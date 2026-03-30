@@ -1,0 +1,83 @@
+---
+title: "course_project"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(sf)
+library(tidycensus)
+```
+
+```{r}
+df = st_read("../extra/shp_trans_transit_count_headway_sum/")
+```
+
+```{r}
+head(df)
+```
+
+```{r}
+tracts <- get_acs(
+  geography = "tract",
+  variables = "B19013_001", 
+  state = "MN",
+  year = 2022,
+  geometry = TRUE 
+)
+```
+
+```{r}
+st_crs(tracts)
+st_crs(df)
+
+lines <- st_transform(df, st_crs(tracts))
+
+
+```
+
+```{r}
+lines_tracts <- st_join(lines, tracts)
+```
+
+```{r}
+tract_summary <- lines_tracts %>%
+  group_by(GEOID) %>%
+  summarise(
+    total_trips = sum(TripCount, na.rm = TRUE),
+    median_income = first(estimate)
+  )
+```
+
+```{r}
+ggplot(tract_summary, aes(x = median_income, y = total_trips)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+```{r}
+tracts_map <- tracts %>%
+  left_join(
+    st_drop_geometry(tract_summary),
+    by = "GEOID"
+  )
+
+metro_tracts <- tracts_map %>%
+  filter(grepl("Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver", NAME))
+```
+
+```{r}
+ggplot(metro_tracts
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = metro_tracts, fill = "grey95", color = NA) +
+  geom_sf(data = lines, color = "blue", size = 0.3, alpha = 0.6) +
+  labs(title = "Transit Network in the Twin Cities") +
+  theme_minimal()
+```
+
+`{) +}   geom_sf(aes(fill = total_trips), color = NA) +   scale_fill_viridis_c(     option = "plasma",     trans = "sqrt",     na.value = "grey90"   ) +   labs(     title = "Transit Service by Census Tract",     subtitle = "Measured using TripCount aggregated from transit line segments",     fill = "Total trips"   ) +   theme_minimal()`
