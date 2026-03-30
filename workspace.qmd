@@ -12,7 +12,7 @@ library(tidycensus)
 ```
 
 ```{r}
-df = st_read("../extra/shp_trans_transit_count_headway_sum/")
+df = st_read("../project-metrotransit-rishika-hadley/data/raw/shp_trans_transit_count_headway_sum/")
 ```
 
 ```{r}
@@ -38,8 +38,11 @@ lines <- st_transform(df, st_crs(tracts))
 
 ```
 
+```{lines_tracts <- st_join(lines, tracts)}
+```
+
 ```{r}
-lines_tracts <- st_join(lines, tracts)
+names(lines_tracts)
 ```
 
 ```{r}
