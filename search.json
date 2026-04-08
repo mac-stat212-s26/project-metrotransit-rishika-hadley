@@ -45,12 +45,144 @@
   {
     "objectID": "appx/proposal.html",
     "href": "appx/proposal.html",
-    "title": "Appendix A — Milestone 1: Proposal + Dataset",
+    "title": "Appendix A — Project Proposal",
     "section": "",
-    "text": "After creating their GitHub repository using the link in Where to Submit section, each team should use the proposal.qmd file to submit their project proposal as an appendix in their project website. The proposal should include the followings Github: https://github.com/mac-stat212-s26/project-metrotransit-rishika-hadley\nTransit access in the Twin Cities team member names - Rishika Kundu, Hadley Wilkins and Laurice Jimu a short description of the project - We are looking at metro transit spatial data of their trips and the income levels of the of the areas they are coming from. 2-3 broad research questions the team is interested in exploring - Is there a correlation between income and ridership, how many stops in richer areas vs poorer ones, where is there a need for more lines or buses the reasons/inspirations behind choosing the topic - We are passionate about metro transit and to see how transit is serving different communities one potential data set that can be used to answer the research questions - https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-transit-count-headway-sum communication plan, ie, primary communication channel (eg, Google Chat, Slack, Email), expected response time (eg, 24 hours during the week), meeting time (eg, “we will meet 7-8pm every Wednesday”) - Text groupchat - every day we chat, Meeting time is during class and we text about things where we need help roles–everyone is expected to contribute to the project but having leads helps with accountability. In particular, determine (1) point of contact–the main person to email the instructor/preceptors, - Laurice Jimu (2) technical lead–the person who will oversee the code base and website, - Rishika Kundu (3) style lead–the person who will make sure the code is following the COMP/STAT 112/212: Code Styling Guide - hadley Wilkins conflict resolution, ie, if a team member misses a deadline, how will the team handle it? How will you make decisions if the team is split 50/50 on a something? - we will talk about it as responsible adults , we can’t be 5050 because there are three of us, also we are really similar and so chances of conflict are low a rough implementation plan, ie, list of tasks with due date and roles–refer to the list of deliverables when building your list. The plan should be added as GitHub Issues within the project repository–see the callout box below for details. - Please create for me:\nTo track your project progress, utilize the GitHub Issues feature by creating a set of milestones and tasks (issues in GitHub terminology) inside each. Below are the instructions for how to add a task into a milestone. Go to your project GitHub repository on the web Select Issues tab Click Milestones –&gt; click New milestone –&gt; type a title, pick a due date, and type a description then hit Create milestone Click New issue –&gt; type a tile, add a description, assign members (from the right list), and hit Create Repeat the steps above to add new milestones and new tasks.",
+    "text": "Milestone 1: Proposal + Dataset",
     "crumbs": [
       "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Milestone 1: Proposal + Dataset</span>"
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#title",
+    "href": "appx/proposal.html#title",
+    "title": "Appendix A — Project Proposal",
+    "section": "Title",
+    "text": "Title\nExploring Equity in Metro Transit: A Spatial Analysis of Ridership and Income",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#team-members",
+    "href": "appx/proposal.html#team-members",
+    "title": "Appendix A — Project Proposal",
+    "section": "Team Members",
+    "text": "Team Members\n\nRishika Kundu\n\nHadley Wilkins\n\nLaurice Jimu",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#project-description",
+    "href": "appx/proposal.html#project-description",
+    "title": "Appendix A — Project Proposal",
+    "section": "Project Description",
+    "text": "Project Description\nFor this project, we’re looking at Metro Transit data and comparing it to income levels across different areas. Basically, we want to understand who is using public transit and whether access to transit is evenly distributed across neighborhoods.\nWe’re especially interested in whether people in lower-income areas rely more on transit, and whether those areas actually have enough stops or service to meet demand.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#research-questions",
+    "href": "appx/proposal.html#research-questions",
+    "title": "Appendix A — Project Proposal",
+    "section": "Research Questions",
+    "text": "Research Questions\nHere are the main questions we want to explore:\n\nIs there a relationship between income levels and transit ridership?\n\nAre transit stops more common in higher-income or lower-income areas?\n\nAre there areas that seem underserved and could benefit from more transit options?",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#why-we-chose-this-topic",
+    "href": "appx/proposal.html#why-we-chose-this-topic",
+    "title": "Appendix A — Project Proposal",
+    "section": "Why We Chose This Topic",
+    "text": "Why We Chose This Topic\nWe’re all interested in public transit and how it impacts everyday life. Transit affects things like getting to work, school, and other opportunities, so it’s important that it works well for everyone.\nThis project gives us a chance to look at real data and see whether transit is actually serving different communities fairly, especially in the Twin Cities.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#dataset",
+    "href": "appx/proposal.html#dataset",
+    "title": "Appendix A — Project Proposal",
+    "section": "Dataset",
+    "text": "Dataset\nWe plan to use the following dataset:\n\nMetro Transit Count and Headway Data\n\nSource: Minnesota Geospatial Commons\n\nLink: https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-transit-count-headway-sum\n\nThis dataset includes spatial data about transit routes, stops, and service levels. We’ll combine it with income data (likely from census data) so we can compare transit patterns across different neighborhoods.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#communication-plan",
+    "href": "appx/proposal.html#communication-plan",
+    "title": "Appendix A — Project Proposal",
+    "section": "Communication Plan",
+    "text": "Communication Plan\nWe’ll mainly communicate through a group text chat, which we already use regularly. We usually respond pretty quickly, but we’ll aim to reply within 24 hours during the week.\nWe’ll also use class time as our main meeting time to work together, and then follow up over text if anything comes up outside of class.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#team-roles",
+    "href": "appx/proposal.html#team-roles",
+    "title": "Appendix A — Project Proposal",
+    "section": "Team Roles",
+    "text": "Team Roles\nWe’ll all contribute to everything, but we picked a few roles to stay organized:\n\nPoint of Contact: Laurice Jimu\n(Handles communication with the instructor/preceptors)\nTechnical Lead: Rishika Kundu\n(Keeps track of code, data, and the website)\nStyle Lead: Hadley Wilkins\n(Makes sure everything is clean, readable, and follows code guidelines)",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#conflict-resolution",
+    "href": "appx/proposal.html#conflict-resolution",
+    "title": "Appendix A — Project Proposal",
+    "section": "Conflict Resolution",
+    "text": "Conflict Resolution\nIf someone misses a deadline, we’ll just talk about it and figure out how to adjust so we stay on track. We want to keep communication open and not let things build up.\nFor decisions, we’ll try to agree as a group. If we disagree, we’ll go with what makes the most sense based on the data and our project goals.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#implementation-plan",
+    "href": "appx/proposal.html#implementation-plan",
+    "title": "Appendix A — Project Proposal",
+    "section": "Implementation Plan",
+    "text": "Implementation Plan\nWe based our timeline on the class schedule and project milestones.\n\nMilestone 1: Proposal + Dataset\nDue: Wednesday, March 25\n\nFinalize topic and research questions\n\nConfirm dataset\n\nSet up GitHub repo\n\nSubmit proposal.qmd\n\n\n\n\nMilestone 2: Effective Teamwork\nDue: April 6\n\nEach person finds a resource about teamwork\n\nWrite a short summary individually\n\n\n\n\nMilestone 3: Case Study\nDue: April 8\n\nLook at an example data story (NYT, FiveThirtyEight, etc.)\n\nAnalyze how it’s structured\n\nAdd write-up to case-study.qmd\n\n\n\n\nMilestone 4: EDA (Exploratory Data Analysis)\nDue: April 10\n\nEach person does their own EDA\n\nCreate visualizations and summaries\n\nStart identifying patterns\n\n\n\n\nMilestone 5: Progress Presentation\nDue: April 22\n\nPut together slides\n\nShare early findings\n\nGet feedback from class\n\n\n\n\nMilestone 6: Near-Final Project\nDue: May 1\n\nFinalize analysis and visuals\n\nBuild out website\n\nRefine story and explanations\n\n\n\n\nMilestone 7: Final Submission\nDue: May 4\n\nFinal edits\n\nCheck website + links\n\nSubmit everything",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#github-issues-plan",
+    "href": "appx/proposal.html#github-issues-plan",
+    "title": "Appendix A — Project Proposal",
+    "section": "GitHub Issues Plan",
+    "text": "GitHub Issues Plan\nWe’ll use GitHub Issues to keep track of tasks and stay organized.\nWe’ll create milestones for each phase of the project and then break them into smaller tasks (issues), like:\n\nSet up repository\n\nClean dataset\n\nDo EDA\n\nBuild visualizations\n\nWrite sections of report\n\nPrepare presentation\n\nEach issue will be assigned to someone and linked to a milestone so we can track progress.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "appx/proposal.html#closing",
+    "href": "appx/proposal.html#closing",
+    "title": "Appendix A — Project Proposal",
+    "section": "Closing",
+    "text": "Closing\nWe’re excited about this project because it connects data science to something real and important. Our goal is to tell a clear story about transit and equity, while also building strong data analysis and visualization skills.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Project Proposal</span>"
     ]
   },
   {
