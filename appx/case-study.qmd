@@ -2,4 +2,28 @@
 title: "Case Study"
 ---
 
-Your case study go here.
+https://fivethirtyeight.com/features/uber-is-taking-millions-of-manhattan-rides-away-from-taxis/
+
+The story uses a hook via policy conflict
+- political fight (de Blasio vs. Uber) 
+- a concrete question — does Uber worsen congestion?
+
+Answer first, evidence second. 
+- headline and opening paragraph immediately state the conclusion
+- rest of the story is justification, not suspense.
+
+Zoom in from city to borough to neighborhood core. 
+- The story narrows progressively
+- City-wide totals come first (48M then 51M rides), 
+- then borough breakdowns
+
+Then they get to the critical insight emerges at the Manhattan core level where the near-perfect substitution of taxis by Uber lives.
+
+Visuals carry the geographic argument.
+- focus in the visuals rather than the words
+
+The scatter plot (Uber gain vs. taxi loss by zone) then converts a geographic pattern into a statistical one, reinforcing claims.
+
+Competing interpretations are addressed, then closed. After presenting the core finding, the piece acknowledges what the data can't prove (dropoffs, Lyft, cruising empty cabs), and quotes both sides but frames these as caveats, not genuine rebuttals.
+
+The final line shifts scale back out: Uber's outer-borough growth is "dramatic" but the real battle is Manhattan, where taxis "might be in trouble." The story ends on implication, not just summary.
