@@ -72,10 +72,6 @@ metro_tracts <- tracts_map %>%
 ```
 
 ```{r}
-ggplot(metro_tracts
-```
-
-```{r}
 ggplot() +
   geom_sf(data = metro_tracts, fill = "grey95", color = NA) +
   geom_sf(data = lines, color = "blue", size = 0.3, alpha = 0.6) +
