@@ -110,12 +110,6 @@ p2 <- ggplot(metro_tracts) + geom_sf(aes(fill = log1p(total_trips)), color = NA)
 p1 + p2
 ```
 
-```{r}
-# Check if any lines span multiple tracts
-lines_tracts %>%
-  count(objectid_or_your_line_id_col) %>%
-  filter(n > 1)
-```
 
 ```{r}
 metro_tracts %>%
