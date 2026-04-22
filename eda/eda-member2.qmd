@@ -1,5 +1,93 @@
 ---
-title: "Member 2 First Name & Last Name Initial"
+title: "Rishika Kundu EDA"
+format: html
+editor: visual
 ---
 
-Your exploratory data analysis of the team datasets go here.
+```{r}
+library(tidyverse)
+library(dplyr)
+library(sf)
+library(tidycensus)
+```
+
+```{r}
+df = st_read("../data/raw/shp_trans_transit_count_headway_sum/")
+```
+```{r}
+tracts <- get_acs(
+  geography = "tract",
+  variables = "B19013_001", 
+  state = "MN",
+  year = 2022,
+  geometry = TRUE 
+)
+```
+```{r}
+st_crs(tracts)
+st_crs(df)
+```
+
+```{r}
+lines <- st_transform(df, st_crs(tracts))
+lines_tracts <- st_join(lines, tracts)
+names(lines_tracts)
+```
+
+```{r}
+tract_summary <- lines_tracts %>%
+  group_by(GEOID) %>%
+  summarise(
+    total_trips = sum(TripCount, na.rm = TRUE),
+    median_income = first(estimate)
+  )
+```
+
+```{r}
+ggplot(tract_summary, aes(x = median_income, y = total_trips)) +
+  geom_point() +
+  geom_smooth(method = "lm")+
+  labs(
+    title = "Transit Service vs. Median Household Income",
+    x = "Median Household Income",
+    y = "Total Transit Trips"
+  )
+```
+```{r}
+tracts_map <- tracts %>%
+  left_join(
+    st_drop_geometry(tract_summary),
+    by = "GEOID"
+  )
+
+metro_tracts <- tracts_map %>%
+  filter(grepl("Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver", NAME))
+```
+
+
+```{r}
+ggplot() +
+  geom_sf(data = metro_tracts, fill = "grey95", color = NA) +
+  geom_sf(data = lines, color = "blue", size = 0.3, alpha = 0.6) +
+  labs(title = "Transit Network in the Twin Cities") +
+  theme_minimal()
+```
+```{r}
+ggplot() +
+  geom_sf(data = metro_tracts, aes(fill = estimate), color = "white", size = 0.1) +
+  scale_fill_gradient(
+    name = "Median Income",
+    low = "#d4f1d4",
+    high = "#1a5c1a"
+  ) +
+  geom_sf(data = lines, size = 0.3, alpha = 0.7) +
+  coord_sf(
+    xlim = c(-94.0, -92.7),
+    ylim = c(44.6, 45.3)
+  ) +
+  labs(
+    title = "Transit Routes vs. Median Household Income"
+  ) +
+  theme_void() 
+```
+
