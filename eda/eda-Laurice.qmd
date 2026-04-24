@@ -44,18 +44,18 @@ The dataset contains trip counts and headways (minutes between trips) for seven 
 | Night | NIGHT | 9:00 PM–1:30 AM |
 | Owl | OWL | 1:30–4:30 AM |
 
-The `SERVICE_ID` field indicates the day type: WK (weekday), SAT (Saturday), SUN (Sunday), FRI (Friday), HOL (Holiday).
+The `service_id` field indicates the day type: WK (weekday), SAT (Saturday), SUN (Sunday), FRI (Friday), HOL (Holiday).
 
 ## 1. Service Volume by Day Type
 
 ```{r}
 day_summary <- df %>%
   st_drop_geometry() %>%
-  group_by(SERVICE_ID) %>%
+  group_by(service_id) %>%
   summarise(
-    total_trips = sum(TOTAL_COUN, na.rm = TRUE),
+    total_trips = sum(TripCount, na.rm = TRUE),
     n_segments = n(),
-    avg_trips_per_segment = mean(TOTAL_COUN, na.rm = TRUE),
+    avg_trips_per_segment = mean(TripCount, na.rm = TRUE),
     .groups = "drop"
   ) %>%
   arrange(desc(total_trips))
@@ -64,7 +64,7 @@ day_summary
 ```
 
 ```{r}
-ggplot(day_summary, aes(x = reorder(SERVICE_ID, -total_trips), y = total_trips)) +
+ggplot(day_summary, aes(x = reorder(service_id, -total_trips), y = total_trips)) +
   geom_col(fill = "#2c7fb8") +
   scale_y_continuous(labels = comma) +
   labs(
@@ -81,8 +81,8 @@ This is the core of the temporal analysis — how does service shift throughout 
 
 ```{r}
 # Pivot trip count columns to long format for weekday service
-time_periods <- c("EAM_COUNT", "AMP_COUNT", "MID_COUNT", "PMP_COUNT",
-                  "EVE_COUNT", "NIGHT_COU", "OWL_COUNT")
+time_periods <- c("EAM_count", "AMP_count", "MID_count", "PMP_count",
+                  "EVE_count", "NIGHT_coun", "OWL_count")
 
 period_labels <- c("Early AM\n4:30-6:00",
                     "AM Peak\n6:00-9:00",
@@ -95,7 +95,7 @@ period_labels <- c("Early AM\n4:30-6:00",
 # Filter to weekday service for the main temporal view
 wk_data <- df %>%
   st_drop_geometry() %>%
-  filter(SERVICE_ID == "WK")
+  filter(service_id == "WK")
 
 trips_long <- wk_data %>%
   select(all_of(time_periods)) %>%
@@ -109,7 +109,7 @@ ggplot(trips_long, aes(x = period_label, y = trips)) +
   scale_y_continuous(labels = comma) +
   labs(
     title = "Weekday Trip Distribution by Time of Day",
-    subtitle = "Twin Cities Metro Transit (SERVICE_ID = WK)",
+    subtitle = "Twin Cities Metro Transit (service_id = WK)",
     x = "Time Period",
     y = "Total Trips Across All Segments"
   ) +
@@ -125,26 +125,26 @@ day_types <- c("WK", "SAT", "SUN")
 
 temporal_by_day <- df %>%
   st_drop_geometry() %>%
-  filter(SERVICE_ID %in% day_types) %>%
-  group_by(SERVICE_ID) %>%
+  filter(service_id %in% day_types) %>%
+  group_by(service_id) %>%
   summarise(across(all_of(time_periods), ~sum(.x, na.rm = TRUE)), .groups = "drop") %>%
-  pivot_longer(-SERVICE_ID, names_to = "period", values_to = "trips") %>%
+  pivot_longer(-service_id, names_to = "period", values_to = "trips") %>%
   mutate(
     period_label = factor(
       recode(period,
-        "EAM_COUNT" = "Early AM",
-        "AMP_COUNT" = "AM Peak",
-        "MID_COUNT" = "Midday",
-        "PMP_COUNT" = "PM Peak",
-        "EVE_COUNT" = "Evening",
-        "NIGHT_COU" = "Night",
-        "OWL_COUNT" = "Owl"),
+        "EAM_count" = "Early AM",
+        "AMP_count" = "AM Peak",
+        "MID_count" = "Midday",
+        "PMP_count" = "PM Peak",
+        "EVE_count" = "Evening",
+        "NIGHT_coun" = "Night",
+        "OWL_count" = "Owl"),
       levels = c("Early AM", "AM Peak", "Midday", "PM Peak", "Evening", "Night", "Owl")
     ),
-    SERVICE_ID = recode(SERVICE_ID, "WK" = "Weekday", "SAT" = "Saturday", "SUN" = "Sunday")
+    service_id = recode(service_id, "WK" = "Weekday", "SAT" = "Saturday", "SUN" = "Sunday")
   )
 
-ggplot(temporal_by_day, aes(x = period_label, y = trips, fill = SERVICE_ID)) +
+ggplot(temporal_by_day, aes(x = period_label, y = trips, fill = service_id)) +
   geom_col(position = "dodge") +
   scale_fill_manual(values = c("Weekday" = "#2c7fb8", "Saturday" = "#7fcdbb", "Sunday" = "#c7e9b4")) +
   scale_y_continuous(labels = comma) +
@@ -163,8 +163,8 @@ ggplot(temporal_by_day, aes(x = period_label, y = trips, fill = SERVICE_ID)) +
 Headway (minutes between trips) is a key measure of service quality. Lower headways mean shorter waits.
 
 ```{r}
-headway_cols <- c("EAM_HDWY", "AMP_HDWY", "MID_HDWY", "PMP_HDWY",
-                  "EVE_HDWY", "NIGHT_HDW", "OWL_HDWY")
+headway_cols <- c("EAM_hdwy", "AMP_hdwy", "MID_hdwy", "PMP_hdwy",
+                  "EVE_hdwy", "NIGHT_hdwy", "OWL_hdwy")
 
 headway_summary <- wk_data %>%
   select(all_of(headway_cols)) %>%
@@ -173,13 +173,13 @@ headway_summary <- wk_data %>%
   mutate(
     period_label = factor(
       recode(period,
-        "EAM_HDWY" = "Early AM",
-        "AMP_HDWY" = "AM Peak",
-        "MID_HDWY" = "Midday",
-        "PMP_HDWY" = "PM Peak",
-        "EVE_HDWY" = "Evening",
-        "NIGHT_HDW" = "Night",
-        "OWL_HDWY" = "Owl"),
+        "EAM_hdwy" = "Early AM",
+        "AMP_hdwy" = "AM Peak",
+        "MID_hdwy" = "Midday",
+        "PMP_hdwy" = "PM Peak",
+        "EVE_hdwy" = "Evening",
+        "NIGHT_hdwy" = "Night",
+        "OWL_hdwy" = "Owl"),
       levels = c("Early AM", "AM Peak", "Midday", "PM Peak", "Evening", "Night", "Owl")
     )
   )
@@ -220,17 +220,17 @@ Where does service concentrate during peak hours versus off-peak? This map compa
 
 # Use weekday data with geometry
 wk_spatial <- df %>%
-  filter(SERVICE_ID == "WK")
+  filter(service_id == "WK")
 
 p_peak <- ggplot(wk_spatial) +
-  geom_sf(aes(color = AMP_COUNT), size = 0.4, alpha = 0.7) +
+  geom_sf(aes(color = AMP_count), size = 0.4, alpha = 0.7) +
   scale_color_viridis_c(option = "plasma", name = "Trips", na.value = "grey80") +
   labs(title = "AM Peak (6:00–9:00 AM)") +
   theme_void() +
   theme(legend.position = "bottom")
 
 p_eve <- ggplot(wk_spatial) +
-  geom_sf(aes(color = EVE_COUNT), size = 0.4, alpha = 0.7) +
+  geom_sf(aes(color = EVE_count), size = 0.4, alpha = 0.7) +
   scale_color_viridis_c(option = "plasma", name = "Trips", na.value = "grey80") +
   labs(title = "Evening (6:30–9:00 PM)") +
   theme_void() +
@@ -250,8 +250,8 @@ p_peak + p_eve +
 #| fig-height: 6
 
 night_service <- wk_spatial %>%
-  mutate(has_night = (NIGHT_COU > 0),
-         has_owl = (OWL_COUNT > 0))
+  mutate(has_night = (NIGHT_coun > 0),
+         has_owl = (OWL_count > 0))
 
 ggplot() +
   geom_sf(data = filter(night_service, !has_night), color = "grey85", size = 0.2) +
@@ -270,8 +270,8 @@ wk_spatial %>%
   st_drop_geometry() %>%
   summarise(
     total_segments = n(),
-    pct_night = round(100 * mean(NIGHT_COU > 0, na.rm = TRUE), 1),
-    pct_owl = round(100 * mean(OWL_COUNT > 0, na.rm = TRUE), 1)
+    pct_night = round(100 * mean(NIGHT_coun > 0, na.rm = TRUE), 1),
+    pct_owl = round(100 * mean(OWL_count > 0, na.rm = TRUE), 1)
   )
 ```
 

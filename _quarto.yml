@@ -63,6 +63,7 @@ book:
       chapters:
         - eda/eda-hadley.qmd
         - eda/eda-member2.qmd
+        - eda/eda-Laurice.qmd
 
   appendices:
   - appx/proposal.qmd

@@ -14,6 +14,7 @@ library(tidycensus)
 ```{r}
 df = st_read("../data/raw/shp_trans_transit_count_headway_sum/")
 ```
+
 ```{r}
 tracts <- get_acs(
   geography = "tract",
@@ -23,6 +24,7 @@ tracts <- get_acs(
   geometry = TRUE 
 )
 ```
+
 ```{r}
 st_crs(tracts)
 st_crs(df)
@@ -53,6 +55,7 @@ ggplot(tract_summary, aes(x = median_income, y = total_trips)) +
     y = "Total Transit Trips"
   )
 ```
+
 ```{r}
 tracts_map <- tracts %>%
   left_join(
@@ -64,7 +67,6 @@ metro_tracts <- tracts_map %>%
   filter(grepl("Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver", NAME))
 ```
 
-
 ```{r}
 ggplot() +
   geom_sf(data = metro_tracts, fill = "grey95", color = NA) +
@@ -72,6 +74,7 @@ ggplot() +
   labs(title = "Transit Network in the Twin Cities") +
   theme_minimal()
 ```
+
 ```{r}
 ggplot() +
   geom_sf(data = metro_tracts, aes(fill = estimate), color = "white", size = 0.1) +
@@ -90,4 +93,3 @@ ggplot() +
   ) +
   theme_void() 
 ```
-
