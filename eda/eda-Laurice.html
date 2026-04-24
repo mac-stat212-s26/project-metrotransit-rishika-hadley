@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Laurice J. EDA — Temporal Patterns in Metro Transit Service – Project Metro-Transit</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../appx/proposal.html" rel="next">
+<link href="../eda/eda-member2.html" rel="prev">
+<script src="../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-447330ed7f5b14f08626394f08367e28.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b1525fc7443f827935229f0f56e36607.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-447330ed7f5b14f08626394f08367e28.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../style/custom.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../eda/eda-hadley.html">EDA</a></li><li class="breadcrumb-item"><a href="../eda/eda-Laurice.html"><span class="chapter-title">Laurice J. EDA — Temporal Patterns in Metro Transit Service</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../assets/sidebar-logo.png" alt="Random negative space illustration" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../assets/sidebar-logo.png" alt="Random negative space illustration" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Team Name</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Report</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">EDA</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../eda/eda-hadley.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Member 1 Hadley W</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../eda/eda-member2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Rishika Kundu EDA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../eda/eda-Laurice.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Laurice J. EDA — Temporal Patterns in Metro Transit Service</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appx/proposal.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Project Proposal</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appx/case-study.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case Study</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../wa/wa-member1.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Hadley W Workspace</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../wa/wa-member2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Member 2 First Name &amp; Last Name Initial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../wa/wa-member3.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Member 3 First Name &amp; Last Name Initial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load Data</a></li>
+  <li><a href="#understanding-the-temporal-fields" id="toc-understanding-the-temporal-fields" class="nav-link" data-scroll-target="#understanding-the-temporal-fields">Understanding the Temporal Fields</a></li>
+  <li><a href="#service-volume-by-day-type" id="toc-service-volume-by-day-type" class="nav-link" data-scroll-target="#service-volume-by-day-type">1. Service Volume by Day Type</a></li>
+  <li><a href="#trip-distribution-across-time-of-day" id="toc-trip-distribution-across-time-of-day" class="nav-link" data-scroll-target="#trip-distribution-across-time-of-day">2. Trip Distribution Across Time of Day</a></li>
+  <li><a href="#weekday-vs.-weekend-temporal-profiles" id="toc-weekday-vs.-weekend-temporal-profiles" class="nav-link" data-scroll-target="#weekday-vs.-weekend-temporal-profiles">3. Weekday vs.&nbsp;Weekend Temporal Profiles</a></li>
+  <li><a href="#headway-analysis-how-long-do-riders-wait" id="toc-headway-analysis-how-long-do-riders-wait" class="nav-link" data-scroll-target="#headway-analysis-how-long-do-riders-wait">4. Headway Analysis — How Long Do Riders Wait?</a></li>
+  <li><a href="#peak-vs.-off-peak-service-intensity-map" id="toc-peak-vs.-off-peak-service-intensity-map" class="nav-link" data-scroll-target="#peak-vs.-off-peak-service-intensity-map">5. Peak vs.&nbsp;Off-Peak Service Intensity Map</a></li>
+  <li><a href="#night-owl-service-where-does-late-night-transit-exist" id="toc-night-owl-service-where-does-late-night-transit-exist" class="nav-link" data-scroll-target="#night-owl-service-where-does-late-night-transit-exist">6. Night &amp; Owl Service — Where Does Late-Night Transit Exist?</a></li>
+  <li><a href="#summary-of-findings" id="toc-summary-of-findings" class="nav-link" data-scroll-target="#summary-of-findings">Summary of Findings</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../eda/eda-hadley.html">EDA</a></li><li class="breadcrumb-item"><a href="../eda/eda-Laurice.html"><span class="chapter-title">Laurice J. EDA — Temporal Patterns in Metro Transit Service</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">Laurice J. EDA — Temporal Patterns in Metro Transit Service</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>While my teammates explored the relationship between transit service and median household income, this EDA examines <strong>temporal patterns</strong> in Metro Transit service: how trip frequency and headways (wait times) vary by time of day and day of week across the Twin Cities metro. Understanding these patterns helps identify when and where service is strongest — and where gaps exist.</p>
+</section>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(patchwork)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="load-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-data">Load Data</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>df <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"../data/raw/shp_trans_transit_count_headway_sum/"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `TransitCountHeadwaySummary' from data source 
+  `/Users/hadleywilkins/Documents/COMP212/project-metrotransit-rishika-hadley/data/raw/shp_trans_transit_count_headway_sum' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 75634 features and 23 fields
+Geometry type: MULTILINESTRING
+Dimension:     XY
+Bounding box:  xmin: 442648 ymin: 4948258 xmax: 515316.2 ymax: 5020153
+Projected CRS: NAD83 / UTM zone 15N</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">glimpse</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 75,634
+Columns: 24
+$ service_id &lt;chr&gt; "SAT", "SAT", "SAT", "SAT", "SAT", "SAT", "SAT", "SAT", "SA…
+$ line_direc &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ RoadSeg_ID &lt;chr&gt; "000F4998-F58A-4BEF-9154-2410CE7B8695", "41557529-134D-48C5…
+$ EAM_count  &lt;dbl&gt; 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0,…
+$ AMP_count  &lt;dbl&gt; 1, 14, 3, 3, 5, 15, 3, 0, 3, 0, 1, 5, 2, 8, 26, 8, 1, 3, 4,…
+$ MID_count  &lt;dbl&gt; 6, 30, 16, 12, 12, 30, 6, 16, 8, 3, 3, 12, 6, 34, 60, 34, 6…
+$ PMP_count  &lt;dbl&gt; 3, 18, 11, 6, 7, 18, 4, 14, 4, 4, 2, 7, 3, 19, 35, 19, 4, 4…
+$ EVE_count  &lt;dbl&gt; 1, 10, 3, 4, 5, 10, 2, 0, 4, 2, 1, 4, 3, 7, 17, 7, 1, 1, 5,…
+$ NIGHT_coun &lt;dbl&gt; 0, 10, 1, 0, 8, 9, 4, 0, 1, 3, 1, 9, 1, 8, 25, 8, 0, 0, 6, …
+$ OWL_count  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ TripCount  &lt;dbl&gt; 11, 85, 34, 25, 37, 85, 19, 30, 20, 12, 8, 37, 15, 78, 165,…
+$ EAM_hdwy   &lt;dbl&gt; 0, 30, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 45, 45, 45, 0, 0, …
+$ AMP_hdwy   &lt;dbl&gt; 180, 13, 60, 60, 36, 12, 60, 0, 60, 0, 180, 36, 90, 23, 7, …
+$ MID_hdwy   &lt;dbl&gt; 60, 12, 23, 30, 30, 12, 60, 23, 45, 120, 120, 30, 60, 11, 6…
+$ PMP_hdwy   &lt;dbl&gt; 70, 12, 19, 35, 30, 12, 53, 15, 53, 53, 105, 30, 70, 11, 6,…
+$ EVE_hdwy   &lt;dbl&gt; 150, 15, 50, 38, 30, 15, 75, 0, 38, 75, 150, 38, 50, 21, 9,…
+$ NIGHT_hdwy &lt;dbl&gt; 0, 27, 270, 0, 34, 30, 68, 0, 270, 90, 270, 30, 270, 34, 11…
+$ OWL_hdwy   &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ created_us &lt;chr&gt; "SVC-GISBATCH", "SVC-GISBATCH", "SVC-GISBATCH", "SVC-GISBAT…
+$ created_da &lt;date&gt; 2026-03-21, 2026-03-21, 2026-03-21, 2026-03-21, 2026-03-21…
+$ last_edite &lt;chr&gt; "SVC-GISBATCH", "SVC-GISBATCH", "SVC-GISBATCH", "SVC-GISBAT…
+$ last_edi_1 &lt;date&gt; 2026-03-21, 2026-03-21, 2026-03-21, 2026-03-21, 2026-03-21…
+$ Shape_Leng &lt;dbl&gt; 140.780997, 160.108840, 365.814556, 64.000694, 121.240641, …
+$ geometry   &lt;MULTILINESTRING [m]&gt; MULTILINESTRING ((466822.1 ..., MULTILINEST…</code></pre>
+</div>
+</div>
+</section>
+<section id="understanding-the-temporal-fields" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-temporal-fields">Understanding the Temporal Fields</h2>
+<p>The dataset contains trip counts and headways (minutes between trips) for seven time periods:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Period</th>
+<th>Abbreviation</th>
+<th>Time Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Early Morning</td>
+<td>EAM</td>
+<td>4:30–6:00 AM</td>
+</tr>
+<tr class="even">
+<td>AM Peak</td>
+<td>AMP</td>
+<td>6:00–9:00 AM</td>
+</tr>
+<tr class="odd">
+<td>Midday</td>
+<td>MID</td>
+<td>9:00 AM–3:00 PM</td>
+</tr>
+<tr class="even">
+<td>PM Peak</td>
+<td>PMP</td>
+<td>3:00–6:30 PM</td>
+</tr>
+<tr class="odd">
+<td>Evening</td>
+<td>EVE</td>
+<td>6:30–9:00 PM</td>
+</tr>
+<tr class="even">
+<td>Night</td>
+<td>NIGHT</td>
+<td>9:00 PM–1:30 AM</td>
+</tr>
+<tr class="odd">
+<td>Owl</td>
+<td>OWL</td>
+<td>1:30–4:30 AM</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>service_id</code> field indicates the day type: WK (weekday), SAT (Saturday), SUN (Sunday), FRI (Friday), HOL (Holiday).</p>
+</section>
+<section id="service-volume-by-day-type" class="level2">
+<h2 class="anchored" data-anchor-id="service-volume-by-day-type">1. Service Volume by Day Type</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>day_summary <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">group_by</span>(service_id) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="at">total_trips =</span> <span class="fu">sum</span>(TripCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="at">n_segments =</span> <span class="fu">n</span>(),</span>
+<span id="cb6-7"><a href="#cb6-7"></a>    <span class="at">avg_trips_per_segment =</span> <span class="fu">mean</span>(TripCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_trips))</span>
+<span id="cb6-11"><a href="#cb6-11"></a></span>
+<span id="cb6-12"><a href="#cb6-12"></a>day_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  service_id total_trips n_segments avg_trips_per_segment
+  &lt;chr&gt;            &lt;dbl&gt;      &lt;int&gt;                 &lt;dbl&gt;
+1 WK             1537905      33754                  45.6
+2 SAT            1159189      22392                  51.8
+3 SUN            1016553      19488                  52.2</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">ggplot</span>(day_summary, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(service_id, <span class="sc">-</span>total_trips), <span class="at">y =</span> total_trips)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#2c7fb8"</span>) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-5"><a href="#cb8-5"></a>    <span class="at">title =</span> <span class="st">"Total Transit Trips by Day Type"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="at">x =</span> <span class="st">"Day Type"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7"></a>    <span class="at">y =</span> <span class="st">"Total Trips"</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="eda-Laurice_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="trip-distribution-across-time-of-day" class="level2">
+<h2 class="anchored" data-anchor-id="trip-distribution-across-time-of-day">2. Trip Distribution Across Time of Day</h2>
+<p>This is the core of the temporal analysis — how does service shift throughout the day?</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Pivot trip count columns to long format for weekday service</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>time_periods <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"EAM_count"</span>, <span class="st">"AMP_count"</span>, <span class="st">"MID_count"</span>, <span class="st">"PMP_count"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3"></a>                  <span class="st">"EVE_count"</span>, <span class="st">"NIGHT_coun"</span>, <span class="st">"OWL_count"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a>period_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Early AM</span><span class="sc">\n</span><span class="st">4:30-6:00"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6"></a>                    <span class="st">"AM Peak</span><span class="sc">\n</span><span class="st">6:00-9:00"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7"></a>                    <span class="st">"Midday</span><span class="sc">\n</span><span class="st">9:00-3:00"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8"></a>                    <span class="st">"PM Peak</span><span class="sc">\n</span><span class="st">3:00-6:30"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9"></a>                    <span class="st">"Evening</span><span class="sc">\n</span><span class="st">6:30-9:00"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10"></a>                    <span class="st">"Night</span><span class="sc">\n</span><span class="st">9:00-1:30"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11"></a>                    <span class="st">"Owl</span><span class="sc">\n</span><span class="st">1:30-4:30"</span>)</span>
+<span id="cb9-12"><a href="#cb9-12"></a></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co"># Filter to weekday service for the main temporal view</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a>wk_data <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a>  <span class="fu">filter</span>(service_id <span class="sc">==</span> <span class="st">"WK"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17"></a></span>
+<span id="cb9-18"><a href="#cb9-18"></a>trips_long <span class="ot">&lt;-</span> wk_data <span class="sc">%&gt;%</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(time_periods)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">sum</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb9-21"><a href="#cb9-21"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"period"</span>, <span class="at">values_to =</span> <span class="st">"trips"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-22"><a href="#cb9-22"></a>  <span class="fu">mutate</span>(<span class="at">period_label =</span> <span class="fu">factor</span>(period_labels, <span class="at">levels =</span> period_labels))</span>
+<span id="cb9-23"><a href="#cb9-23"></a></span>
+<span id="cb9-24"><a href="#cb9-24"></a><span class="fu">ggplot</span>(trips_long, <span class="fu">aes</span>(<span class="at">x =</span> period_label, <span class="at">y =</span> trips)) <span class="sc">+</span></span>
+<span id="cb9-25"><a href="#cb9-25"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#41b6c4"</span>) <span class="sc">+</span></span>
+<span id="cb9-26"><a href="#cb9-26"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">comma</span>(trips)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.3</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb9-27"><a href="#cb9-27"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb9-28"><a href="#cb9-28"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-29"><a href="#cb9-29"></a>    <span class="at">title =</span> <span class="st">"Weekday Trip Distribution by Time of Day"</span>,</span>
+<span id="cb9-30"><a href="#cb9-30"></a>    <span class="at">subtitle =</span> <span class="st">"Twin Cities Metro Transit (service_id = WK)"</span>,</span>
+<span id="cb9-31"><a href="#cb9-31"></a>    <span class="at">x =</span> <span class="st">"Time Period"</span>,</span>
+<span id="cb9-32"><a href="#cb9-32"></a>    <span class="at">y =</span> <span class="st">"Total Trips Across All Segments"</span></span>
+<span id="cb9-33"><a href="#cb9-33"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-34"><a href="#cb9-34"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-35"><a href="#cb9-35"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="eda-Laurice_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="weekday-vs.-weekend-temporal-profiles" class="level2">
+<h2 class="anchored" data-anchor-id="weekday-vs.-weekend-temporal-profiles">3. Weekday vs.&nbsp;Weekend Temporal Profiles</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Compare weekday, Saturday, and Sunday profiles</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>day_types <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"WK"</span>, <span class="st">"SAT"</span>, <span class="st">"SUN"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a>temporal_by_day <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>  <span class="fu">filter</span>(service_id <span class="sc">%in%</span> day_types) <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>  <span class="fu">group_by</span>(service_id) <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(time_periods), <span class="sc">~</span><span class="fu">sum</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>service_id, <span class="at">names_to =</span> <span class="st">"period"</span>, <span class="at">values_to =</span> <span class="st">"trips"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-11"><a href="#cb10-11"></a>    <span class="at">period_label =</span> <span class="fu">factor</span>(</span>
+<span id="cb10-12"><a href="#cb10-12"></a>      <span class="fu">recode</span>(period,</span>
+<span id="cb10-13"><a href="#cb10-13"></a>        <span class="st">"EAM_count"</span> <span class="ot">=</span> <span class="st">"Early AM"</span>,</span>
+<span id="cb10-14"><a href="#cb10-14"></a>        <span class="st">"AMP_count"</span> <span class="ot">=</span> <span class="st">"AM Peak"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15"></a>        <span class="st">"MID_count"</span> <span class="ot">=</span> <span class="st">"Midday"</span>,</span>
+<span id="cb10-16"><a href="#cb10-16"></a>        <span class="st">"PMP_count"</span> <span class="ot">=</span> <span class="st">"PM Peak"</span>,</span>
+<span id="cb10-17"><a href="#cb10-17"></a>        <span class="st">"EVE_count"</span> <span class="ot">=</span> <span class="st">"Evening"</span>,</span>
+<span id="cb10-18"><a href="#cb10-18"></a>        <span class="st">"NIGHT_coun"</span> <span class="ot">=</span> <span class="st">"Night"</span>,</span>
+<span id="cb10-19"><a href="#cb10-19"></a>        <span class="st">"OWL_count"</span> <span class="ot">=</span> <span class="st">"Owl"</span>),</span>
+<span id="cb10-20"><a href="#cb10-20"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Early AM"</span>, <span class="st">"AM Peak"</span>, <span class="st">"Midday"</span>, <span class="st">"PM Peak"</span>, <span class="st">"Evening"</span>, <span class="st">"Night"</span>, <span class="st">"Owl"</span>)</span>
+<span id="cb10-21"><a href="#cb10-21"></a>    ),</span>
+<span id="cb10-22"><a href="#cb10-22"></a>    <span class="at">service_id =</span> <span class="fu">recode</span>(service_id, <span class="st">"WK"</span> <span class="ot">=</span> <span class="st">"Weekday"</span>, <span class="st">"SAT"</span> <span class="ot">=</span> <span class="st">"Saturday"</span>, <span class="st">"SUN"</span> <span class="ot">=</span> <span class="st">"Sunday"</span>)</span>
+<span id="cb10-23"><a href="#cb10-23"></a>  )</span>
+<span id="cb10-24"><a href="#cb10-24"></a></span>
+<span id="cb10-25"><a href="#cb10-25"></a><span class="fu">ggplot</span>(temporal_by_day, <span class="fu">aes</span>(<span class="at">x =</span> period_label, <span class="at">y =</span> trips, <span class="at">fill =</span> service_id)) <span class="sc">+</span></span>
+<span id="cb10-26"><a href="#cb10-26"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb10-27"><a href="#cb10-27"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Weekday"</span> <span class="ot">=</span> <span class="st">"#2c7fb8"</span>, <span class="st">"Saturday"</span> <span class="ot">=</span> <span class="st">"#7fcdbb"</span>, <span class="st">"Sunday"</span> <span class="ot">=</span> <span class="st">"#c7e9b4"</span>)) <span class="sc">+</span></span>
+<span id="cb10-28"><a href="#cb10-28"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb10-29"><a href="#cb10-29"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-30"><a href="#cb10-30"></a>    <span class="at">title =</span> <span class="st">"Trip Distribution: Weekday vs. Weekend"</span>,</span>
+<span id="cb10-31"><a href="#cb10-31"></a>    <span class="at">x =</span> <span class="st">"Time Period"</span>,</span>
+<span id="cb10-32"><a href="#cb10-32"></a>    <span class="at">y =</span> <span class="st">"Total Trips"</span>,</span>
+<span id="cb10-33"><a href="#cb10-33"></a>    <span class="at">fill =</span> <span class="st">"Day Type"</span></span>
+<span id="cb10-34"><a href="#cb10-34"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-35"><a href="#cb10-35"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb10-36"><a href="#cb10-36"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="eda-Laurice_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="headway-analysis-how-long-do-riders-wait" class="level2">
+<h2 class="anchored" data-anchor-id="headway-analysis-how-long-do-riders-wait">4. Headway Analysis — How Long Do Riders Wait?</h2>
+<p>Headway (minutes between trips) is a key measure of service quality. Lower headways mean shorter waits.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>headway_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"EAM_hdwy"</span>, <span class="st">"AMP_hdwy"</span>, <span class="st">"MID_hdwy"</span>, <span class="st">"PMP_hdwy"</span>,</span>
+<span id="cb11-2"><a href="#cb11-2"></a>                  <span class="st">"EVE_hdwy"</span>, <span class="st">"NIGHT_hdwy"</span>, <span class="st">"OWL_hdwy"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a>headway_summary <span class="ot">&lt;-</span> wk_data <span class="sc">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(headway_cols)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"period"</span>, <span class="at">values_to =</span> <span class="st">"headway"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a>  <span class="fu">filter</span>(headway <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb11-9"><a href="#cb11-9"></a>    <span class="at">period_label =</span> <span class="fu">factor</span>(</span>
+<span id="cb11-10"><a href="#cb11-10"></a>      <span class="fu">recode</span>(period,</span>
+<span id="cb11-11"><a href="#cb11-11"></a>        <span class="st">"EAM_hdwy"</span> <span class="ot">=</span> <span class="st">"Early AM"</span>,</span>
+<span id="cb11-12"><a href="#cb11-12"></a>        <span class="st">"AMP_hdwy"</span> <span class="ot">=</span> <span class="st">"AM Peak"</span>,</span>
+<span id="cb11-13"><a href="#cb11-13"></a>        <span class="st">"MID_hdwy"</span> <span class="ot">=</span> <span class="st">"Midday"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14"></a>        <span class="st">"PMP_hdwy"</span> <span class="ot">=</span> <span class="st">"PM Peak"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15"></a>        <span class="st">"EVE_hdwy"</span> <span class="ot">=</span> <span class="st">"Evening"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16"></a>        <span class="st">"NIGHT_hdwy"</span> <span class="ot">=</span> <span class="st">"Night"</span>,</span>
+<span id="cb11-17"><a href="#cb11-17"></a>        <span class="st">"OWL_hdwy"</span> <span class="ot">=</span> <span class="st">"Owl"</span>),</span>
+<span id="cb11-18"><a href="#cb11-18"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Early AM"</span>, <span class="st">"AM Peak"</span>, <span class="st">"Midday"</span>, <span class="st">"PM Peak"</span>, <span class="st">"Evening"</span>, <span class="st">"Night"</span>, <span class="st">"Owl"</span>)</span>
+<span id="cb11-19"><a href="#cb11-19"></a>    )</span>
+<span id="cb11-20"><a href="#cb11-20"></a>  )</span>
+<span id="cb11-21"><a href="#cb11-21"></a></span>
+<span id="cb11-22"><a href="#cb11-22"></a><span class="fu">ggplot</span>(headway_summary, <span class="fu">aes</span>(<span class="at">x =</span> period_label, <span class="at">y =</span> headway)) <span class="sc">+</span></span>
+<span id="cb11-23"><a href="#cb11-23"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#fdae6b"</span>, <span class="at">outlier.alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb11-24"><a href="#cb11-24"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">120</span>)) <span class="sc">+</span></span>
+<span id="cb11-25"><a href="#cb11-25"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-26"><a href="#cb11-26"></a>    <span class="at">title =</span> <span class="st">"Weekday Headways by Time of Day"</span>,</span>
+<span id="cb11-27"><a href="#cb11-27"></a>    <span class="at">subtitle =</span> <span class="st">"Lower headway = more frequent service (shorter waits)"</span>,</span>
+<span id="cb11-28"><a href="#cb11-28"></a>    <span class="at">x =</span> <span class="st">"Time Period"</span>,</span>
+<span id="cb11-29"><a href="#cb11-29"></a>    <span class="at">y =</span> <span class="st">"Headway (minutes)"</span></span>
+<span id="cb11-30"><a href="#cb11-30"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-31"><a href="#cb11-31"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb11-32"><a href="#cb11-32"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="eda-Laurice_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Median headways summary table</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>headway_summary <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">group_by</span>(period_label) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb12-5"><a href="#cb12-5"></a>    <span class="at">median_headway =</span> <span class="fu">median</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-6"><a href="#cb12-6"></a>    <span class="at">mean_headway =</span> <span class="fu">round</span>(<span class="fu">mean</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
+<span id="cb12-7"><a href="#cb12-7"></a>    <span class="at">min_headway =</span> <span class="fu">min</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-8"><a href="#cb12-8"></a>    <span class="at">max_headway =</span> <span class="fu">max</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-9"><a href="#cb12-9"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 5
+  period_label median_headway mean_headway min_headway max_headway
+  &lt;fct&gt;                 &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+1 Early AM                 45         52.3           2          90
+2 AM Peak                  30         42.9           1         180
+3 Midday                   30         49.2           1         360
+4 PM Peak                  30         42.6           1         210
+5 Evening                  30         48.2           2         150
+6 Night                    45         90.7           3         270
+7 Owl                     180        146.           18         180</code></pre>
+</div>
+</div>
+</section>
+<section id="peak-vs.-off-peak-service-intensity-map" class="level2">
+<h2 class="anchored" data-anchor-id="peak-vs.-off-peak-service-intensity-map">5. Peak vs.&nbsp;Off-Peak Service Intensity Map</h2>
+<p>Where does service concentrate during peak hours versus off-peak? This map compares AM Peak trip counts to Evening counts to visualize how the network shifts.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Use weekday data with geometry</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>wk_spatial <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>  <span class="fu">filter</span>(service_id <span class="sc">==</span> <span class="st">"WK"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4"></a></span>
+<span id="cb14-5"><a href="#cb14-5"></a>p_peak <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(wk_spatial) <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">color =</span> AMP_count), <span class="at">size =</span> <span class="fl">0.4</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">"plasma"</span>, <span class="at">name =</span> <span class="st">"Trips"</span>, <span class="at">na.value =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"AM Peak (6:00–9:00 AM)"</span>) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb14-11"><a href="#cb14-11"></a></span>
+<span id="cb14-12"><a href="#cb14-12"></a>p_eve <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(wk_spatial) <span class="sc">+</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">color =</span> EVE_count), <span class="at">size =</span> <span class="fl">0.4</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">"plasma"</span>, <span class="at">name =</span> <span class="st">"Trips"</span>, <span class="at">na.value =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Evening (6:30–9:00 PM)"</span>) <span class="sc">+</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb14-17"><a href="#cb14-17"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb14-18"><a href="#cb14-18"></a></span>
+<span id="cb14-19"><a href="#cb14-19"></a>p_peak <span class="sc">+</span> p_eve <span class="sc">+</span></span>
+<span id="cb14-20"><a href="#cb14-20"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb14-21"><a href="#cb14-21"></a>    <span class="at">title =</span> <span class="st">"Weekday Transit Service: Peak vs. Evening"</span>,</span>
+<span id="cb14-22"><a href="#cb14-22"></a>    <span class="at">subtitle =</span> <span class="st">"Trip counts per road segment"</span></span>
+<span id="cb14-23"><a href="#cb14-23"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="eda-Laurice_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="night-owl-service-where-does-late-night-transit-exist" class="level2">
+<h2 class="anchored" data-anchor-id="night-owl-service-where-does-late-night-transit-exist">6. Night &amp; Owl Service — Where Does Late-Night Transit Exist?</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>night_service <span class="ot">&lt;-</span> wk_spatial <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">mutate</span>(<span class="at">has_night =</span> (NIGHT_coun <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
+<span id="cb15-3"><a href="#cb15-3"></a>         <span class="at">has_owl =</span> (OWL_count <span class="sc">&gt;</span> <span class="dv">0</span>))</span>
+<span id="cb15-4"><a href="#cb15-4"></a></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">filter</span>(night_service, <span class="sc">!</span>has_night), <span class="at">color =</span> <span class="st">"grey85"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">filter</span>(night_service, has_night <span class="sc">&amp;</span> <span class="sc">!</span>has_owl), <span class="at">color =</span> <span class="st">"#fdae6b"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">filter</span>(night_service, has_owl), <span class="at">color =</span> <span class="st">"#e31a1c"</span>, <span class="at">size =</span> <span class="fl">0.6</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a>  <span class="fu">labs</span>(</span>
+<span id="cb15-10"><a href="#cb15-10"></a>    <span class="at">title =</span> <span class="st">"Late-Night Transit Coverage"</span>,</span>
+<span id="cb15-11"><a href="#cb15-11"></a>    <span class="at">subtitle =</span> <span class="st">"Orange = Night service (9 PM–1:30 AM) | Red = Owl service (1:30–4:30 AM) | Grey = No late service"</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="eda-Laurice_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># What share of segments have night/owl service?</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>wk_spatial <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-5"><a href="#cb16-5"></a>    <span class="at">total_segments =</span> <span class="fu">n</span>(),</span>
+<span id="cb16-6"><a href="#cb16-6"></a>    <span class="at">pct_night =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">mean</span>(NIGHT_coun <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
+<span id="cb16-7"><a href="#cb16-7"></a>    <span class="at">pct_owl =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">mean</span>(OWL_count <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>)</span>
+<span id="cb16-8"><a href="#cb16-8"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  total_segments pct_night pct_owl
+1          33754      56.4     9.3</code></pre>
+</div>
+</div>
+</section>
+<section id="summary-of-findings" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-findings">Summary of Findings</h2>
+<p>This temporal EDA reveals several patterns in the Metro Transit network:</p>
+<ol type="1">
+<li><strong>Weekday service dominates</strong> — weekday trip volumes are substantially higher than Saturday or Sunday.</li>
+<li><strong>Dual peak pattern</strong> — weekday service shows clear AM and PM peaks, consistent with commuter-oriented scheduling. Weekend service is more evenly distributed across the day.</li>
+<li><strong>Headways widen dramatically at night</strong> — median wait times during peak hours are much shorter than evening and night periods, meaning riders outside of rush hour face significantly longer waits.</li>
+<li><strong>Late-night coverage is sparse</strong> — only a small fraction of road segments have any night service, and owl service (after 1:30 AM) is extremely limited, concentrated along a few core corridors.</li>
+<li><strong>Peak-hour service concentrates in the urban core</strong> — comparing the AM Peak and Evening maps shows that high-frequency service contracts toward the center city as the day progresses.</li>
+</ol>
+<p>These temporal patterns complement the income-based analyses by Hadley and Rishika and connect to our research question about underserved areas — communities that depend on off-peak or late-night transit face much longer waits and far fewer route options.</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../eda/eda-member2.html" class="pagination-link" aria-label="Rishika Kundu EDA">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Rishika Kundu EDA</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../appx/proposal.html" class="pagination-link" aria-label="Project Proposal">
+        <span class="nav-page-text"><span class="chapter-title">Project Proposal</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">---</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="an">title:</span><span class="co"> "Laurice J. EDA — Temporal Patterns in Metro Transit Service"</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="an">format:</span><span class="co"> html</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="an">editor:</span><span class="co"> visual</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="co">---</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a></span>
+<span id="cb18-7"><a href="#cb18-7"></a><span class="fu">## Overview</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a></span>
+<span id="cb18-9"><a href="#cb18-9"></a>While my teammates explored the relationship between transit service and median household income, this EDA examines **temporal patterns** in Metro Transit service: how trip frequency and headways (wait times) vary by time of day and day of week across the Twin Cities metro. Understanding these patterns helps identify when and where service is strongest — and where gaps exist.</span>
+<span id="cb18-10"><a href="#cb18-10"></a></span>
+<span id="cb18-11"><a href="#cb18-11"></a><span class="fu">## Setup</span></span>
+<span id="cb18-12"><a href="#cb18-12"></a></span>
+<span id="cb18-15"><a href="#cb18-15"></a><span class="in">```{r}</span></span>
+<span id="cb18-16"><a href="#cb18-16"></a><span class="co">#| message: false</span></span>
+<span id="cb18-17"><a href="#cb18-17"></a><span class="co">#| warning: false</span></span>
+<span id="cb18-18"><a href="#cb18-18"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb18-19"><a href="#cb18-19"></a><span class="fu">library</span>(sf)</span>
+<span id="cb18-20"><a href="#cb18-20"></a><span class="fu">library</span>(scales)</span>
+<span id="cb18-21"><a href="#cb18-21"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb18-22"><a href="#cb18-22"></a><span class="in">```</span></span>
+<span id="cb18-23"><a href="#cb18-23"></a></span>
+<span id="cb18-24"><a href="#cb18-24"></a><span class="fu">## Load Data</span></span>
+<span id="cb18-25"><a href="#cb18-25"></a></span>
+<span id="cb18-28"><a href="#cb18-28"></a><span class="in">```{r}</span></span>
+<span id="cb18-29"><a href="#cb18-29"></a><span class="co">#| message: false</span></span>
+<span id="cb18-30"><a href="#cb18-30"></a>df <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"../data/raw/shp_trans_transit_count_headway_sum/"</span>)</span>
+<span id="cb18-31"><a href="#cb18-31"></a><span class="in">```</span></span>
+<span id="cb18-32"><a href="#cb18-32"></a></span>
+<span id="cb18-35"><a href="#cb18-35"></a><span class="in">```{r}</span></span>
+<span id="cb18-36"><a href="#cb18-36"></a><span class="fu">glimpse</span>(df)</span>
+<span id="cb18-37"><a href="#cb18-37"></a><span class="in">```</span></span>
+<span id="cb18-38"><a href="#cb18-38"></a></span>
+<span id="cb18-39"><a href="#cb18-39"></a><span class="fu">## Understanding the Temporal Fields</span></span>
+<span id="cb18-40"><a href="#cb18-40"></a></span>
+<span id="cb18-41"><a href="#cb18-41"></a>The dataset contains trip counts and headways (minutes between trips) for seven time periods:</span>
+<span id="cb18-42"><a href="#cb18-42"></a></span>
+<span id="cb18-43"><a href="#cb18-43"></a><span class="pp">|</span> Period <span class="pp">|</span> Abbreviation <span class="pp">|</span> Time Range <span class="pp">|</span></span>
+<span id="cb18-44"><a href="#cb18-44"></a><span class="pp">|--------|-------------|------------|</span></span>
+<span id="cb18-45"><a href="#cb18-45"></a><span class="pp">|</span> Early Morning <span class="pp">|</span> EAM <span class="pp">|</span> 4:30–6:00 AM <span class="pp">|</span></span>
+<span id="cb18-46"><a href="#cb18-46"></a><span class="pp">|</span> AM Peak <span class="pp">|</span> AMP <span class="pp">|</span> 6:00–9:00 AM <span class="pp">|</span></span>
+<span id="cb18-47"><a href="#cb18-47"></a><span class="pp">|</span> Midday <span class="pp">|</span> MID <span class="pp">|</span> 9:00 AM–3:00 PM <span class="pp">|</span></span>
+<span id="cb18-48"><a href="#cb18-48"></a><span class="pp">|</span> PM Peak <span class="pp">|</span> PMP <span class="pp">|</span> 3:00–6:30 PM <span class="pp">|</span></span>
+<span id="cb18-49"><a href="#cb18-49"></a><span class="pp">|</span> Evening <span class="pp">|</span> EVE <span class="pp">|</span> 6:30–9:00 PM <span class="pp">|</span></span>
+<span id="cb18-50"><a href="#cb18-50"></a><span class="pp">|</span> Night <span class="pp">|</span> NIGHT <span class="pp">|</span> 9:00 PM–1:30 AM <span class="pp">|</span></span>
+<span id="cb18-51"><a href="#cb18-51"></a><span class="pp">|</span> Owl <span class="pp">|</span> OWL <span class="pp">|</span> 1:30–4:30 AM <span class="pp">|</span></span>
+<span id="cb18-52"><a href="#cb18-52"></a></span>
+<span id="cb18-53"><a href="#cb18-53"></a>The <span class="in">`service_id`</span> field indicates the day type: WK (weekday), SAT (Saturday), SUN (Sunday), FRI (Friday), HOL (Holiday).</span>
+<span id="cb18-54"><a href="#cb18-54"></a></span>
+<span id="cb18-55"><a href="#cb18-55"></a><span class="fu">## 1. Service Volume by Day Type</span></span>
+<span id="cb18-56"><a href="#cb18-56"></a></span>
+<span id="cb18-59"><a href="#cb18-59"></a><span class="in">```{r}</span></span>
+<span id="cb18-60"><a href="#cb18-60"></a>day_summary <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb18-61"><a href="#cb18-61"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-62"><a href="#cb18-62"></a>  <span class="fu">group_by</span>(service_id) <span class="sc">%&gt;%</span></span>
+<span id="cb18-63"><a href="#cb18-63"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb18-64"><a href="#cb18-64"></a>    <span class="at">total_trips =</span> <span class="fu">sum</span>(TripCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-65"><a href="#cb18-65"></a>    <span class="at">n_segments =</span> <span class="fu">n</span>(),</span>
+<span id="cb18-66"><a href="#cb18-66"></a>    <span class="at">avg_trips_per_segment =</span> <span class="fu">mean</span>(TripCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-67"><a href="#cb18-67"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb18-68"><a href="#cb18-68"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb18-69"><a href="#cb18-69"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_trips))</span>
+<span id="cb18-70"><a href="#cb18-70"></a></span>
+<span id="cb18-71"><a href="#cb18-71"></a>day_summary</span>
+<span id="cb18-72"><a href="#cb18-72"></a><span class="in">```</span></span>
+<span id="cb18-73"><a href="#cb18-73"></a></span>
+<span id="cb18-76"><a href="#cb18-76"></a><span class="in">```{r}</span></span>
+<span id="cb18-77"><a href="#cb18-77"></a><span class="fu">ggplot</span>(day_summary, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(service_id, <span class="sc">-</span>total_trips), <span class="at">y =</span> total_trips)) <span class="sc">+</span></span>
+<span id="cb18-78"><a href="#cb18-78"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#2c7fb8"</span>) <span class="sc">+</span></span>
+<span id="cb18-79"><a href="#cb18-79"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb18-80"><a href="#cb18-80"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-81"><a href="#cb18-81"></a>    <span class="at">title =</span> <span class="st">"Total Transit Trips by Day Type"</span>,</span>
+<span id="cb18-82"><a href="#cb18-82"></a>    <span class="at">x =</span> <span class="st">"Day Type"</span>,</span>
+<span id="cb18-83"><a href="#cb18-83"></a>    <span class="at">y =</span> <span class="st">"Total Trips"</span></span>
+<span id="cb18-84"><a href="#cb18-84"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-85"><a href="#cb18-85"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb18-86"><a href="#cb18-86"></a><span class="in">```</span></span>
+<span id="cb18-87"><a href="#cb18-87"></a></span>
+<span id="cb18-88"><a href="#cb18-88"></a><span class="fu">## 2. Trip Distribution Across Time of Day</span></span>
+<span id="cb18-89"><a href="#cb18-89"></a></span>
+<span id="cb18-90"><a href="#cb18-90"></a>This is the core of the temporal analysis — how does service shift throughout the day?</span>
+<span id="cb18-91"><a href="#cb18-91"></a></span>
+<span id="cb18-94"><a href="#cb18-94"></a><span class="in">```{r}</span></span>
+<span id="cb18-95"><a href="#cb18-95"></a><span class="co"># Pivot trip count columns to long format for weekday service</span></span>
+<span id="cb18-96"><a href="#cb18-96"></a>time_periods <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"EAM_count"</span>, <span class="st">"AMP_count"</span>, <span class="st">"MID_count"</span>, <span class="st">"PMP_count"</span>,</span>
+<span id="cb18-97"><a href="#cb18-97"></a>                  <span class="st">"EVE_count"</span>, <span class="st">"NIGHT_coun"</span>, <span class="st">"OWL_count"</span>)</span>
+<span id="cb18-98"><a href="#cb18-98"></a></span>
+<span id="cb18-99"><a href="#cb18-99"></a>period_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Early AM</span><span class="sc">\n</span><span class="st">4:30-6:00"</span>,</span>
+<span id="cb18-100"><a href="#cb18-100"></a>                    <span class="st">"AM Peak</span><span class="sc">\n</span><span class="st">6:00-9:00"</span>,</span>
+<span id="cb18-101"><a href="#cb18-101"></a>                    <span class="st">"Midday</span><span class="sc">\n</span><span class="st">9:00-3:00"</span>,</span>
+<span id="cb18-102"><a href="#cb18-102"></a>                    <span class="st">"PM Peak</span><span class="sc">\n</span><span class="st">3:00-6:30"</span>,</span>
+<span id="cb18-103"><a href="#cb18-103"></a>                    <span class="st">"Evening</span><span class="sc">\n</span><span class="st">6:30-9:00"</span>,</span>
+<span id="cb18-104"><a href="#cb18-104"></a>                    <span class="st">"Night</span><span class="sc">\n</span><span class="st">9:00-1:30"</span>,</span>
+<span id="cb18-105"><a href="#cb18-105"></a>                    <span class="st">"Owl</span><span class="sc">\n</span><span class="st">1:30-4:30"</span>)</span>
+<span id="cb18-106"><a href="#cb18-106"></a></span>
+<span id="cb18-107"><a href="#cb18-107"></a><span class="co"># Filter to weekday service for the main temporal view</span></span>
+<span id="cb18-108"><a href="#cb18-108"></a>wk_data <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb18-109"><a href="#cb18-109"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-110"><a href="#cb18-110"></a>  <span class="fu">filter</span>(service_id <span class="sc">==</span> <span class="st">"WK"</span>)</span>
+<span id="cb18-111"><a href="#cb18-111"></a></span>
+<span id="cb18-112"><a href="#cb18-112"></a>trips_long <span class="ot">&lt;-</span> wk_data <span class="sc">%&gt;%</span></span>
+<span id="cb18-113"><a href="#cb18-113"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(time_periods)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-114"><a href="#cb18-114"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">sum</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb18-115"><a href="#cb18-115"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"period"</span>, <span class="at">values_to =</span> <span class="st">"trips"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-116"><a href="#cb18-116"></a>  <span class="fu">mutate</span>(<span class="at">period_label =</span> <span class="fu">factor</span>(period_labels, <span class="at">levels =</span> period_labels))</span>
+<span id="cb18-117"><a href="#cb18-117"></a></span>
+<span id="cb18-118"><a href="#cb18-118"></a><span class="fu">ggplot</span>(trips_long, <span class="fu">aes</span>(<span class="at">x =</span> period_label, <span class="at">y =</span> trips)) <span class="sc">+</span></span>
+<span id="cb18-119"><a href="#cb18-119"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#41b6c4"</span>) <span class="sc">+</span></span>
+<span id="cb18-120"><a href="#cb18-120"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">comma</span>(trips)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.3</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb18-121"><a href="#cb18-121"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb18-122"><a href="#cb18-122"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-123"><a href="#cb18-123"></a>    <span class="at">title =</span> <span class="st">"Weekday Trip Distribution by Time of Day"</span>,</span>
+<span id="cb18-124"><a href="#cb18-124"></a>    <span class="at">subtitle =</span> <span class="st">"Twin Cities Metro Transit (service_id = WK)"</span>,</span>
+<span id="cb18-125"><a href="#cb18-125"></a>    <span class="at">x =</span> <span class="st">"Time Period"</span>,</span>
+<span id="cb18-126"><a href="#cb18-126"></a>    <span class="at">y =</span> <span class="st">"Total Trips Across All Segments"</span></span>
+<span id="cb18-127"><a href="#cb18-127"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-128"><a href="#cb18-128"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb18-129"><a href="#cb18-129"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>))</span>
+<span id="cb18-130"><a href="#cb18-130"></a><span class="in">```</span></span>
+<span id="cb18-131"><a href="#cb18-131"></a></span>
+<span id="cb18-132"><a href="#cb18-132"></a><span class="fu">## 3. Weekday vs. Weekend Temporal Profiles</span></span>
+<span id="cb18-133"><a href="#cb18-133"></a></span>
+<span id="cb18-136"><a href="#cb18-136"></a><span class="in">```{r}</span></span>
+<span id="cb18-137"><a href="#cb18-137"></a><span class="co"># Compare weekday, Saturday, and Sunday profiles</span></span>
+<span id="cb18-138"><a href="#cb18-138"></a>day_types <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"WK"</span>, <span class="st">"SAT"</span>, <span class="st">"SUN"</span>)</span>
+<span id="cb18-139"><a href="#cb18-139"></a></span>
+<span id="cb18-140"><a href="#cb18-140"></a>temporal_by_day <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb18-141"><a href="#cb18-141"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-142"><a href="#cb18-142"></a>  <span class="fu">filter</span>(service_id <span class="sc">%in%</span> day_types) <span class="sc">%&gt;%</span></span>
+<span id="cb18-143"><a href="#cb18-143"></a>  <span class="fu">group_by</span>(service_id) <span class="sc">%&gt;%</span></span>
+<span id="cb18-144"><a href="#cb18-144"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(time_periods), <span class="sc">~</span><span class="fu">sum</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-145"><a href="#cb18-145"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>service_id, <span class="at">names_to =</span> <span class="st">"period"</span>, <span class="at">values_to =</span> <span class="st">"trips"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-146"><a href="#cb18-146"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb18-147"><a href="#cb18-147"></a>    <span class="at">period_label =</span> <span class="fu">factor</span>(</span>
+<span id="cb18-148"><a href="#cb18-148"></a>      <span class="fu">recode</span>(period,</span>
+<span id="cb18-149"><a href="#cb18-149"></a>        <span class="st">"EAM_count"</span> <span class="ot">=</span> <span class="st">"Early AM"</span>,</span>
+<span id="cb18-150"><a href="#cb18-150"></a>        <span class="st">"AMP_count"</span> <span class="ot">=</span> <span class="st">"AM Peak"</span>,</span>
+<span id="cb18-151"><a href="#cb18-151"></a>        <span class="st">"MID_count"</span> <span class="ot">=</span> <span class="st">"Midday"</span>,</span>
+<span id="cb18-152"><a href="#cb18-152"></a>        <span class="st">"PMP_count"</span> <span class="ot">=</span> <span class="st">"PM Peak"</span>,</span>
+<span id="cb18-153"><a href="#cb18-153"></a>        <span class="st">"EVE_count"</span> <span class="ot">=</span> <span class="st">"Evening"</span>,</span>
+<span id="cb18-154"><a href="#cb18-154"></a>        <span class="st">"NIGHT_coun"</span> <span class="ot">=</span> <span class="st">"Night"</span>,</span>
+<span id="cb18-155"><a href="#cb18-155"></a>        <span class="st">"OWL_count"</span> <span class="ot">=</span> <span class="st">"Owl"</span>),</span>
+<span id="cb18-156"><a href="#cb18-156"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Early AM"</span>, <span class="st">"AM Peak"</span>, <span class="st">"Midday"</span>, <span class="st">"PM Peak"</span>, <span class="st">"Evening"</span>, <span class="st">"Night"</span>, <span class="st">"Owl"</span>)</span>
+<span id="cb18-157"><a href="#cb18-157"></a>    ),</span>
+<span id="cb18-158"><a href="#cb18-158"></a>    <span class="at">service_id =</span> <span class="fu">recode</span>(service_id, <span class="st">"WK"</span> <span class="ot">=</span> <span class="st">"Weekday"</span>, <span class="st">"SAT"</span> <span class="ot">=</span> <span class="st">"Saturday"</span>, <span class="st">"SUN"</span> <span class="ot">=</span> <span class="st">"Sunday"</span>)</span>
+<span id="cb18-159"><a href="#cb18-159"></a>  )</span>
+<span id="cb18-160"><a href="#cb18-160"></a></span>
+<span id="cb18-161"><a href="#cb18-161"></a><span class="fu">ggplot</span>(temporal_by_day, <span class="fu">aes</span>(<span class="at">x =</span> period_label, <span class="at">y =</span> trips, <span class="at">fill =</span> service_id)) <span class="sc">+</span></span>
+<span id="cb18-162"><a href="#cb18-162"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb18-163"><a href="#cb18-163"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Weekday"</span> <span class="ot">=</span> <span class="st">"#2c7fb8"</span>, <span class="st">"Saturday"</span> <span class="ot">=</span> <span class="st">"#7fcdbb"</span>, <span class="st">"Sunday"</span> <span class="ot">=</span> <span class="st">"#c7e9b4"</span>)) <span class="sc">+</span></span>
+<span id="cb18-164"><a href="#cb18-164"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb18-165"><a href="#cb18-165"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-166"><a href="#cb18-166"></a>    <span class="at">title =</span> <span class="st">"Trip Distribution: Weekday vs. Weekend"</span>,</span>
+<span id="cb18-167"><a href="#cb18-167"></a>    <span class="at">x =</span> <span class="st">"Time Period"</span>,</span>
+<span id="cb18-168"><a href="#cb18-168"></a>    <span class="at">y =</span> <span class="st">"Total Trips"</span>,</span>
+<span id="cb18-169"><a href="#cb18-169"></a>    <span class="at">fill =</span> <span class="st">"Day Type"</span></span>
+<span id="cb18-170"><a href="#cb18-170"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-171"><a href="#cb18-171"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb18-172"><a href="#cb18-172"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb18-173"><a href="#cb18-173"></a><span class="in">```</span></span>
+<span id="cb18-174"><a href="#cb18-174"></a></span>
+<span id="cb18-175"><a href="#cb18-175"></a><span class="fu">## 4. Headway Analysis — How Long Do Riders Wait?</span></span>
+<span id="cb18-176"><a href="#cb18-176"></a></span>
+<span id="cb18-177"><a href="#cb18-177"></a>Headway (minutes between trips) is a key measure of service quality. Lower headways mean shorter waits.</span>
+<span id="cb18-178"><a href="#cb18-178"></a></span>
+<span id="cb18-181"><a href="#cb18-181"></a><span class="in">```{r}</span></span>
+<span id="cb18-182"><a href="#cb18-182"></a>headway_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"EAM_hdwy"</span>, <span class="st">"AMP_hdwy"</span>, <span class="st">"MID_hdwy"</span>, <span class="st">"PMP_hdwy"</span>,</span>
+<span id="cb18-183"><a href="#cb18-183"></a>                  <span class="st">"EVE_hdwy"</span>, <span class="st">"NIGHT_hdwy"</span>, <span class="st">"OWL_hdwy"</span>)</span>
+<span id="cb18-184"><a href="#cb18-184"></a></span>
+<span id="cb18-185"><a href="#cb18-185"></a>headway_summary <span class="ot">&lt;-</span> wk_data <span class="sc">%&gt;%</span></span>
+<span id="cb18-186"><a href="#cb18-186"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(headway_cols)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-187"><a href="#cb18-187"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"period"</span>, <span class="at">values_to =</span> <span class="st">"headway"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-188"><a href="#cb18-188"></a>  <span class="fu">filter</span>(headway <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-189"><a href="#cb18-189"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb18-190"><a href="#cb18-190"></a>    <span class="at">period_label =</span> <span class="fu">factor</span>(</span>
+<span id="cb18-191"><a href="#cb18-191"></a>      <span class="fu">recode</span>(period,</span>
+<span id="cb18-192"><a href="#cb18-192"></a>        <span class="st">"EAM_hdwy"</span> <span class="ot">=</span> <span class="st">"Early AM"</span>,</span>
+<span id="cb18-193"><a href="#cb18-193"></a>        <span class="st">"AMP_hdwy"</span> <span class="ot">=</span> <span class="st">"AM Peak"</span>,</span>
+<span id="cb18-194"><a href="#cb18-194"></a>        <span class="st">"MID_hdwy"</span> <span class="ot">=</span> <span class="st">"Midday"</span>,</span>
+<span id="cb18-195"><a href="#cb18-195"></a>        <span class="st">"PMP_hdwy"</span> <span class="ot">=</span> <span class="st">"PM Peak"</span>,</span>
+<span id="cb18-196"><a href="#cb18-196"></a>        <span class="st">"EVE_hdwy"</span> <span class="ot">=</span> <span class="st">"Evening"</span>,</span>
+<span id="cb18-197"><a href="#cb18-197"></a>        <span class="st">"NIGHT_hdwy"</span> <span class="ot">=</span> <span class="st">"Night"</span>,</span>
+<span id="cb18-198"><a href="#cb18-198"></a>        <span class="st">"OWL_hdwy"</span> <span class="ot">=</span> <span class="st">"Owl"</span>),</span>
+<span id="cb18-199"><a href="#cb18-199"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Early AM"</span>, <span class="st">"AM Peak"</span>, <span class="st">"Midday"</span>, <span class="st">"PM Peak"</span>, <span class="st">"Evening"</span>, <span class="st">"Night"</span>, <span class="st">"Owl"</span>)</span>
+<span id="cb18-200"><a href="#cb18-200"></a>    )</span>
+<span id="cb18-201"><a href="#cb18-201"></a>  )</span>
+<span id="cb18-202"><a href="#cb18-202"></a></span>
+<span id="cb18-203"><a href="#cb18-203"></a><span class="fu">ggplot</span>(headway_summary, <span class="fu">aes</span>(<span class="at">x =</span> period_label, <span class="at">y =</span> headway)) <span class="sc">+</span></span>
+<span id="cb18-204"><a href="#cb18-204"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#fdae6b"</span>, <span class="at">outlier.alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb18-205"><a href="#cb18-205"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">120</span>)) <span class="sc">+</span></span>
+<span id="cb18-206"><a href="#cb18-206"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-207"><a href="#cb18-207"></a>    <span class="at">title =</span> <span class="st">"Weekday Headways by Time of Day"</span>,</span>
+<span id="cb18-208"><a href="#cb18-208"></a>    <span class="at">subtitle =</span> <span class="st">"Lower headway = more frequent service (shorter waits)"</span>,</span>
+<span id="cb18-209"><a href="#cb18-209"></a>    <span class="at">x =</span> <span class="st">"Time Period"</span>,</span>
+<span id="cb18-210"><a href="#cb18-210"></a>    <span class="at">y =</span> <span class="st">"Headway (minutes)"</span></span>
+<span id="cb18-211"><a href="#cb18-211"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-212"><a href="#cb18-212"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb18-213"><a href="#cb18-213"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb18-214"><a href="#cb18-214"></a><span class="in">```</span></span>
+<span id="cb18-215"><a href="#cb18-215"></a></span>
+<span id="cb18-218"><a href="#cb18-218"></a><span class="in">```{r}</span></span>
+<span id="cb18-219"><a href="#cb18-219"></a><span class="co"># Median headways summary table</span></span>
+<span id="cb18-220"><a href="#cb18-220"></a>headway_summary <span class="sc">%&gt;%</span></span>
+<span id="cb18-221"><a href="#cb18-221"></a>  <span class="fu">group_by</span>(period_label) <span class="sc">%&gt;%</span></span>
+<span id="cb18-222"><a href="#cb18-222"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb18-223"><a href="#cb18-223"></a>    <span class="at">median_headway =</span> <span class="fu">median</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-224"><a href="#cb18-224"></a>    <span class="at">mean_headway =</span> <span class="fu">round</span>(<span class="fu">mean</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
+<span id="cb18-225"><a href="#cb18-225"></a>    <span class="at">min_headway =</span> <span class="fu">min</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-226"><a href="#cb18-226"></a>    <span class="at">max_headway =</span> <span class="fu">max</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-227"><a href="#cb18-227"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb18-228"><a href="#cb18-228"></a>  )</span>
+<span id="cb18-229"><a href="#cb18-229"></a><span class="in">```</span></span>
+<span id="cb18-230"><a href="#cb18-230"></a></span>
+<span id="cb18-231"><a href="#cb18-231"></a><span class="fu">## 5. Peak vs. Off-Peak Service Intensity Map</span></span>
+<span id="cb18-232"><a href="#cb18-232"></a></span>
+<span id="cb18-233"><a href="#cb18-233"></a>Where does service concentrate during peak hours versus off-peak? This map compares AM Peak trip counts to Evening counts to visualize how the network shifts.</span>
+<span id="cb18-234"><a href="#cb18-234"></a></span>
+<span id="cb18-237"><a href="#cb18-237"></a><span class="in">```{r}</span></span>
+<span id="cb18-238"><a href="#cb18-238"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb18-239"><a href="#cb18-239"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb18-240"><a href="#cb18-240"></a></span>
+<span id="cb18-241"><a href="#cb18-241"></a><span class="co"># Use weekday data with geometry</span></span>
+<span id="cb18-242"><a href="#cb18-242"></a>wk_spatial <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb18-243"><a href="#cb18-243"></a>  <span class="fu">filter</span>(service_id <span class="sc">==</span> <span class="st">"WK"</span>)</span>
+<span id="cb18-244"><a href="#cb18-244"></a></span>
+<span id="cb18-245"><a href="#cb18-245"></a>p_peak <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(wk_spatial) <span class="sc">+</span></span>
+<span id="cb18-246"><a href="#cb18-246"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">color =</span> AMP_count), <span class="at">size =</span> <span class="fl">0.4</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb18-247"><a href="#cb18-247"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">"plasma"</span>, <span class="at">name =</span> <span class="st">"Trips"</span>, <span class="at">na.value =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb18-248"><a href="#cb18-248"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"AM Peak (6:00–9:00 AM)"</span>) <span class="sc">+</span></span>
+<span id="cb18-249"><a href="#cb18-249"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb18-250"><a href="#cb18-250"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb18-251"><a href="#cb18-251"></a></span>
+<span id="cb18-252"><a href="#cb18-252"></a>p_eve <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(wk_spatial) <span class="sc">+</span></span>
+<span id="cb18-253"><a href="#cb18-253"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">color =</span> EVE_count), <span class="at">size =</span> <span class="fl">0.4</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb18-254"><a href="#cb18-254"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">"plasma"</span>, <span class="at">name =</span> <span class="st">"Trips"</span>, <span class="at">na.value =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb18-255"><a href="#cb18-255"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Evening (6:30–9:00 PM)"</span>) <span class="sc">+</span></span>
+<span id="cb18-256"><a href="#cb18-256"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb18-257"><a href="#cb18-257"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb18-258"><a href="#cb18-258"></a></span>
+<span id="cb18-259"><a href="#cb18-259"></a>p_peak <span class="sc">+</span> p_eve <span class="sc">+</span></span>
+<span id="cb18-260"><a href="#cb18-260"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb18-261"><a href="#cb18-261"></a>    <span class="at">title =</span> <span class="st">"Weekday Transit Service: Peak vs. Evening"</span>,</span>
+<span id="cb18-262"><a href="#cb18-262"></a>    <span class="at">subtitle =</span> <span class="st">"Trip counts per road segment"</span></span>
+<span id="cb18-263"><a href="#cb18-263"></a>  )</span>
+<span id="cb18-264"><a href="#cb18-264"></a><span class="in">```</span></span>
+<span id="cb18-265"><a href="#cb18-265"></a></span>
+<span id="cb18-266"><a href="#cb18-266"></a><span class="fu">## 6. Night &amp; Owl Service — Where Does Late-Night Transit Exist?</span></span>
+<span id="cb18-267"><a href="#cb18-267"></a></span>
+<span id="cb18-270"><a href="#cb18-270"></a><span class="in">```{r}</span></span>
+<span id="cb18-271"><a href="#cb18-271"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb18-272"><a href="#cb18-272"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb18-273"><a href="#cb18-273"></a></span>
+<span id="cb18-274"><a href="#cb18-274"></a>night_service <span class="ot">&lt;-</span> wk_spatial <span class="sc">%&gt;%</span></span>
+<span id="cb18-275"><a href="#cb18-275"></a>  <span class="fu">mutate</span>(<span class="at">has_night =</span> (NIGHT_coun <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
+<span id="cb18-276"><a href="#cb18-276"></a>         <span class="at">has_owl =</span> (OWL_count <span class="sc">&gt;</span> <span class="dv">0</span>))</span>
+<span id="cb18-277"><a href="#cb18-277"></a></span>
+<span id="cb18-278"><a href="#cb18-278"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb18-279"><a href="#cb18-279"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">filter</span>(night_service, <span class="sc">!</span>has_night), <span class="at">color =</span> <span class="st">"grey85"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb18-280"><a href="#cb18-280"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">filter</span>(night_service, has_night <span class="sc">&amp;</span> <span class="sc">!</span>has_owl), <span class="at">color =</span> <span class="st">"#fdae6b"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb18-281"><a href="#cb18-281"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">filter</span>(night_service, has_owl), <span class="at">color =</span> <span class="st">"#e31a1c"</span>, <span class="at">size =</span> <span class="fl">0.6</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb18-282"><a href="#cb18-282"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-283"><a href="#cb18-283"></a>    <span class="at">title =</span> <span class="st">"Late-Night Transit Coverage"</span>,</span>
+<span id="cb18-284"><a href="#cb18-284"></a>    <span class="at">subtitle =</span> <span class="st">"Orange = Night service (9 PM–1:30 AM) | Red = Owl service (1:30–4:30 AM) | Grey = No late service"</span></span>
+<span id="cb18-285"><a href="#cb18-285"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-286"><a href="#cb18-286"></a>  <span class="fu">theme_void</span>()</span>
+<span id="cb18-287"><a href="#cb18-287"></a><span class="in">```</span></span>
+<span id="cb18-288"><a href="#cb18-288"></a></span>
+<span id="cb18-291"><a href="#cb18-291"></a><span class="in">```{r}</span></span>
+<span id="cb18-292"><a href="#cb18-292"></a><span class="co"># What share of segments have night/owl service?</span></span>
+<span id="cb18-293"><a href="#cb18-293"></a>wk_spatial <span class="sc">%&gt;%</span></span>
+<span id="cb18-294"><a href="#cb18-294"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-295"><a href="#cb18-295"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb18-296"><a href="#cb18-296"></a>    <span class="at">total_segments =</span> <span class="fu">n</span>(),</span>
+<span id="cb18-297"><a href="#cb18-297"></a>    <span class="at">pct_night =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">mean</span>(NIGHT_coun <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
+<span id="cb18-298"><a href="#cb18-298"></a>    <span class="at">pct_owl =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">mean</span>(OWL_count <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>)</span>
+<span id="cb18-299"><a href="#cb18-299"></a>  )</span>
+<span id="cb18-300"><a href="#cb18-300"></a><span class="in">```</span></span>
+<span id="cb18-301"><a href="#cb18-301"></a></span>
+<span id="cb18-302"><a href="#cb18-302"></a><span class="fu">## Summary of Findings</span></span>
+<span id="cb18-303"><a href="#cb18-303"></a></span>
+<span id="cb18-304"><a href="#cb18-304"></a>This temporal EDA reveals several patterns in the Metro Transit network:</span>
+<span id="cb18-305"><a href="#cb18-305"></a></span>
+<span id="cb18-306"><a href="#cb18-306"></a><span class="ss">1. </span>**Weekday service dominates** — weekday trip volumes are substantially higher than Saturday or Sunday.</span>
+<span id="cb18-307"><a href="#cb18-307"></a><span class="ss">2. </span>**Dual peak pattern** — weekday service shows clear AM and PM peaks, consistent with commuter-oriented scheduling. Weekend service is more evenly distributed across the day.</span>
+<span id="cb18-308"><a href="#cb18-308"></a><span class="ss">3. </span>**Headways widen dramatically at night** — median wait times during peak hours are much shorter than evening and night periods, meaning riders outside of rush hour face significantly longer waits.</span>
+<span id="cb18-309"><a href="#cb18-309"></a><span class="ss">4. </span>**Late-night coverage is sparse** — only a small fraction of road segments have any night service, and owl service (after 1:30 AM) is extremely limited, concentrated along a few core corridors.</span>
+<span id="cb18-310"><a href="#cb18-310"></a><span class="ss">5. </span>**Peak-hour service concentrates in the urban core** — comparing the AM Peak and Evening maps shows that high-frequency service contracts toward the center city as the day progresses.</span>
+<span id="cb18-311"><a href="#cb18-311"></a></span>
+<span id="cb18-312"><a href="#cb18-312"></a>These temporal patterns complement the income-based analyses by Hadley and Rishika and connect to our research question about underserved areas — communities that depend on off-peak or late-night transit face much longer waits and far fewer route options.</span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+
+<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
