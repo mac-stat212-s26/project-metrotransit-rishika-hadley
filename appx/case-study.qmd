@@ -20,6 +20,7 @@ Zoom in from city to borough to neighborhood core.
 Then they get to the critical insight emerges at the Manhattan core level where the near-perfect substitution of taxis by Uber lives.
 
 Visuals carry the geographic argument.
+
 - focus in the visuals rather than the words
 
 The scatter plot (Uber gain vs. taxi loss by zone) then converts a geographic pattern into a statistical one, reinforcing claims.
