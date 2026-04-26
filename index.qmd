@@ -1,5 +1,5 @@
 ---
-title: "Report"
+title: "Exploring Equity in Twin Cities: A Spatial Analysis of Ridership and Income"
 ---
 
 Your report goes here.
@@ -7,4 +7,30 @@ Your report goes here.
 ```{r}
 # a test code chunk
 ```
+
+
+Guiding Research Question: Does Twin Cities transit adequately serve marginalized commenities? 
+
+Data Characteristics
+
+MN Geospatial Commons
+- Transit Trip Count and Headway Summary: Contains frequency statistics for all trips serving the Twin Cities regional metropolitan area
+
+ACS for demographic data
+American Community Survey Data for census tract level demographic data.
+
+Transit Routes v.s. Median Household Income
+- Transit service is heavily concentrated in lower-income central city tracts, while wealthier suburban areas have little to no coverage
+- Transit service is concentrated in lower-income, denser urban areas, which is typical of most American cities. 
+The pattern could reflect either equitable planning or simply that high income areas tend to be lower density suburbs which have low transit service. 
+
+It would be interesting to see what the outliers represent. 
+
+Transit Routes v.s.Racial Demographics
+- The map shows transit routes are heavily concentrated in urban core, which also has the highest density of People of Color. Suburan areas are predominantly white and have lesser transit accessibility. 
+
+Total transit trips vs Percent People
+The scatter plot shows a weak positive relationship. Tracts with higher percentages of People of Color tend to have more transit trips, as shown by the upward sloping regression line.
+
+
 

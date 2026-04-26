@@ -1,5 +1,5 @@
 ---
-title: "Member 1 Hadley W"
+title: "Hadley W EDA"
 ---
 
 Your exploratory data analysis of the team datasets go here.
