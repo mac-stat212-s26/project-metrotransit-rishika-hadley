@@ -1,36 +1,300 @@
 ---
 title: "Exploring Equity in Twin Cities: A Spatial Analysis of Ridership and Income"
+authors:
+  - name: Hadley W
+  - name: Rishika K
+  - name: Laurice J
+date: today
+format: html
+execute:
+  echo: false
+  warning: false
+  message: false
 ---
 
-Your report goes here.
+## Motivation
 
-```{r}
-# a test code chunk
-```
+Public transit is one of the most direct levers cities have for expanding economic
+opportunity. It determines whether someone can reach work, school, a doctor, or a
+grocery store without a car. In a car-dependent metro like the Twin Cities, who has
+access to frequent, reliable transit matters enormously.
 
+Our interest came from wanting to test a fundamental assumption: does Metro Transit
+actually serve the people who need it most? The Twin Cities is often cited as one of
+the most economically segregated metros in the country, and transit equity is an
+active policy debate. We had the spatial data to investigate it directly, which led
+us to the central question: does the transit network follow need, or does it follow
+something else?
 
-Guiding Research Question: Does Twin Cities transit adequately serve marginalized commenities? 
+This project matters because transit access is not just a convenience — it is a
+mechanism for economic mobility. Understanding where service is strong, where it
+falls short, and who bears the burden of those gaps is essential for advocates,
+planners, and policymakers working toward a more equitable region.
 
-Data Characteristics
+---
 
-MN Geospatial Commons
-- Transit Trip Count and Headway Summary: Contains frequency statistics for all trips serving the Twin Cities regional metropolitan area
+## Research Question
 
-ACS for demographic data
-American Community Survey Data for census tract level demographic data.
+**Does Twin Cities transit adequately serve marginalized communities?**
 
-Transit Routes v.s. Median Household Income
-- Transit service is heavily concentrated in lower-income central city tracts, while wealthier suburban areas have little to no coverage
-- Transit service is concentrated in lower-income, denser urban areas, which is typical of most American cities. 
-The pattern could reflect either equitable planning or simply that high income areas tend to be lower density suburbs which have low transit service. 
+This overarching question breaks into three testable sub-questions, each corresponding
+to a thread of our analysis:
 
-It would be interesting to see what the outliers represent. 
+1. Is there a relationship between neighborhood income and transit service volume?
+2. Do communities of color have greater or lesser access to transit routes?
+3. How does service quality — measured by headways and time-of-day coverage — vary
+   across the network, and what does that mean for riders who depend on off-peak
+   service?
 
-Transit Routes v.s.Racial Demographics
-- The map shows transit routes are heavily concentrated in urban core, which also has the highest density of People of Color. Suburan areas are predominantly white and have lesser transit accessibility. 
+The key idea we want to communicate: **having a bus route nearby is not the same as
+having good transit.** Frequency, hours of operation, and wait times matter as much
+as geographic coverage.
 
-Total transit trips vs Percent People
-The scatter plot shows a weak positive relationship. Tracts with higher percentages of People of Color tend to have more transit trips, as shown by the upward sloping regression line.
+---
 
+## Background
 
+Before diving into the analysis, a few concepts and terms need clarification.
 
+**Census tracts** are small geographic units maintained by the U.S. Census Bureau,
+typically containing between 1,200 and 8,000 people. They serve as the primary unit
+of analysis throughout this report, allowing us to compare transit service levels
+across neighborhoods.
+
+**Headway** refers to the number of minutes between consecutive trips on a given
+route segment. A headway of 10 minutes means a bus arrives every 10 minutes; a
+headway of 60 means riders may wait up to an hour. Headway is arguably the most
+important measure of transit quality — it determines whether transit is a genuinely
+viable option or a last resort.
+
+**Service periods** in the dataset are broken into seven windows:
+
+| Period     | Abbreviation | Time Range          |
+|------------|-------------|---------------------|
+| Early AM   | EAM         | 4:30 – 6:00 AM      |
+| AM Peak    | AMP         | 6:00 – 9:00 AM      |
+| Midday     | MID         | 9:00 AM – 3:00 PM   |
+| PM Peak    | PMP         | 3:00 – 6:30 PM      |
+| Evening    | EVE         | 6:30 – 9:00 PM      |
+| Night      | NIGHT       | 9:00 PM – 1:30 AM   |
+| Owl        | OWL         | 1:30 – 4:30 AM      |
+
+**The 7-county metro** refers to Hennepin, Ramsey, Dakota, Anoka, Washington, Scott,
+and Carver counties — the standard definition of the Twin Cities metropolitan area
+used by the Metropolitan Council.
+
+**ACS (American Community Survey)** is an ongoing U.S. Census Bureau survey that
+provides annual demographic and economic estimates — including median household
+income and racial composition — at the census tract level.
+
+**TripCount** is a field in the transit dataset representing the total number of
+scheduled transit trips serving a given road segment across all service periods.
+Higher values indicate more frequent service on that segment.
+
+---
+
+## Data
+
+### Data Collection
+
+We used two datasets in this project.
+
+The **Metro Transit Count and Headway Summary** shapefile comes from the Minnesota
+Geospatial Commons, produced by the Metropolitan Council's GIS batch process
+(`SVC-GISBATCH`). The dataset was last updated March 21, 2026. It contains 75,634
+road segment features, each representing a stretch of road served by Metro Transit,
+with trip counts and headway values recorded for each of the seven service periods
+across three day types: weekday (`WK`), Saturday (`SAT`), and Sunday (`SUN`).
+Geometry is stored as multiline strings in the NAD83/UTM Zone 15N projected
+coordinate reference system.
+
+The **American Community Survey (2022)** data was pulled via the `tidycensus` R
+package for all Minnesota census tracts, using variable `B19013_001` (median
+household income), with tract polygon geometries included. This data is collected
+continuously by the Census Bureau and represents 5-year estimates centered on 2022.
+
+### Data Acquisition
+
+The transit shapefile was downloaded directly from the Minnesota Geospatial Commons:
+
+> <https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-transit-count-headway-sum>
+
+Census tract data was accessed via the Census Bureau API using `tidycensus::get_acs()`
+with `geometry = TRUE`, requiring a Census API key.
+
+### Data Understanding
+
+The transit shapefile contains **75,634 features** and **23 attribute fields**, including
+time-of-day trip counts (`EAM_count`, `AMP_count`, etc.), headway values
+(`EAM_hdwy`, `AMP_hdwy`, etc.), a `service_id` field (day type), and road segment
+identifiers. The `TripCount` field aggregates trips across all periods for a given
+segment and day type.
+
+Before analysis, several preparation steps were required:
+
+- **CRS reprojection:** The transit lines were in NAD83/UTM Zone 15N (EPSG:26915),
+  while the ACS tract geometries used geographic NAD83 (EPSG:4269). We reprojected
+  the transit lines to match the ACS CRS using `st_transform()` before performing
+  any spatial operations.
+- **Spatial join:** We used `st_join()` to match each transit line segment to the
+  census tract polygon it intersects, then summarized total trips and median income
+  per tract via `group_by(GEOID) |> summarise()`.
+- **Metro filter:** We filtered to the 7-county metro area using a `grepl()` match
+  on county names in the tract `NAME` field, yielding **784 census tracts**.
+- **Missing data:** 177 metro tracts had missing median income estimates from the
+  ACS. These tracts were retained in spatial visualizations but excluded from
+  income-based scatter plots and regressions. Missing values tend to occur in
+  group-quarters geographies, parks, and industrial zones.
+- **Skewness:** `TripCount` values were right-skewed (min: 1, median: 31, mean: 49,
+  max: 836), so `log1p()` transformation was applied in choropleth maps and
+  scatterplots to reduce the influence of extreme values.
+
+A key quality check confirmed that **0 transit line segments failed to match a
+census tract** — every segment in the dataset fell within a valid geography.
+
+---
+
+## Data Insights
+
+### Transit service concentrates in lower-income, high-POC urban tracts
+
+The side-by-side choropleth maps comparing median household income to log-scaled
+transit trip density reveal a clear spatial inverse: the urban cores of Hennepin and
+Ramsey counties — which have the lowest median incomes and highest concentrations of
+people of color — have by far the most transit service. The county-level summary
+reinforces this pattern:
+
+| County     | Mean Trips/Tract | Mean Median Income | Tracts |
+|------------|-----------------|-------------------|--------|
+| Hennepin   | 9,017           | \$94,164          | 329    |
+| Ramsey     | 8,724           | \$80,077          | 143    |
+| Dakota     | 2,796           | \$103,268         | 106    |
+| Anoka      | 2,262           | \$81,769          | 90     |
+| Washington | 2,244           | \$100,478         | 59     |
+| Scott      | 1,218           | \$112,866         | 32     |
+| Carver     | 334             | \$109,313         | 25     |
+
+Carver County — the wealthiest in the metro — averages just 334 trips per tract,
+compared to over 9,000 in Hennepin. The map of transit routes overlaid on a
+racial demographics choropleth shows the same pattern: the urban core with the
+highest density of people of color is also where the network is densest.
+
+This is consistent with how most American cities are structured: higher-density,
+lower-income urban neighborhoods are more transit-oriented by design, and transit
+investment has historically followed those corridors.
+
+### "Served" does not mean "well-served"
+
+The temporal analysis complicates the spatial picture in an important way. Laurice's
+EDA reveals that **the network is built around peak-hour commuters**, and service
+quality degrades sharply outside those windows:
+
+- Median headways during AM and PM Peak hours are **30 minutes** — already lengthy
+  by transit standards.
+- Median night headways (9:00 PM – 1:30 AM) rise to **45 minutes**, with a mean of
+  over 90 minutes.
+- Owl service (1:30 – 4:30 AM) has a median headway of **180 minutes** — one bus
+  every three hours.
+- Only **56.4%** of weekday road segments have any night service at all.
+- Just **9.3%** of segments have Owl service, concentrated along a handful of core
+  corridors.
+
+Workers who depend on transit for evening or overnight shifts — disproportionately
+lower-wage workers in service, healthcare, and hospitality industries — face a
+dramatically different transit system than peak-hour commuters.
+
+### Weekend service is smoother but thinner
+
+Weekday trip volumes (~1.54 million total across all segments) substantially exceed
+Saturday (~1.16 million) and Sunday (~1.02 million). More importantly, **the shape
+of service differs**: weekday trips show a strong dual-peak structure reflecting
+9-to-5 commute patterns, while weekend trips are more evenly distributed across
+the day. This structural difference matters for equity — lower-income riders are
+more likely to work non-standard hours and rely on weekend transit, which covers
+fewer routes with wider headways.
+
+### The income-transit relationship is real but noisy
+
+Both the linear regression (Rishika's EDA) and the LOESS smoother (Hadley's EDA)
+show a weak negative relationship between median household income and total trip
+count: lower-income tracts do tend to have more service. However, the relationship
+has substantial scatter. Some lower-income tracts have very little service; some
+moderate-income tracts near high-frequency corridors have considerable coverage.
+This suggests that **density, route history, and corridor geography explain service
+distribution at least as much as income alone** — the network was not designed with
+income equity as a primary goal, and the spatial alignment with lower-income tracts
+may be largely incidental.
+
+### A surprising result worth investigating
+
+The scatter plot of total trips vs. percent people of color shows only a weak
+positive relationship — weaker than the visual map overlay would suggest. This
+disconnect is likely a methodological artifact: our spatial join assigns the full
+trip count of any line segment to the single tract it intersects, which can inflate
+counts in tracts that are physically large or positioned at route intersections. This
+is one of the more important limitations to address in future work.
+
+---
+
+## Conclusions
+
+The data tells a story that is **partially encouraging and partially concerning**.
+
+At the broadest level, transit service is concentrated where lower-income communities
+and communities of color live — the network is spatially aligned with need in
+relative terms. The urban cores of Minneapolis and Saint Paul are well-covered, and
+the county-level gradient in service volume tracks (inversely) with income.
+
+But spatial coverage is only half of transit equity. When we examine *when* service
+runs and *how often*, a different picture emerges. The system is structured for
+peak-hour, 9-to-5 commuters. Riders who need transit most — lower-wage workers,
+people without cars, those working evenings and overnight — face headways that make
+transit impractical for daily life. A 90-minute mean night headway is not a system
+that functions as reliable transportation; it is a system that merely tolerates
+being used outside of convenient hours.
+
+The answer to our guiding question — *does Twin Cities transit adequately serve
+marginalized communities?* — is: **geographically, yes, to a degree; temporally,
+much less so.** The gap between where routes exist and when those routes actually
+run is where equity is lost.
+
+---
+
+## Limitations and Future Work
+
+Several limitations of this analysis are worth naming directly.
+
+**Spatial join methodology.** Our `st_join()` assigns the full trip count of each
+line segment to whichever tract polygon it intersects. Segments that cross tract
+boundaries are counted in only one tract, which can artificially inflate or deflate
+per-tract totals — particularly for large or irregularly shaped tracts near
+corridors. A more rigorous approach would use `st_intersection()` to clip segments
+to tract boundaries and weight trip counts proportionally by the share of segment
+length within each tract.
+
+**Missing income data.** 177 metro tracts (~22%) have missing ACS median income
+estimates and were excluded from regression analyses. These missing values are not
+random — they tend to occur in group-quarters geographies and institutional areas —
+which may introduce systematic bias.
+
+**Cross-sectional snapshot.** The dataset represents a single point in time (March
+2026). We cannot draw conclusions about trends, or whether recent service changes
+have disproportionately affected certain communities.
+
+**Service supply vs. ridership demand.** Our analysis measures service supply
+(scheduled trips per segment) rather than actual ridership. High supply in a tract
+does not necessarily mean high ridership, and vice versa. Incorporating actual
+boarding data from Metro Transit's ridership records would provide a more complete
+picture.
+
+**Race/ethnicity analysis is incomplete.** Racial demographics appeared in the main
+project summary but were not fully integrated into the individual EDA analyses. A
+rigorous equity analysis would incorporate ACS race variables (e.g., `B03002`) and
+conduct multivariate analysis controlling for density, income, and racial composition
+simultaneously.
+
+**Future directions** could include: accessibility metrics measuring how many jobs
+or essential services can be reached within 30 minutes by transit from each tract;
+a longitudinal analysis of service changes; disaggregation of headway equity by
+income quintile; and comparison with peer cities to contextualize the Twin Cities'
+equity performance.
