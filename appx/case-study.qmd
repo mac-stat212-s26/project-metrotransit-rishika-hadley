@@ -5,6 +5,8 @@ title: "Case Study"
 https://fivethirtyeight.com/features/uber-is-taking-millions-of-manhattan-rides-away-from-taxis/
 
 The story uses a hook via policy conflict
+- 
+
 - political fight (de Blasio vs. Uber) 
 - a concrete question — does Uber worsen congestion?
 
