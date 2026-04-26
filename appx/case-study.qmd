@@ -11,6 +11,7 @@ The story uses a hook via policy conflict
 - a concrete question — does Uber worsen congestion?
 
 Answer first, evidence second. 
+
 - headline and opening paragraph immediately state the conclusion
 - rest of the story is justification, not suspense.
 
