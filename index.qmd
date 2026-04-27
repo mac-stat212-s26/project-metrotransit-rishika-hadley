@@ -2,6 +2,63 @@
 title: "Exploring Equity in Twin Cities: A Spatial Analysis of Ridership and Income"
 ---
 
+```{r setup}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(dplyr)
+library(sf)
+library(tidycensus)
+library(patchwork)
+library(scales)
+```
+
+```{r load-data}
+#| label: load-data
+#| include: false
+#| cache: true
+
+# Transit shapefile
+df <- st_read("data/raw/shp_trans_transit_count_headway_sum/", quiet = TRUE)
+
+# ACS median household income for MN tracts
+tracts <- get_acs(
+  geography = "tract",
+  variables = "B19013_001",
+  state = "MN",
+  year = 2022,
+  geometry = TRUE
+)
+```
+
+```{r process-data}
+#| label: process-data
+#| include: false
+
+# Reproject transit lines to match ACS CRS
+lines <- st_transform(df, st_crs(tracts))
+
+# Spatial join: assign each transit segment to the tract it intersects
+lines_tracts <- st_join(lines, tracts)
+
+# Summarise trip count and income per tract
+tract_summary <- lines_tracts %>%
+  group_by(GEOID) %>%
+  summarise(
+    total_trips = sum(TripCount, na.rm = TRUE),
+    median_income = first(estimate)
+  )
+
+# Join summaries back to tract geometries and filter to 7-county metro
+tracts_map <- tracts %>%
+  left_join(st_drop_geometry(tract_summary), by = "GEOID")
+
+metro_tracts <- tracts_map %>%
+  filter(grepl("Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver", NAME)) %>%
+  mutate(county = str_extract(NAME, "Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver"))
+```
+
 ## Motivation
 
 Public transit is one of the most direct ways cities can expand economic opportunity. It determines whether someone can reach work, school, a doctor, or a grocery store without a car. In a car-dependent metro like the Twin Cities, who has access to frequent, reliable transit matters.
@@ -111,61 +168,6 @@ time-of-day trip counts (`EAM_count`, `AMP_count`, etc.), headway values
 identifiers. The `TripCount` field aggregates trips across all periods for a given
 segment and day type.
 
-```{r}
-library(tidyverse)
-library(dplyr)
-library(sf)
-library(tidycensus)
-library(patchwork)
-```
-
-```{r}
-df <- st_read("data/raw/shp_trans_transit_count_headway_sum/")
-```
-
-```{r}
-tracts <- get_acs(
-  geography = "tract",
-  variables = "B19013_001", 
-  state = "MN",
-  year = 2022,
-  geometry = TRUE 
-)
-```
-
-```{r}
-lines <- st_transform(df, st_crs(tracts))
-```
-
-```{r}
-lines_tracts <- st_join(lines, tracts)
-```
-
-```{r}
-names(lines_tracts)
-```
-
-```{r}
-tract_summary <- lines_tracts %>%
-  group_by(GEOID) %>%
-  summarise(
-    total_trips = sum(TripCount, na.rm = TRUE),
-    median_income = first(estimate)
-  )
-```
-
-
-```{r}
-tracts_map <- tracts %>%
-  left_join(
-    st_drop_geometry(tract_summary),
-    by = "GEOID"
-  )
-
-metro_tracts <- tracts_map %>%
-  filter(grepl("Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver", NAME))
-```
-
 Before analysis, several preparation steps were required:
 
 - **CRS reprojection:** The transit lines were in NAD83/UTM Zone 15N (EPSG:26915),
@@ -185,9 +187,21 @@ Before analysis, several preparation steps were required:
   max: 836), so `log1p()` transformation was applied in choropleth maps and
   scatterplots to reduce the influence of extreme values.
 
-A key quality check confirmed that **0 transit line segments failed to match a
-census tract** — every segment in the dataset fell within a valid geography.
+A key quality check confirmed that **zero transit line segments failed to match a
+census tract** — every segment fell within a valid geography. The histogram below
+illustrates the skewness that motivated log transformation.
 
+```{r trip-count-distribution}
+ggplot(lines_tracts, aes(x = TripCount)) +
+  geom_histogram(bins = 60, fill = "#2c7bb6", color = "white", linewidth = 0.2) +
+  scale_x_continuous(labels = comma) +
+  labs(
+    title = "Distribution of Transit Trip Counts per Segment",
+    x = "Trip Count", y = "Number of Segments"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(plot.title = element_text(face = "bold"))
+```
 ---
 
 ## Data Insights
@@ -202,28 +216,29 @@ far the most transit service. The wealthiest outer-ring counties are
 near-blank on the transit map.
 
 ```{r choropleth-maps}
-common_theme <- theme_void() +
+common_theme <- theme_void(base_size = 10) +
   theme(
-    plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
-    legend.position = "bottom"
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 13),
+    legend.position = "bottom",
+    legend.key.width = unit(1.5, "cm")
   )
 
 p1 <- ggplot(metro_tracts) +
-  geom_sf(aes(fill = median_income), color = "white", size = 0.1) +
-  scale_fill_viridis_c(labels = scales::dollar, name = "Median Income") +
+  geom_sf(aes(fill = median_income), color = "white", linewidth = 0.1) +
+  scale_fill_viridis_c(labels = dollar, name = "Median Income", na.value = "grey85") +
   labs(title = "Median Household Income") +
   common_theme
 
 p2 <- ggplot(metro_tracts) +
-  geom_sf(aes(fill = log1p(total_trips)), color = "white", size = 0.1) +
-  scale_fill_viridis_c(option = "magma", name = "Transit Trips (log)") +
-  labs(title = "Transit Usage") +
+  geom_sf(aes(fill = log1p(total_trips)), color = "white", linewidth = 0.1) +
+  scale_fill_viridis_c(option = "magma", name = "Transit Trips (log)", na.value = "grey85") +
+  labs(title = "Transit Trip Density") +
   common_theme
 
 p1 + p2 +
   plot_annotation(
-    title = "Income vs Transit Usage Across Census Tracts",
-    subtitle = "Exploring spatial inequality and transportation patterns"
+    title = "Income vs. Transit Service Across Twin Cities Census Tracts",
+    theme = theme(plot.title = element_text(face = "bold", size = 15, hjust = 0.5))
   )
 ```
 
@@ -233,7 +248,34 @@ over 9,000 in Hennepin. Bar color encodes mean income, making the
 income–service inverse immediately visible.
 
 ```{r county-summary}
+county_summary <- metro_tracts %>%
+  st_drop_geometry() %>%
+  group_by(county) %>%
+  summarise(
+    mean_trips  = mean(total_trips, na.rm = TRUE),
+    mean_income = mean(median_income, na.rm = TRUE),
+    n_tracts    = n(),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_trips))
 
+ggplot(county_summary, aes(x = fct_reorder(county, mean_trips), y = mean_trips)) +
+  geom_col(aes(fill = mean_income), width = 0.7) +
+  geom_text(aes(label = comma(round(mean_trips))), hjust = -0.1, size = 3.5) +
+  scale_fill_viridis_c(labels = dollar, name = "Mean Median Income") +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.18))) +
+  coord_flip() +
+  labs(
+    title = "Mean Transit Trips per Tract by County",
+    subtitle = "Bar color reflects average median household income",
+    x = NULL, y = "Mean Trip Count"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "bottom",
+    legend.key.width = unit(1.5, "cm")
+  )
 ```
 
 This pattern is consistent with how most American cities are structured:
