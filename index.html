@@ -416,11 +416,35 @@ cookieconsent.run({
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation">Motivation</a></li>
+  <li><a href="#research-question" id="toc-research-question" class="nav-link" data-scroll-target="#research-question">Research Question</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a>
+  <ul class="collapse">
+  <li><a href="#data-collection" id="toc-data-collection" class="nav-link" data-scroll-target="#data-collection">Data Collection</a></li>
+  <li><a href="#data-acquisition" id="toc-data-acquisition" class="nav-link" data-scroll-target="#data-acquisition">Data Acquisition</a></li>
+  <li><a href="#data-understanding" id="toc-data-understanding" class="nav-link" data-scroll-target="#data-understanding">Data Understanding</a></li>
+  </ul></li>
+  <li><a href="#data-insights" id="toc-data-insights" class="nav-link" data-scroll-target="#data-insights">Data Insights</a>
+  <ul class="collapse">
+  <li><a href="#transit-service-concentrates-in-lower-income-high-poc-urban-tracts" id="toc-transit-service-concentrates-in-lower-income-high-poc-urban-tracts" class="nav-link" data-scroll-target="#transit-service-concentrates-in-lower-income-high-poc-urban-tracts">Transit service concentrates in lower-income, high-POC urban tracts</a></li>
+  <li><a href="#served-does-not-mean-well-served" id="toc-served-does-not-mean-well-served" class="nav-link" data-scroll-target="#served-does-not-mean-well-served">“Served” does not mean “well-served”</a></li>
+  <li><a href="#weekend-service-is-smoother-but-thinner" id="toc-weekend-service-is-smoother-but-thinner" class="nav-link" data-scroll-target="#weekend-service-is-smoother-but-thinner">Weekend service is smoother but thinner</a></li>
+  <li><a href="#the-income-transit-relationship-is-real-but-noisy" id="toc-the-income-transit-relationship-is-real-but-noisy" class="nav-link" data-scroll-target="#the-income-transit-relationship-is-real-but-noisy">The income-transit relationship is real but noisy</a></li>
+  <li><a href="#a-surprising-result-worth-investigating" id="toc-a-surprising-result-worth-investigating" class="nav-link" data-scroll-target="#a-surprising-result-worth-investigating">A surprising result worth investigating</a></li>
+  </ul></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  <li><a href="#limitations-and-future-work" id="toc-limitations-and-future-work" class="nav-link" data-scroll-target="#limitations-and-future-work">Limitations and Future Work</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content column-body" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -430,7 +454,7 @@ cookieconsent.run({
 
 
 
-<div class="quarto-title-meta column-page-right">
+<div class="quarto-title-meta column-body">
 
     <div>
     <div class="quarto-title-meta-heading">Authors</div>
@@ -444,7 +468,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">Sunday, April 26, 2026</p>
+      <p class="date">Monday, April 27, 2026</p>
     </div>
   </div>
   
@@ -456,25 +480,542 @@ cookieconsent.run({
 </header>
 
 
-<p>Your report goes here.</p>
+<section id="motivation" class="level2">
+<h2 class="anchored" data-anchor-id="motivation">Motivation</h2>
+<p>Public transit is one of the most direct ways cities can expand economic opportunity. It determines whether someone can reach work, school, a doctor, or a grocery store without a car. In a car-dependent metro like the Twin Cities, who has access to frequent, reliable transit matters.</p>
+<p>Our motivation for this project came from wanting to test a assumption: does Metro Transit actually serve the people who need it most? The Twin Cities is often considered one of the most economically segregated metros in the country, and transit equity is an important policy debate. We had spatial data to investigate the issue directly, which led us to the central question: does the transit network follow need, or does it follow something else?</p>
+<p>This project matters because transit access is a mechanism for economic mobility. Understanding where service is strong, where itfalls short, and who bears the burden of those gaps is essential for advocates, planners, and policymakers working toward a more equitable region.</p>
+<hr>
+</section>
+<section id="research-question" class="level2">
+<h2 class="anchored" data-anchor-id="research-question">Research Question</h2>
+<p><strong>Does Twin Cities transit adequately serve marginalized communities?</strong></p>
+<p>This overarching question breaks into three testable sub-questions, each corresponding to a thread of our analysis:</p>
+<ol type="1">
+<li>Is there a relationship between neighborhood income and transit service volume?</li>
+<li>Do communities of color have greater or lesser access to transit routes?</li>
+<li>How does service quality (measured by headways and time-of-day coverage) vary across the network, and what does that mean for riders who depend on off-peak service?</li>
+</ol>
+<p>The key idea we want to communicate: <strong>having a bus route nearby is not the same as having good transit.</strong> Frequency, hours of operation, and wait times matter as much as geographic coverage.</p>
+<hr>
+</section>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>Before diving into the analysis, a few concepts and terms need clarification.</p>
+<p><strong>Census tracts</strong> are small geographic units maintained by the U.S. Census Bureau, typically containing between 1,200 and 8,000 people. They serve as the primary unit of analysis throughout this report, allowing us to compare transit service levels across neighborhoods.</p>
+<p><strong>Headway</strong> refers to the number of minutes between consecutive trips on a given route segment. A headway of 10 minutes means a bus arrives every 10 minutes; a headway of 60 means riders may wait up to an hour. Headway is arguably the most important measure of transit quality — it determines whether transit is a genuinely viable option or a last resort.</p>
+<p><strong>Service periods</strong> in the dataset are broken into seven windows:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Period</th>
+<th>Abbreviation</th>
+<th>Time Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Early AM</td>
+<td>EAM</td>
+<td>4:30 – 6:00 AM</td>
+</tr>
+<tr class="even">
+<td>AM Peak</td>
+<td>AMP</td>
+<td>6:00 – 9:00 AM</td>
+</tr>
+<tr class="odd">
+<td>Midday</td>
+<td>MID</td>
+<td>9:00 AM – 3:00 PM</td>
+</tr>
+<tr class="even">
+<td>PM Peak</td>
+<td>PMP</td>
+<td>3:00 – 6:30 PM</td>
+</tr>
+<tr class="odd">
+<td>Evening</td>
+<td>EVE</td>
+<td>6:30 – 9:00 PM</td>
+</tr>
+<tr class="even">
+<td>Night</td>
+<td>NIGHT</td>
+<td>9:00 PM – 1:30 AM</td>
+</tr>
+<tr class="odd">
+<td>Owl</td>
+<td>OWL</td>
+<td>1:30 – 4:30 AM</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The 7-county metro</strong> refers to Hennepin, Ramsey, Dakota, Anoka, Washington, Scott, and Carver counties — the standard definition of the Twin Cities metropolitan area used by the Metropolitan Council.</p>
+<p><strong>ACS (American Community Survey)</strong> is an ongoing U.S. Census Bureau survey that provides annual demographic and economic estimates — including median household income and racial composition — at the census tract level.</p>
+<p><strong>TripCount</strong> is a field in the transit dataset representing the total number of scheduled transit trips serving a given road segment across all service periods. Higher values indicate more frequent service on that segment.</p>
+<hr>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<section id="data-collection" class="level3">
+<h3 class="anchored" data-anchor-id="data-collection">Data Collection</h3>
+<p>We used two datasets in this project.</p>
+<p>The <strong>Metro Transit Count and Headway Summary</strong> shapefile comes from the Minnesota Geospatial Commons, produced by the Metropolitan Council’s GIS batch process (<code>SVC-GISBATCH</code>). The dataset was last updated March 21, 2026. It contains 75,634 road segment features, each representing a stretch of road served by Metro Transit, with trip counts and headway values recorded for each of the seven service periods across three day types: weekday (<code>WK</code>), Saturday (<code>SAT</code>), and Sunday (<code>SUN</code>). Geometry is stored as multiline strings in the NAD83/UTM Zone 15N projected coordinate reference system.</p>
+<p>The <strong>American Community Survey (2022)</strong> data was pulled via the <code>tidycensus</code> R package for all Minnesota census tracts, using variable <code>B19013_001</code> (median household income), with tract polygon geometries included. This data is collected continuously by the Census Bureau and represents 5-year estimates centered on 2022.</p>
+</section>
+<section id="data-acquisition" class="level3">
+<h3 class="anchored" data-anchor-id="data-acquisition">Data Acquisition</h3>
+<p>The transit shapefile was downloaded directly from the Minnesota Geospatial Commons:</p>
+<blockquote class="blockquote">
+<p><a href="https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-transit-count-headway-sum" class="uri">https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-transit-count-headway-sum</a></p>
+</blockquote>
+<p>Census tract data was accessed via the Census Bureau API using <code>tidycensus::get_acs()</code> with <code>geometry = TRUE</code>, requiring a Census API key.</p>
+</section>
+<section id="data-understanding" class="level3">
+<h3 class="anchored" data-anchor-id="data-understanding">Data Understanding</h3>
+<p>The transit shapefile contains <strong>75,634 features</strong> and <strong>23 attribute fields</strong>, including time-of-day trip counts (<code>EAM_count</code>, <code>AMP_count</code>, etc.), headway values (<code>EAM_hdwy</code>, <code>AMP_hdwy</code>, etc.), a <code>service_id</code> field (day type), and road segment identifiers. The <code>TripCount</code> field aggregates trips across all periods for a given segment and day type.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># a test code chunk</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(patchwork)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>Guiding Research Question: Does Twin Cities transit adequately serve marginalized commenities?</p>
-<p>Data Characteristics</p>
-<p>MN Geospatial Commons - Transit Trip Count and Headway Summary: Contains frequency statistics for all trips serving the Twin Cities regional metropolitan area</p>
-<p>ACS for demographic data American Community Survey Data for census tract level demographic data.</p>
-<p>Transit Routes v.s. Median Household Income - Transit service is heavily concentrated in lower-income central city tracts, while wealthier suburban areas have little to no coverage - Transit service is concentrated in lower-income, denser urban areas, which is typical of most American cities. The pattern could reflect either equitable planning or simply that high income areas tend to be lower density suburbs which have low transit service.</p>
-<p>It would be interesting to see what the outliers represent.</p>
-<p>Transit Routes v.s.Racial Demographics - The map shows transit routes are heavily concentrated in urban core, which also has the highest density of People of Color. Suburan areas are predominantly white and have lesser transit accessibility.</p>
-<p>Total transit trips vs Percent People The scatter plot shows a weak positive relationship. Tracts with higher percentages of People of Color tend to have more transit trips, as shown by the upward sloping regression line.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>df <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/raw/shp_trans_transit_count_headway_sum/"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `TransitCountHeadwaySummary' from data source 
+  `/Users/hadleywilkins/Documents/COMP212/project-metrotransit-rishika-hadley/data/raw/shp_trans_transit_count_headway_sum' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 75634 features and 23 fields
+Geometry type: MULTILINESTRING
+Dimension:     XY
+Bounding box:  xmin: 442648 ymin: 4948258 xmax: 515316.2 ymax: 5020153
+Projected CRS: NAD83 / UTM zone 15N</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>tracts <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="at">geography =</span> <span class="st">"tract"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="at">variables =</span> <span class="st">"B19013_001"</span>, </span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="at">state =</span> <span class="st">"MN"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="at">year =</span> <span class="dv">2022</span>,</span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="at">geometry =</span> <span class="cn">TRUE</span> </span>
+<span id="cb4-7"><a href="#cb4-7"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=                                                                     |   2%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |===                                                                   |   4%
+  |                                                                            
+  |====                                                                  |   5%
+  |                                                                            
+  |=====                                                                 |   6%
+  |                                                                            
+  |======                                                                |   8%
+  |                                                                            
+  |=======                                                               |  10%
+  |                                                                            
+  |========                                                              |  12%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |===========                                                           |  16%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |=============                                                         |  19%
+  |                                                                            
+  |==============                                                        |  21%
+  |                                                                            
+  |================                                                      |  23%
+  |                                                                            
+  |=================                                                     |  25%
+  |                                                                            
+  |==================                                                    |  26%
+  |                                                                            
+  |====================                                                  |  28%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |======================                                                |  31%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |========================                                              |  34%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |==========================                                            |  38%
+  |                                                                            
+  |============================                                          |  39%
+  |                                                                            
+  |=============================                                         |  41%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |===============================                                       |  44%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |=================================                                     |  47%
+  |                                                                            
+  |==================================                                    |  49%
+  |                                                                            
+  |===================================                                   |  51%
+  |                                                                            
+  |=====================================                                 |  52%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |=======================================                               |  55%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  60%
+  |                                                                            
+  |===========================================                           |  62%
+  |                                                                            
+  |============================================                          |  64%
+  |                                                                            
+  |==============================================                        |  65%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |=================================================                     |  70%
+  |                                                                            
+  |==================================================                    |  72%
+  |                                                                            
+  |===================================================                   |  73%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |======================================================                |  77%
+  |                                                                            
+  |=======================================================               |  78%
+  |                                                                            
+  |========================================================              |  80%
+  |                                                                            
+  |=========================================================             |  81%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |===========================================================           |  85%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |=============================================================         |  88%
+  |                                                                            
+  |===============================================================       |  89%
+  |                                                                            
+  |================================================================      |  91%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |===================================================================   |  96%
+  |                                                                            
+  |====================================================================  |  98%
+  |                                                                            
+  |===================================================================== |  99%
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>lines <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(df, <span class="fu">st_crs</span>(tracts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>lines_tracts <span class="ot">&lt;-</span> <span class="fu">st_join</span>(lines, tracts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">names</span>(lines_tracts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "service_id" "line_direc" "RoadSeg_ID" "EAM_count"  "AMP_count" 
+ [6] "MID_count"  "PMP_count"  "EVE_count"  "NIGHT_coun" "OWL_count" 
+[11] "TripCount"  "EAM_hdwy"   "AMP_hdwy"   "MID_hdwy"   "PMP_hdwy"  
+[16] "EVE_hdwy"   "NIGHT_hdwy" "OWL_hdwy"   "created_us" "created_da"
+[21] "last_edite" "last_edi_1" "Shape_Leng" "GEOID"      "NAME"      
+[26] "variable"   "estimate"   "moe"        "geometry"  </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>tract_summary <span class="ot">&lt;-</span> lines_tracts <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">group_by</span>(GEOID) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="at">total_trips =</span> <span class="fu">sum</span>(TripCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-5"><a href="#cb10-5"></a>    <span class="at">median_income =</span> <span class="fu">first</span>(estimate)</span>
+<span id="cb10-6"><a href="#cb10-6"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>tracts_map <span class="ot">&lt;-</span> tracts <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    <span class="fu">st_drop_geometry</span>(tract_summary),</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="at">by =</span> <span class="st">"GEOID"</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>  )</span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a>metro_tracts <span class="ot">&lt;-</span> tracts_map <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver"</span>, NAME))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Before analysis, several preparation steps were required:</p>
+<ul>
+<li><strong>CRS reprojection:</strong> The transit lines were in NAD83/UTM Zone 15N (EPSG:26915), while the ACS tract geometries used geographic NAD83 (EPSG:4269). We reprojected the transit lines to match the ACS CRS using <code>st_transform()</code> before performing any spatial operations.</li>
+<li><strong>Spatial join:</strong> We used <code>st_join()</code> to match each transit line segment to the census tract polygon it intersects, then summarized total trips and median income per tract via <code>group_by(GEOID) |&gt; summarise()</code>.</li>
+<li><strong>Metro filter:</strong> We filtered to the 7-county metro area using a <code>grepl()</code> match on county names in the tract <code>NAME</code> field, yielding <strong>784 census tracts</strong>.</li>
+<li><strong>Missing data:</strong> 177 metro tracts had missing median income estimates from the ACS. These tracts were retained in spatial visualizations but excluded from income-based scatter plots and regressions. Missing values tend to occur in group-quarters geographies, parks, and industrial zones.</li>
+<li><strong>Skewness:</strong> <code>TripCount</code> values were right-skewed (min: 1, median: 31, mean: 49, max: 836), so <code>log1p()</code> transformation was applied in choropleth maps and scatterplots to reduce the influence of extreme values.</li>
+</ul>
+<p>A key quality check confirmed that <strong>0 transit line segments failed to match a census tract</strong> — every segment in the dataset fell within a valid geography.</p>
+<hr>
+</section>
+</section>
+<section id="data-insights" class="level2">
+<h2 class="anchored" data-anchor-id="data-insights">Data Insights</h2>
+<section id="transit-service-concentrates-in-lower-income-high-poc-urban-tracts" class="level3">
+<h3 class="anchored" data-anchor-id="transit-service-concentrates-in-lower-income-high-poc-urban-tracts">Transit service concentrates in lower-income, high-POC urban tracts</h3>
+<p>The side-by-side choropleth maps comparing median household income to log-scaled transit trip density reveal a clear spatial inverse: the urban cores of Hennepin and Ramsey counties — which have the lowest median incomes and highest concentrations of people of color — have by far the most transit service. The wealthiest outer-ring counties are near-blank on the transit map.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>common_theme <span class="ot">&lt;-</span> <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">theme</span>(</span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>  )</span>
+<span id="cb12-6"><a href="#cb12-6"></a></span>
+<span id="cb12-7"><a href="#cb12-7"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(metro_tracts) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> median_income), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">labels =</span> scales<span class="sc">::</span>dollar, <span class="at">name =</span> <span class="st">"Median Income"</span>) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Median Household Income"</span>) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>  common_theme</span>
+<span id="cb12-12"><a href="#cb12-12"></a></span>
+<span id="cb12-13"><a href="#cb12-13"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(metro_tracts) <span class="sc">+</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">log1p</span>(total_trips)), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"magma"</span>, <span class="at">name =</span> <span class="st">"Transit Trips (log)"</span>) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Transit Usage"</span>) <span class="sc">+</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a>  common_theme</span>
+<span id="cb12-18"><a href="#cb12-18"></a></span>
+<span id="cb12-19"><a href="#cb12-19"></a>p1 <span class="sc">+</span> p2 <span class="sc">+</span></span>
+<span id="cb12-20"><a href="#cb12-20"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb12-21"><a href="#cb12-21"></a>    <span class="at">title =</span> <span class="st">"Income vs Transit Usage Across Census Tracts"</span>,</span>
+<span id="cb12-22"><a href="#cb12-22"></a>    <span class="at">subtitle =</span> <span class="st">"Exploring spatial inequality and transportation patterns"</span></span>
+<span id="cb12-23"><a href="#cb12-23"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/choropleth-maps-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The county-level bar chart reinforces the pattern. Carver County — the wealthiest in the metro — averages just 334 trips per tract, compared to over 9,000 in Hennepin. Bar color encodes mean income, making the income–service inverse immediately visible.</p>
+<p>This pattern is consistent with how most American cities are structured: higher-density, lower-income urban neighborhoods are more transit-oriented by design, and investment has historically followed those corridors.</p>
+</section>
+<section id="served-does-not-mean-well-served" class="level3">
+<h3 class="anchored" data-anchor-id="served-does-not-mean-well-served">“Served” does not mean “well-served”</h3>
+<p>The spatial picture is only half the story. The temporal analysis reveals that <strong>the network is built around peak-hour commuters</strong>, and service quality degrades sharply outside those windows. The chart below shows how headways lengthen dramatically as the day moves away from peak commute times.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>headway_long <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">filter</span>(service_id <span class="sc">==</span> <span class="st">"WK"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="fu">select</span>(<span class="fu">ends_with</span>(<span class="st">"_hdwy"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"period_raw"</span>, <span class="at">values_to =</span> <span class="st">"headway"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(headway), headway <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-8"><a href="#cb13-8"></a>    <span class="at">period =</span> <span class="fu">str_remove</span>(period_raw, <span class="st">"_hdwy"</span>) <span class="sc">%&gt;%</span> <span class="fu">str_to_upper</span>(),</span>
+<span id="cb13-9"><a href="#cb13-9"></a>    <span class="at">period =</span> <span class="fu">factor</span>(period, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"EAM"</span>, <span class="st">"AMP"</span>, <span class="st">"MID"</span>, <span class="st">"PMP"</span>, <span class="st">"EVE"</span>, <span class="st">"NIGHT"</span>, <span class="st">"OWL"</span>))</span>
+<span id="cb13-10"><a href="#cb13-10"></a>  )</span>
+<span id="cb13-11"><a href="#cb13-11"></a></span>
+<span id="cb13-12"><a href="#cb13-12"></a>headway_summary <span class="ot">&lt;-</span> headway_long <span class="sc">%&gt;%</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a>  <span class="fu">group_by</span>(period) <span class="sc">%&gt;%</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb13-15"><a href="#cb13-15"></a>    <span class="at">median_hdwy =</span> <span class="fu">median</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-16"><a href="#cb13-16"></a>    <span class="at">mean_hdwy   =</span> <span class="fu">mean</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-17"><a href="#cb13-17"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a>  )</span>
+<span id="cb13-19"><a href="#cb13-19"></a></span>
+<span id="cb13-20"><a href="#cb13-20"></a><span class="fu">ggplot</span>(headway_summary, <span class="fu">aes</span>(<span class="at">x =</span> period, <span class="at">y =</span> median_hdwy, <span class="at">fill =</span> median_hdwy)) <span class="sc">+</span></span>
+<span id="cb13-21"><a href="#cb13-21"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb13-22"><a href="#cb13-22"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(median_hdwy), <span class="st">" min"</span>)),</span>
+<span id="cb13-23"><a href="#cb13-23"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.4</span>, <span class="at">size =</span> <span class="fl">3.8</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb13-24"><a href="#cb13-24"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"#2ca25f"</span>, <span class="at">high =</span> <span class="st">"#d73027"</span>) <span class="sc">+</span></span>
+<span id="cb13-25"><a href="#cb13-25"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>))) <span class="sc">+</span></span>
+<span id="cb13-26"><a href="#cb13-26"></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-27"><a href="#cb13-27"></a>    <span class="at">title =</span> <span class="st">"Median Headway by Service Period (Weekday)"</span>,</span>
+<span id="cb13-28"><a href="#cb13-28"></a>    <span class="at">subtitle =</span> <span class="st">"Higher values = longer waits between buses"</span>,</span>
+<span id="cb13-29"><a href="#cb13-29"></a>    <span class="at">x =</span> <span class="st">"Service Period"</span>, <span class="at">y =</span> <span class="st">"Median Headway (minutes)"</span></span>
+<span id="cb13-30"><a href="#cb13-30"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-31"><a href="#cb13-31"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb13-32"><a href="#cb13-32"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/headway-by-period-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Key takeaways:</p>
+<ul>
+<li>Median headways during AM and PM Peak are <strong>~30 minutes</strong> — already lengthy by transit standards.</li>
+<li>Median night headways (9:00 PM – 1:30 AM) rise to <strong>45 minutes</strong>, with a mean exceeding 90 minutes.</li>
+<li>Owl service has a median headway of <strong>180 minutes</strong> — one bus every three hours.</li>
+<li>Only <strong>56.4%</strong> of weekday segments have any night service; just <strong>9.3%</strong> have Owl service, concentrated along a handful of core corridors.</li>
+</ul>
+<p>Workers who depend on transit for evening or overnight shifts — disproportionately lower-wage workers in service, healthcare, and hospitality — face a dramatically different system than peak-hour commuters.</p>
+</section>
+<section id="weekend-service-is-smoother-but-thinner" class="level3">
+<h3 class="anchored" data-anchor-id="weekend-service-is-smoother-but-thinner">Weekend service is smoother but thinner</h3>
+<p>Weekday trip volumes (~1.54 million total) substantially exceed Saturday (~1.16M) and Sunday (~1.02M). More importantly, <strong>the shape of service differs</strong>: weekday trips show a strong dual-peak structure reflecting 9-to-5 commute patterns, while weekend service is more evenly distributed across the day. This matters for equity — lower-income riders are more likely to work non-standard hours and depend on weekend transit, which covers fewer routes with wider headways.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>trips_by_day <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>  <span class="fu">select</span>(service_id, <span class="fu">starts_with</span>(<span class="st">"EAM_count"</span>), <span class="fu">starts_with</span>(<span class="st">"AMP_count"</span>),</span>
+<span id="cb14-4"><a href="#cb14-4"></a>         <span class="fu">starts_with</span>(<span class="st">"MID_count"</span>), <span class="fu">starts_with</span>(<span class="st">"PMP_count"</span>),</span>
+<span id="cb14-5"><a href="#cb14-5"></a>         <span class="fu">starts_with</span>(<span class="st">"EVE_count"</span>), <span class="fu">starts_with</span>(<span class="st">"NIGHT_count"</span>),</span>
+<span id="cb14-6"><a href="#cb14-6"></a>         <span class="fu">starts_with</span>(<span class="st">"OWL_count"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>service_id, <span class="at">names_to =</span> <span class="st">"period_raw"</span>, <span class="at">values_to =</span> <span class="st">"count"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(count)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-10"><a href="#cb14-10"></a>    <span class="at">period =</span> <span class="fu">str_remove</span>(period_raw, <span class="st">"_count"</span>) <span class="sc">%&gt;%</span> <span class="fu">str_to_upper</span>(),</span>
+<span id="cb14-11"><a href="#cb14-11"></a>    <span class="at">period =</span> <span class="fu">factor</span>(period, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"EAM"</span>, <span class="st">"AMP"</span>, <span class="st">"MID"</span>, <span class="st">"PMP"</span>, <span class="st">"EVE"</span>, <span class="st">"NIGHT"</span>, <span class="st">"OWL"</span>)),</span>
+<span id="cb14-12"><a href="#cb14-12"></a>    <span class="at">day_type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb14-13"><a href="#cb14-13"></a>      service_id <span class="sc">==</span> <span class="st">"WK"</span>  <span class="sc">~</span> <span class="st">"Weekday"</span>,</span>
+<span id="cb14-14"><a href="#cb14-14"></a>      service_id <span class="sc">==</span> <span class="st">"SAT"</span> <span class="sc">~</span> <span class="st">"Saturday"</span>,</span>
+<span id="cb14-15"><a href="#cb14-15"></a>      service_id <span class="sc">==</span> <span class="st">"SUN"</span> <span class="sc">~</span> <span class="st">"Sunday"</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a>    )</span>
+<span id="cb14-17"><a href="#cb14-17"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb14-18"><a href="#cb14-18"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(day_type)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-19"><a href="#cb14-19"></a>  <span class="fu">group_by</span>(day_type, period) <span class="sc">%&gt;%</span></span>
+<span id="cb14-20"><a href="#cb14-20"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb14-21"><a href="#cb14-21"></a></span>
+<span id="cb14-22"><a href="#cb14-22"></a><span class="fu">ggplot</span>(trips_by_day, <span class="fu">aes</span>(<span class="at">x =</span> period, <span class="at">y =</span> total <span class="sc">/</span> <span class="fl">1e6</span>, <span class="at">fill =</span> day_type)) <span class="sc">+</span></span>
+<span id="cb14-23"><a href="#cb14-23"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb14-24"><a href="#cb14-24"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb14-25"><a href="#cb14-25"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Weekday"</span> <span class="ot">=</span> <span class="st">"#2c7bb6"</span>, <span class="st">"Saturday"</span> <span class="ot">=</span> <span class="st">"#fdae61"</span>, <span class="st">"Sunday"</span> <span class="ot">=</span> <span class="st">"#d7191c"</span>),</span>
+<span id="cb14-26"><a href="#cb14-26"></a>    <span class="at">name =</span> <span class="st">"Day Type"</span></span>
+<span id="cb14-27"><a href="#cb14-27"></a>  ) <span class="sc">+</span></span>
+<span id="cb14-28"><a href="#cb14-28"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"M"</span>)) <span class="sc">+</span></span>
+<span id="cb14-29"><a href="#cb14-29"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-30"><a href="#cb14-30"></a>    <span class="at">title =</span> <span class="st">"Total Transit Trips by Period and Day Type"</span>,</span>
+<span id="cb14-31"><a href="#cb14-31"></a>    <span class="at">x =</span> <span class="st">"Service Period"</span>, <span class="at">y =</span> <span class="st">"Total Trips (millions)"</span></span>
+<span id="cb14-32"><a href="#cb14-32"></a>  ) <span class="sc">+</span></span>
+<span id="cb14-33"><a href="#cb14-33"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb14-34"><a href="#cb14-34"></a>  <span class="fu">theme</span>(</span>
+<span id="cb14-35"><a href="#cb14-35"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb14-36"><a href="#cb14-36"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb14-37"><a href="#cb14-37"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/trips-by-daytype-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-income-transit-relationship-is-real-but-noisy" class="level3">
+<h3 class="anchored" data-anchor-id="the-income-transit-relationship-is-real-but-noisy">The income-transit relationship is real but noisy</h3>
+<p>Both a linear regression and a LOESS smoother show a weak negative relationship between median household income and total trip count: lower-income tracts tend to have more service. However, the relationship has wide scatter. Some lower-income tracts have very little service; some moderate-income tracts near high-frequency corridors have substantial coverage.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>metro_tracts <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(median_income), <span class="sc">!</span><span class="fu">is.na</span>(total_trips)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> median_income, <span class="at">y =</span> <span class="fu">log1p</span>(total_trips))) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.35</span>, <span class="at">color =</span> <span class="st">"#4d4d4d"</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">color =</span> <span class="st">"#2c7bb6"</span>, <span class="at">fill =</span> <span class="st">"#abd9e9"</span>, <span class="at">linewidth =</span> <span class="fl">1.1</span>) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"#d73027"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb15-8"><a href="#cb15-8"></a>              <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a>  <span class="fu">labs</span>(</span>
+<span id="cb15-10"><a href="#cb15-10"></a>    <span class="at">title =</span> <span class="st">"Median Income vs. Transit Trips per Census Tract"</span>,</span>
+<span id="cb15-11"><a href="#cb15-11"></a>    <span class="at">subtitle =</span> <span class="st">"Blue = LOESS smoother · Red dashed = linear fit · Each point = one census tract"</span>,</span>
+<span id="cb15-12"><a href="#cb15-12"></a>    <span class="at">x =</span> <span class="st">"Median Household Income"</span>, <span class="at">y =</span> <span class="st">"Transit Trips (log scale)"</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb15-15"><a href="#cb15-15"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/income-trips-scatter-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This suggests that <strong>density, route history, and corridor geography explain service distribution at least as much as income alone.</strong> The network was not explicitly designed with income equity as a primary goal, and the spatial alignment with lower-income tracts may be largely incidental to land-use patterns.</p>
+</section>
+<section id="a-surprising-result-worth-investigating" class="level3">
+<h3 class="anchored" data-anchor-id="a-surprising-result-worth-investigating">A surprising result worth investigating</h3>
+<p>The scatter plot of total trips vs.&nbsp;percent people of color shows only a weak positive relationship — weaker than the visual map overlay would suggest. This disconnect is likely a methodological artifact: our spatial join assigns the full trip count of any line segment to the single tract it intersects, which can inflate counts in tracts that are physically large or positioned at route intersections. This is one of the more important limitations to address in future work.</p>
+<hr>
+</section>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>The data tells a story that is <strong>partially encouraging and partially concerning</strong>.</p>
+<p>At the broadest level, transit service is concentrated where lower-income communities and communities of color live — the network is spatially aligned with need in relative terms. The urban cores of Minneapolis and Saint Paul are well-covered, and the county-level gradient in service volume tracks (inversely) with income.</p>
+<p>But spatial coverage is only half of transit equity. When we examine <em>when</em> service runs and <em>how often</em>, a different picture emerges. The system is structured for peak-hour, 9-to-5 commuters. Riders who need transit most — lower-wage workers, people without cars, those working evenings and overnight — face headways that make transit impractical for daily life. A 90-minute mean night headway is not a system that functions as reliable transportation; it is a system that merely tolerates being used outside of convenient hours.</p>
+<p>The answer to our guiding question — <em>does Twin Cities transit adequately serve marginalized communities?</em> — is: <strong>geographically, yes, to a degree; temporally, much less so.</strong> The gap between where routes exist and when those routes actually run is where equity is lost.</p>
+<hr>
+</section>
+<section id="limitations-and-future-work" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-and-future-work">Limitations and Future Work</h2>
+<p>Several limitations of this analysis are worth naming directly.</p>
+<p><strong>Spatial join methodology.</strong> Our <code>st_join()</code> assigns the full trip count of each line segment to whichever tract polygon it intersects. Segments that cross tract boundaries are counted in only one tract, which can artificially inflate or deflate per-tract totals — particularly for large or irregularly shaped tracts near corridors. A more rigorous approach would use <code>st_intersection()</code> to clip segments to tract boundaries and weight trip counts proportionally by the share of segment length within each tract.</p>
+<p><strong>Missing income data.</strong> 177 metro tracts (~22%) have missing ACS median income estimates and were excluded from regression analyses. These missing values are not random — they tend to occur in group-quarters geographies and institutional areas — which may introduce systematic bias.</p>
+<p><strong>Cross-sectional snapshot.</strong> The dataset represents a single point in time (March 2026). We cannot draw conclusions about trends, or whether recent service changes have disproportionately affected certain communities.</p>
+<p><strong>Service supply vs.&nbsp;ridership demand.</strong> Our analysis measures service supply (scheduled trips per segment) rather than actual ridership. High supply in a tract does not necessarily mean high ridership, and vice versa. Incorporating actual boarding data from Metro Transit’s ridership records would provide a more complete picture.</p>
+<p><strong>Race/ethnicity analysis is incomplete.</strong> Racial demographics appeared in the main project summary but were not fully integrated into the individual EDA analyses. A rigorous equity analysis would incorporate ACS race variables (e.g., <code>B03002</code>) and conduct multivariate analysis controlling for density, income, and racial composition simultaneously.</p>
+<p><strong>Future directions</strong> could include: accessibility metrics measuring how many jobs or essential services can be reached within 30 minutes by transit from each tract; a longitudinal analysis of service changes; disaggregation of headway equity by income quintile; and comparison with peer cities to contextualize the Twin Cities’ equity performance.</p>
 
 
 <!-- -->
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -946,7 +1487,7 @@ cookieconsent.run({
     }
   });
   </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
@@ -955,41 +1496,461 @@ cookieconsent.run({
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">---</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="an">title:</span><span class="co"> "Exploring Equity in Twin Cities: A Spatial Analysis of Ridership and Income"</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co">---</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a></span>
-<span id="cb2-5"><a href="#cb2-5"></a>Your report goes here.</span>
-<span id="cb2-6"><a href="#cb2-6"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="in">```{r}</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co"># a test code chunk</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="in">```</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a></span>
-<span id="cb2-13"><a href="#cb2-13"></a></span>
-<span id="cb2-14"><a href="#cb2-14"></a>Guiding Research Question: Does Twin Cities transit adequately serve marginalized commenities? </span>
-<span id="cb2-15"><a href="#cb2-15"></a></span>
-<span id="cb2-16"><a href="#cb2-16"></a>Data Characteristics</span>
-<span id="cb2-17"><a href="#cb2-17"></a></span>
-<span id="cb2-18"><a href="#cb2-18"></a>MN Geospatial Commons</span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="ss">- </span>Transit Trip Count and Headway Summary: Contains frequency statistics for all trips serving the Twin Cities regional metropolitan area</span>
-<span id="cb2-20"><a href="#cb2-20"></a></span>
-<span id="cb2-21"><a href="#cb2-21"></a>ACS for demographic data</span>
-<span id="cb2-22"><a href="#cb2-22"></a>American Community Survey Data for census tract level demographic data.</span>
-<span id="cb2-23"><a href="#cb2-23"></a></span>
-<span id="cb2-24"><a href="#cb2-24"></a>Transit Routes v.s. Median Household Income</span>
-<span id="cb2-25"><a href="#cb2-25"></a><span class="ss">- </span>Transit service is heavily concentrated in lower-income central city tracts, while wealthier suburban areas have little to no coverage</span>
-<span id="cb2-26"><a href="#cb2-26"></a><span class="ss">- </span>Transit service is concentrated in lower-income, denser urban areas, which is typical of most American cities. </span>
-<span id="cb2-27"><a href="#cb2-27"></a>The pattern could reflect either equitable planning or simply that high income areas tend to be lower density suburbs which have low transit service. </span>
-<span id="cb2-28"><a href="#cb2-28"></a></span>
-<span id="cb2-29"><a href="#cb2-29"></a>It would be interesting to see what the outliers represent. </span>
-<span id="cb2-30"><a href="#cb2-30"></a></span>
-<span id="cb2-31"><a href="#cb2-31"></a>Transit Routes v.s.Racial Demographics</span>
-<span id="cb2-32"><a href="#cb2-32"></a><span class="ss">- </span>The map shows transit routes are heavily concentrated in urban core, which also has the highest density of People of Color. Suburan areas are predominantly white and have lesser transit accessibility. </span>
-<span id="cb2-33"><a href="#cb2-33"></a></span>
-<span id="cb2-34"><a href="#cb2-34"></a>Total transit trips vs Percent People</span>
-<span id="cb2-35"><a href="#cb2-35"></a>The scatter plot shows a weak positive relationship. Tracts with higher percentages of People of Color tend to have more transit trips, as shown by the upward sloping regression line.</span>
-<span id="cb2-36"><a href="#cb2-36"></a></span>
-<span id="cb2-37"><a href="#cb2-37"></a></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">---</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="an">title:</span><span class="co"> "Exploring Equity in Twin Cities: A Spatial Analysis of Ridership and Income"</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="co">---</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="fu">## Motivation</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a></span>
+<span id="cb16-7"><a href="#cb16-7"></a>Public transit is one of the most direct ways cities can expand economic opportunity. It determines whether someone can reach work, school, a doctor, or a grocery store without a car. In a car-dependent metro like the Twin Cities, who has access to frequent, reliable transit matters.</span>
+<span id="cb16-8"><a href="#cb16-8"></a></span>
+<span id="cb16-9"><a href="#cb16-9"></a>Our motivation for this project came from wanting to test a assumption: does Metro Transit</span>
+<span id="cb16-10"><a href="#cb16-10"></a>actually serve the people who need it most? The Twin Cities is often considered one of the most economically segregated metros in the country, and transit equity is an important policy debate. We had spatial data to investigate the issue directly, which led us to the central question: does the transit network follow need, or does it follow</span>
+<span id="cb16-11"><a href="#cb16-11"></a>something else?</span>
+<span id="cb16-12"><a href="#cb16-12"></a></span>
+<span id="cb16-13"><a href="#cb16-13"></a>This project matters because transit access is a mechanism for economic mobility. Understanding where service is strong, where itfalls short, and who bears the burden of those gaps is essential for advocates, planners, and policymakers working toward a more equitable region.</span>
+<span id="cb16-14"><a href="#cb16-14"></a></span>
+<span id="cb16-15"><a href="#cb16-15"></a>---</span>
+<span id="cb16-16"><a href="#cb16-16"></a></span>
+<span id="cb16-17"><a href="#cb16-17"></a><span class="fu">## Research Question</span></span>
+<span id="cb16-18"><a href="#cb16-18"></a></span>
+<span id="cb16-19"><a href="#cb16-19"></a>**Does Twin Cities transit adequately serve marginalized communities?**</span>
+<span id="cb16-20"><a href="#cb16-20"></a></span>
+<span id="cb16-21"><a href="#cb16-21"></a>This overarching question breaks into three testable sub-questions, each corresponding</span>
+<span id="cb16-22"><a href="#cb16-22"></a>to a thread of our analysis:</span>
+<span id="cb16-23"><a href="#cb16-23"></a></span>
+<span id="cb16-24"><a href="#cb16-24"></a><span class="ss">1. </span>Is there a relationship between neighborhood income and transit service volume?</span>
+<span id="cb16-25"><a href="#cb16-25"></a><span class="ss">2. </span>Do communities of color have greater or lesser access to transit routes?</span>
+<span id="cb16-26"><a href="#cb16-26"></a><span class="ss">3. </span>How does service quality (measured by headways and time-of-day coverage) vary</span>
+<span id="cb16-27"><a href="#cb16-27"></a>   across the network, and what does that mean for riders who depend on off-peak</span>
+<span id="cb16-28"><a href="#cb16-28"></a>   service?</span>
+<span id="cb16-29"><a href="#cb16-29"></a></span>
+<span id="cb16-30"><a href="#cb16-30"></a>The key idea we want to communicate: **having a bus route nearby is not the same as</span>
+<span id="cb16-31"><a href="#cb16-31"></a>having good transit.** Frequency, hours of operation, and wait times matter as much</span>
+<span id="cb16-32"><a href="#cb16-32"></a>as geographic coverage.</span>
+<span id="cb16-33"><a href="#cb16-33"></a></span>
+<span id="cb16-34"><a href="#cb16-34"></a>---</span>
+<span id="cb16-35"><a href="#cb16-35"></a></span>
+<span id="cb16-36"><a href="#cb16-36"></a><span class="fu">## Background</span></span>
+<span id="cb16-37"><a href="#cb16-37"></a></span>
+<span id="cb16-38"><a href="#cb16-38"></a>Before diving into the analysis, a few concepts and terms need clarification.</span>
+<span id="cb16-39"><a href="#cb16-39"></a></span>
+<span id="cb16-40"><a href="#cb16-40"></a>**Census tracts** are small geographic units maintained by the U.S. Census Bureau,</span>
+<span id="cb16-41"><a href="#cb16-41"></a>typically containing between 1,200 and 8,000 people. They serve as the primary unit</span>
+<span id="cb16-42"><a href="#cb16-42"></a>of analysis throughout this report, allowing us to compare transit service levels</span>
+<span id="cb16-43"><a href="#cb16-43"></a>across neighborhoods.</span>
+<span id="cb16-44"><a href="#cb16-44"></a></span>
+<span id="cb16-45"><a href="#cb16-45"></a>**Headway** refers to the number of minutes between consecutive trips on a given</span>
+<span id="cb16-46"><a href="#cb16-46"></a>route segment. A headway of 10 minutes means a bus arrives every 10 minutes; a</span>
+<span id="cb16-47"><a href="#cb16-47"></a>headway of 60 means riders may wait up to an hour. Headway is arguably the most</span>
+<span id="cb16-48"><a href="#cb16-48"></a>important measure of transit quality — it determines whether transit is a genuinely</span>
+<span id="cb16-49"><a href="#cb16-49"></a>viable option or a last resort.</span>
+<span id="cb16-50"><a href="#cb16-50"></a></span>
+<span id="cb16-51"><a href="#cb16-51"></a>**Service periods** in the dataset are broken into seven windows:</span>
+<span id="cb16-52"><a href="#cb16-52"></a></span>
+<span id="cb16-53"><a href="#cb16-53"></a><span class="pp">|</span> Period     <span class="pp">|</span> Abbreviation <span class="pp">|</span> Time Range          <span class="pp">|</span></span>
+<span id="cb16-54"><a href="#cb16-54"></a><span class="pp">|------------|-------------|---------------------|</span></span>
+<span id="cb16-55"><a href="#cb16-55"></a><span class="pp">|</span> Early AM   <span class="pp">|</span> EAM         <span class="pp">|</span> 4:30 – 6:00 AM      <span class="pp">|</span></span>
+<span id="cb16-56"><a href="#cb16-56"></a><span class="pp">|</span> AM Peak    <span class="pp">|</span> AMP         <span class="pp">|</span> 6:00 – 9:00 AM      <span class="pp">|</span></span>
+<span id="cb16-57"><a href="#cb16-57"></a><span class="pp">|</span> Midday     <span class="pp">|</span> MID         <span class="pp">|</span> 9:00 AM – 3:00 PM   <span class="pp">|</span></span>
+<span id="cb16-58"><a href="#cb16-58"></a><span class="pp">|</span> PM Peak    <span class="pp">|</span> PMP         <span class="pp">|</span> 3:00 – 6:30 PM      <span class="pp">|</span></span>
+<span id="cb16-59"><a href="#cb16-59"></a><span class="pp">|</span> Evening    <span class="pp">|</span> EVE         <span class="pp">|</span> 6:30 – 9:00 PM      <span class="pp">|</span></span>
+<span id="cb16-60"><a href="#cb16-60"></a><span class="pp">|</span> Night      <span class="pp">|</span> NIGHT       <span class="pp">|</span> 9:00 PM – 1:30 AM   <span class="pp">|</span></span>
+<span id="cb16-61"><a href="#cb16-61"></a><span class="pp">|</span> Owl        <span class="pp">|</span> OWL         <span class="pp">|</span> 1:30 – 4:30 AM      <span class="pp">|</span></span>
+<span id="cb16-62"><a href="#cb16-62"></a></span>
+<span id="cb16-63"><a href="#cb16-63"></a>**The 7-county metro** refers to Hennepin, Ramsey, Dakota, Anoka, Washington, Scott,</span>
+<span id="cb16-64"><a href="#cb16-64"></a>and Carver counties — the standard definition of the Twin Cities metropolitan area</span>
+<span id="cb16-65"><a href="#cb16-65"></a>used by the Metropolitan Council.</span>
+<span id="cb16-66"><a href="#cb16-66"></a></span>
+<span id="cb16-67"><a href="#cb16-67"></a>**ACS (American Community Survey)** is an ongoing U.S. Census Bureau survey that</span>
+<span id="cb16-68"><a href="#cb16-68"></a>provides annual demographic and economic estimates — including median household</span>
+<span id="cb16-69"><a href="#cb16-69"></a>income and racial composition — at the census tract level.</span>
+<span id="cb16-70"><a href="#cb16-70"></a></span>
+<span id="cb16-71"><a href="#cb16-71"></a>**TripCount** is a field in the transit dataset representing the total number of</span>
+<span id="cb16-72"><a href="#cb16-72"></a>scheduled transit trips serving a given road segment across all service periods.</span>
+<span id="cb16-73"><a href="#cb16-73"></a>Higher values indicate more frequent service on that segment.</span>
+<span id="cb16-74"><a href="#cb16-74"></a></span>
+<span id="cb16-75"><a href="#cb16-75"></a>---</span>
+<span id="cb16-76"><a href="#cb16-76"></a></span>
+<span id="cb16-77"><a href="#cb16-77"></a><span class="fu">## Data</span></span>
+<span id="cb16-78"><a href="#cb16-78"></a></span>
+<span id="cb16-79"><a href="#cb16-79"></a><span class="fu">### Data Collection</span></span>
+<span id="cb16-80"><a href="#cb16-80"></a></span>
+<span id="cb16-81"><a href="#cb16-81"></a>We used two datasets in this project.</span>
+<span id="cb16-82"><a href="#cb16-82"></a></span>
+<span id="cb16-83"><a href="#cb16-83"></a>The **Metro Transit Count and Headway Summary** shapefile comes from the Minnesota</span>
+<span id="cb16-84"><a href="#cb16-84"></a>Geospatial Commons, produced by the Metropolitan Council's GIS batch process</span>
+<span id="cb16-85"><a href="#cb16-85"></a>(<span class="in">`SVC-GISBATCH`</span>). The dataset was last updated March 21, 2026. It contains 75,634</span>
+<span id="cb16-86"><a href="#cb16-86"></a>road segment features, each representing a stretch of road served by Metro Transit,</span>
+<span id="cb16-87"><a href="#cb16-87"></a>with trip counts and headway values recorded for each of the seven service periods</span>
+<span id="cb16-88"><a href="#cb16-88"></a>across three day types: weekday (<span class="in">`WK`</span>), Saturday (<span class="in">`SAT`</span>), and Sunday (<span class="in">`SUN`</span>).</span>
+<span id="cb16-89"><a href="#cb16-89"></a>Geometry is stored as multiline strings in the NAD83/UTM Zone 15N projected</span>
+<span id="cb16-90"><a href="#cb16-90"></a>coordinate reference system.</span>
+<span id="cb16-91"><a href="#cb16-91"></a></span>
+<span id="cb16-92"><a href="#cb16-92"></a>The **American Community Survey (2022)** data was pulled via the <span class="in">`tidycensus`</span> R</span>
+<span id="cb16-93"><a href="#cb16-93"></a>package for all Minnesota census tracts, using variable <span class="in">`B19013_001`</span> (median</span>
+<span id="cb16-94"><a href="#cb16-94"></a>household income), with tract polygon geometries included. This data is collected</span>
+<span id="cb16-95"><a href="#cb16-95"></a>continuously by the Census Bureau and represents 5-year estimates centered on 2022.</span>
+<span id="cb16-96"><a href="#cb16-96"></a></span>
+<span id="cb16-97"><a href="#cb16-97"></a><span class="fu">### Data Acquisition</span></span>
+<span id="cb16-98"><a href="#cb16-98"></a></span>
+<span id="cb16-99"><a href="#cb16-99"></a>The transit shapefile was downloaded directly from the Minnesota Geospatial Commons:</span>
+<span id="cb16-100"><a href="#cb16-100"></a></span>
+<span id="cb16-101"><a href="#cb16-101"></a><span class="at">&gt; </span><span class="ot">&lt;https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-transit-count-headway-sum&gt;</span></span>
+<span id="cb16-102"><a href="#cb16-102"></a></span>
+<span id="cb16-103"><a href="#cb16-103"></a>Census tract data was accessed via the Census Bureau API using <span class="in">`tidycensus::get_acs()`</span></span>
+<span id="cb16-104"><a href="#cb16-104"></a>with <span class="in">`geometry = TRUE`</span>, requiring a Census API key.</span>
+<span id="cb16-105"><a href="#cb16-105"></a></span>
+<span id="cb16-106"><a href="#cb16-106"></a><span class="fu">### Data Understanding</span></span>
+<span id="cb16-107"><a href="#cb16-107"></a></span>
+<span id="cb16-108"><a href="#cb16-108"></a>The transit shapefile contains **75,634 features** and **23 attribute fields**, including</span>
+<span id="cb16-109"><a href="#cb16-109"></a>time-of-day trip counts (<span class="in">`EAM_count`</span>, <span class="in">`AMP_count`</span>, etc.), headway values</span>
+<span id="cb16-110"><a href="#cb16-110"></a>(<span class="in">`EAM_hdwy`</span>, <span class="in">`AMP_hdwy`</span>, etc.), a <span class="in">`service_id`</span> field (day type), and road segment</span>
+<span id="cb16-111"><a href="#cb16-111"></a>identifiers. The <span class="in">`TripCount`</span> field aggregates trips across all periods for a given</span>
+<span id="cb16-112"><a href="#cb16-112"></a>segment and day type.</span>
+<span id="cb16-113"><a href="#cb16-113"></a></span>
+<span id="cb16-116"><a href="#cb16-116"></a><span class="in">```{r}</span></span>
+<span id="cb16-117"><a href="#cb16-117"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb16-118"><a href="#cb16-118"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb16-119"><a href="#cb16-119"></a><span class="fu">library</span>(sf)</span>
+<span id="cb16-120"><a href="#cb16-120"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb16-121"><a href="#cb16-121"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb16-122"><a href="#cb16-122"></a><span class="in">```</span></span>
+<span id="cb16-123"><a href="#cb16-123"></a></span>
+<span id="cb16-126"><a href="#cb16-126"></a><span class="in">```{r}</span></span>
+<span id="cb16-127"><a href="#cb16-127"></a>df <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/raw/shp_trans_transit_count_headway_sum/"</span>)</span>
+<span id="cb16-128"><a href="#cb16-128"></a><span class="in">```</span></span>
+<span id="cb16-129"><a href="#cb16-129"></a></span>
+<span id="cb16-132"><a href="#cb16-132"></a><span class="in">```{r}</span></span>
+<span id="cb16-133"><a href="#cb16-133"></a>tracts <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb16-134"><a href="#cb16-134"></a>  <span class="at">geography =</span> <span class="st">"tract"</span>,</span>
+<span id="cb16-135"><a href="#cb16-135"></a>  <span class="at">variables =</span> <span class="st">"B19013_001"</span>, </span>
+<span id="cb16-136"><a href="#cb16-136"></a>  <span class="at">state =</span> <span class="st">"MN"</span>,</span>
+<span id="cb16-137"><a href="#cb16-137"></a>  <span class="at">year =</span> <span class="dv">2022</span>,</span>
+<span id="cb16-138"><a href="#cb16-138"></a>  <span class="at">geometry =</span> <span class="cn">TRUE</span> </span>
+<span id="cb16-139"><a href="#cb16-139"></a>)</span>
+<span id="cb16-140"><a href="#cb16-140"></a><span class="in">```</span></span>
+<span id="cb16-141"><a href="#cb16-141"></a></span>
+<span id="cb16-144"><a href="#cb16-144"></a><span class="in">```{r}</span></span>
+<span id="cb16-145"><a href="#cb16-145"></a>lines <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(df, <span class="fu">st_crs</span>(tracts))</span>
+<span id="cb16-146"><a href="#cb16-146"></a><span class="in">```</span></span>
+<span id="cb16-147"><a href="#cb16-147"></a></span>
+<span id="cb16-150"><a href="#cb16-150"></a><span class="in">```{r}</span></span>
+<span id="cb16-151"><a href="#cb16-151"></a>lines_tracts <span class="ot">&lt;-</span> <span class="fu">st_join</span>(lines, tracts)</span>
+<span id="cb16-152"><a href="#cb16-152"></a><span class="in">```</span></span>
+<span id="cb16-153"><a href="#cb16-153"></a></span>
+<span id="cb16-156"><a href="#cb16-156"></a><span class="in">```{r}</span></span>
+<span id="cb16-157"><a href="#cb16-157"></a><span class="fu">names</span>(lines_tracts)</span>
+<span id="cb16-158"><a href="#cb16-158"></a><span class="in">```</span></span>
+<span id="cb16-159"><a href="#cb16-159"></a></span>
+<span id="cb16-162"><a href="#cb16-162"></a><span class="in">```{r}</span></span>
+<span id="cb16-163"><a href="#cb16-163"></a>tract_summary <span class="ot">&lt;-</span> lines_tracts <span class="sc">%&gt;%</span></span>
+<span id="cb16-164"><a href="#cb16-164"></a>  <span class="fu">group_by</span>(GEOID) <span class="sc">%&gt;%</span></span>
+<span id="cb16-165"><a href="#cb16-165"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-166"><a href="#cb16-166"></a>    <span class="at">total_trips =</span> <span class="fu">sum</span>(TripCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-167"><a href="#cb16-167"></a>    <span class="at">median_income =</span> <span class="fu">first</span>(estimate)</span>
+<span id="cb16-168"><a href="#cb16-168"></a>  )</span>
+<span id="cb16-169"><a href="#cb16-169"></a><span class="in">```</span></span>
+<span id="cb16-170"><a href="#cb16-170"></a></span>
+<span id="cb16-171"><a href="#cb16-171"></a></span>
+<span id="cb16-174"><a href="#cb16-174"></a><span class="in">```{r}</span></span>
+<span id="cb16-175"><a href="#cb16-175"></a>tracts_map <span class="ot">&lt;-</span> tracts <span class="sc">%&gt;%</span></span>
+<span id="cb16-176"><a href="#cb16-176"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb16-177"><a href="#cb16-177"></a>    <span class="fu">st_drop_geometry</span>(tract_summary),</span>
+<span id="cb16-178"><a href="#cb16-178"></a>    <span class="at">by =</span> <span class="st">"GEOID"</span></span>
+<span id="cb16-179"><a href="#cb16-179"></a>  )</span>
+<span id="cb16-180"><a href="#cb16-180"></a></span>
+<span id="cb16-181"><a href="#cb16-181"></a>metro_tracts <span class="ot">&lt;-</span> tracts_map <span class="sc">%&gt;%</span></span>
+<span id="cb16-182"><a href="#cb16-182"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver"</span>, NAME))</span>
+<span id="cb16-183"><a href="#cb16-183"></a><span class="in">```</span></span>
+<span id="cb16-184"><a href="#cb16-184"></a></span>
+<span id="cb16-185"><a href="#cb16-185"></a>Before analysis, several preparation steps were required:</span>
+<span id="cb16-186"><a href="#cb16-186"></a></span>
+<span id="cb16-187"><a href="#cb16-187"></a><span class="ss">- </span>**CRS reprojection:** The transit lines were in NAD83/UTM Zone 15N (EPSG:26915),</span>
+<span id="cb16-188"><a href="#cb16-188"></a>  while the ACS tract geometries used geographic NAD83 (EPSG:4269). We reprojected</span>
+<span id="cb16-189"><a href="#cb16-189"></a>  the transit lines to match the ACS CRS using <span class="in">`st_transform()`</span> before performing</span>
+<span id="cb16-190"><a href="#cb16-190"></a>  any spatial operations.</span>
+<span id="cb16-191"><a href="#cb16-191"></a><span class="ss">- </span>**Spatial join:** We used <span class="in">`st_join()`</span> to match each transit line segment to the</span>
+<span id="cb16-192"><a href="#cb16-192"></a>  census tract polygon it intersects, then summarized total trips and median income</span>
+<span id="cb16-193"><a href="#cb16-193"></a>  per tract via <span class="in">`group_by(GEOID) |&gt; summarise()`</span>.</span>
+<span id="cb16-194"><a href="#cb16-194"></a><span class="ss">- </span>**Metro filter:** We filtered to the 7-county metro area using a <span class="in">`grepl()`</span> match</span>
+<span id="cb16-195"><a href="#cb16-195"></a>  on county names in the tract <span class="in">`NAME`</span> field, yielding **784 census tracts**.</span>
+<span id="cb16-196"><a href="#cb16-196"></a><span class="ss">- </span>**Missing data:** 177 metro tracts had missing median income estimates from the</span>
+<span id="cb16-197"><a href="#cb16-197"></a>  ACS. These tracts were retained in spatial visualizations but excluded from</span>
+<span id="cb16-198"><a href="#cb16-198"></a>  income-based scatter plots and regressions. Missing values tend to occur in</span>
+<span id="cb16-199"><a href="#cb16-199"></a>  group-quarters geographies, parks, and industrial zones.</span>
+<span id="cb16-200"><a href="#cb16-200"></a><span class="ss">- </span>**Skewness:** <span class="in">`TripCount`</span> values were right-skewed (min: 1, median: 31, mean: 49,</span>
+<span id="cb16-201"><a href="#cb16-201"></a>  max: 836), so <span class="in">`log1p()`</span> transformation was applied in choropleth maps and</span>
+<span id="cb16-202"><a href="#cb16-202"></a>  scatterplots to reduce the influence of extreme values.</span>
+<span id="cb16-203"><a href="#cb16-203"></a></span>
+<span id="cb16-204"><a href="#cb16-204"></a>A key quality check confirmed that **0 transit line segments failed to match a</span>
+<span id="cb16-205"><a href="#cb16-205"></a>census tract** — every segment in the dataset fell within a valid geography.</span>
+<span id="cb16-206"><a href="#cb16-206"></a></span>
+<span id="cb16-207"><a href="#cb16-207"></a>---</span>
+<span id="cb16-208"><a href="#cb16-208"></a></span>
+<span id="cb16-209"><a href="#cb16-209"></a><span class="fu">## Data Insights</span></span>
+<span id="cb16-210"><a href="#cb16-210"></a></span>
+<span id="cb16-211"><a href="#cb16-211"></a><span class="fu">### Transit service concentrates in lower-income, high-POC urban tracts</span></span>
+<span id="cb16-212"><a href="#cb16-212"></a></span>
+<span id="cb16-213"><a href="#cb16-213"></a>The side-by-side choropleth maps comparing median household income to</span>
+<span id="cb16-214"><a href="#cb16-214"></a>log-scaled transit trip density reveal a clear spatial inverse: the</span>
+<span id="cb16-215"><a href="#cb16-215"></a>urban cores of Hennepin and Ramsey counties — which have the lowest</span>
+<span id="cb16-216"><a href="#cb16-216"></a>median incomes and highest concentrations of people of color — have by</span>
+<span id="cb16-217"><a href="#cb16-217"></a>far the most transit service. The wealthiest outer-ring counties are</span>
+<span id="cb16-218"><a href="#cb16-218"></a>near-blank on the transit map.</span>
+<span id="cb16-219"><a href="#cb16-219"></a></span>
+<span id="cb16-220"><a href="#cb16-220"></a><span class="in">```{r choropleth-maps}</span></span>
+<span id="cb16-221"><a href="#cb16-221"></a>common_theme <span class="ot">&lt;-</span> <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb16-222"><a href="#cb16-222"></a>  <span class="fu">theme</span>(</span>
+<span id="cb16-223"><a href="#cb16-223"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb16-224"><a href="#cb16-224"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb16-225"><a href="#cb16-225"></a>  )</span>
+<span id="cb16-226"><a href="#cb16-226"></a></span>
+<span id="cb16-227"><a href="#cb16-227"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(metro_tracts) <span class="sc">+</span></span>
+<span id="cb16-228"><a href="#cb16-228"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> median_income), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb16-229"><a href="#cb16-229"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">labels =</span> scales<span class="sc">::</span>dollar, <span class="at">name =</span> <span class="st">"Median Income"</span>) <span class="sc">+</span></span>
+<span id="cb16-230"><a href="#cb16-230"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Median Household Income"</span>) <span class="sc">+</span></span>
+<span id="cb16-231"><a href="#cb16-231"></a>  common_theme</span>
+<span id="cb16-232"><a href="#cb16-232"></a></span>
+<span id="cb16-233"><a href="#cb16-233"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(metro_tracts) <span class="sc">+</span></span>
+<span id="cb16-234"><a href="#cb16-234"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">log1p</span>(total_trips)), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb16-235"><a href="#cb16-235"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"magma"</span>, <span class="at">name =</span> <span class="st">"Transit Trips (log)"</span>) <span class="sc">+</span></span>
+<span id="cb16-236"><a href="#cb16-236"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Transit Usage"</span>) <span class="sc">+</span></span>
+<span id="cb16-237"><a href="#cb16-237"></a>  common_theme</span>
+<span id="cb16-238"><a href="#cb16-238"></a></span>
+<span id="cb16-239"><a href="#cb16-239"></a>p1 <span class="sc">+</span> p2 <span class="sc">+</span></span>
+<span id="cb16-240"><a href="#cb16-240"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb16-241"><a href="#cb16-241"></a>    <span class="at">title =</span> <span class="st">"Income vs Transit Usage Across Census Tracts"</span>,</span>
+<span id="cb16-242"><a href="#cb16-242"></a>    <span class="at">subtitle =</span> <span class="st">"Exploring spatial inequality and transportation patterns"</span></span>
+<span id="cb16-243"><a href="#cb16-243"></a>  )</span>
+<span id="cb16-244"><a href="#cb16-244"></a><span class="in">```</span></span>
+<span id="cb16-245"><a href="#cb16-245"></a></span>
+<span id="cb16-246"><a href="#cb16-246"></a>The county-level bar chart reinforces the pattern. Carver County — the</span>
+<span id="cb16-247"><a href="#cb16-247"></a>wealthiest in the metro — averages just 334 trips per tract, compared to</span>
+<span id="cb16-248"><a href="#cb16-248"></a>over 9,000 in Hennepin. Bar color encodes mean income, making the</span>
+<span id="cb16-249"><a href="#cb16-249"></a>income–service inverse immediately visible.</span>
+<span id="cb16-250"><a href="#cb16-250"></a></span>
+<span id="cb16-251"><a href="#cb16-251"></a><span class="in">```{r county-summary}</span></span>
+<span id="cb16-252"><a href="#cb16-252"></a></span>
+<span id="cb16-253"><a href="#cb16-253"></a><span class="in">```</span></span>
+<span id="cb16-254"><a href="#cb16-254"></a></span>
+<span id="cb16-255"><a href="#cb16-255"></a>This pattern is consistent with how most American cities are structured:</span>
+<span id="cb16-256"><a href="#cb16-256"></a>higher-density, lower-income urban neighborhoods are more</span>
+<span id="cb16-257"><a href="#cb16-257"></a>transit-oriented by design, and investment has historically followed</span>
+<span id="cb16-258"><a href="#cb16-258"></a>those corridors.</span>
+<span id="cb16-259"><a href="#cb16-259"></a></span>
+<span id="cb16-260"><a href="#cb16-260"></a><span class="fu">### "Served" does not mean "well-served"</span></span>
+<span id="cb16-261"><a href="#cb16-261"></a></span>
+<span id="cb16-262"><a href="#cb16-262"></a>The spatial picture is only half the story. The temporal analysis reveals that</span>
+<span id="cb16-263"><a href="#cb16-263"></a>**the network is built around peak-hour commuters**, and service quality degrades</span>
+<span id="cb16-264"><a href="#cb16-264"></a>sharply outside those windows. The chart below shows how headways lengthen</span>
+<span id="cb16-265"><a href="#cb16-265"></a>dramatically as the day moves away from peak commute times.</span>
+<span id="cb16-266"><a href="#cb16-266"></a></span>
+<span id="cb16-267"><a href="#cb16-267"></a><span class="in">```{r headway-by-period}</span></span>
+<span id="cb16-268"><a href="#cb16-268"></a></span>
+<span id="cb16-269"><a href="#cb16-269"></a>headway_long <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb16-270"><a href="#cb16-270"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb16-271"><a href="#cb16-271"></a>  <span class="fu">filter</span>(service_id <span class="sc">==</span> <span class="st">"WK"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-272"><a href="#cb16-272"></a>  <span class="fu">select</span>(<span class="fu">ends_with</span>(<span class="st">"_hdwy"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-273"><a href="#cb16-273"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"period_raw"</span>, <span class="at">values_to =</span> <span class="st">"headway"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-274"><a href="#cb16-274"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(headway), headway <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-275"><a href="#cb16-275"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-276"><a href="#cb16-276"></a>    <span class="at">period =</span> <span class="fu">str_remove</span>(period_raw, <span class="st">"_hdwy"</span>) <span class="sc">%&gt;%</span> <span class="fu">str_to_upper</span>(),</span>
+<span id="cb16-277"><a href="#cb16-277"></a>    <span class="at">period =</span> <span class="fu">factor</span>(period, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"EAM"</span>, <span class="st">"AMP"</span>, <span class="st">"MID"</span>, <span class="st">"PMP"</span>, <span class="st">"EVE"</span>, <span class="st">"NIGHT"</span>, <span class="st">"OWL"</span>))</span>
+<span id="cb16-278"><a href="#cb16-278"></a>  )</span>
+<span id="cb16-279"><a href="#cb16-279"></a></span>
+<span id="cb16-280"><a href="#cb16-280"></a>headway_summary <span class="ot">&lt;-</span> headway_long <span class="sc">%&gt;%</span></span>
+<span id="cb16-281"><a href="#cb16-281"></a>  <span class="fu">group_by</span>(period) <span class="sc">%&gt;%</span></span>
+<span id="cb16-282"><a href="#cb16-282"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-283"><a href="#cb16-283"></a>    <span class="at">median_hdwy =</span> <span class="fu">median</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-284"><a href="#cb16-284"></a>    <span class="at">mean_hdwy   =</span> <span class="fu">mean</span>(headway, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-285"><a href="#cb16-285"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb16-286"><a href="#cb16-286"></a>  )</span>
+<span id="cb16-287"><a href="#cb16-287"></a></span>
+<span id="cb16-288"><a href="#cb16-288"></a><span class="fu">ggplot</span>(headway_summary, <span class="fu">aes</span>(<span class="at">x =</span> period, <span class="at">y =</span> median_hdwy, <span class="at">fill =</span> median_hdwy)) <span class="sc">+</span></span>
+<span id="cb16-289"><a href="#cb16-289"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb16-290"><a href="#cb16-290"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(median_hdwy), <span class="st">" min"</span>)),</span>
+<span id="cb16-291"><a href="#cb16-291"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.4</span>, <span class="at">size =</span> <span class="fl">3.8</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb16-292"><a href="#cb16-292"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"#2ca25f"</span>, <span class="at">high =</span> <span class="st">"#d73027"</span>) <span class="sc">+</span></span>
+<span id="cb16-293"><a href="#cb16-293"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>))) <span class="sc">+</span></span>
+<span id="cb16-294"><a href="#cb16-294"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-295"><a href="#cb16-295"></a>    <span class="at">title =</span> <span class="st">"Median Headway by Service Period (Weekday)"</span>,</span>
+<span id="cb16-296"><a href="#cb16-296"></a>    <span class="at">subtitle =</span> <span class="st">"Higher values = longer waits between buses"</span>,</span>
+<span id="cb16-297"><a href="#cb16-297"></a>    <span class="at">x =</span> <span class="st">"Service Period"</span>, <span class="at">y =</span> <span class="st">"Median Headway (minutes)"</span></span>
+<span id="cb16-298"><a href="#cb16-298"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-299"><a href="#cb16-299"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb16-300"><a href="#cb16-300"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span>
+<span id="cb16-301"><a href="#cb16-301"></a><span class="in">```</span></span>
+<span id="cb16-302"><a href="#cb16-302"></a></span>
+<span id="cb16-303"><a href="#cb16-303"></a>Key takeaways:</span>
+<span id="cb16-304"><a href="#cb16-304"></a></span>
+<span id="cb16-305"><a href="#cb16-305"></a><span class="ss">- </span>Median headways during AM and PM Peak are **~30 minutes** — already lengthy by</span>
+<span id="cb16-306"><a href="#cb16-306"></a>  transit standards.</span>
+<span id="cb16-307"><a href="#cb16-307"></a><span class="ss">- </span>Median night headways (9:00 PM – 1:30 AM) rise to **45 minutes**, with a mean</span>
+<span id="cb16-308"><a href="#cb16-308"></a>  exceeding 90 minutes.</span>
+<span id="cb16-309"><a href="#cb16-309"></a><span class="ss">- </span>Owl service has a median headway of **180 minutes** — one bus every three hours.</span>
+<span id="cb16-310"><a href="#cb16-310"></a><span class="ss">- </span>Only **56.4%** of weekday segments have any night service; just **9.3%** have Owl</span>
+<span id="cb16-311"><a href="#cb16-311"></a>  service, concentrated along a handful of core corridors.</span>
+<span id="cb16-312"><a href="#cb16-312"></a></span>
+<span id="cb16-313"><a href="#cb16-313"></a>Workers who depend on transit for evening or overnight shifts — disproportionately</span>
+<span id="cb16-314"><a href="#cb16-314"></a>lower-wage workers in service, healthcare, and hospitality — face a dramatically</span>
+<span id="cb16-315"><a href="#cb16-315"></a>different system than peak-hour commuters.</span>
+<span id="cb16-316"><a href="#cb16-316"></a></span>
+<span id="cb16-317"><a href="#cb16-317"></a><span class="fu">### Weekend service is smoother but thinner</span></span>
+<span id="cb16-318"><a href="#cb16-318"></a></span>
+<span id="cb16-319"><a href="#cb16-319"></a>Weekday trip volumes (~1.54 million total) substantially exceed Saturday (~1.16M) and</span>
+<span id="cb16-320"><a href="#cb16-320"></a>Sunday (~1.02M). More importantly, **the shape of service differs**: weekday trips</span>
+<span id="cb16-321"><a href="#cb16-321"></a>show a strong dual-peak structure reflecting 9-to-5 commute patterns, while weekend</span>
+<span id="cb16-322"><a href="#cb16-322"></a>service is more evenly distributed across the day. This matters for equity —</span>
+<span id="cb16-323"><a href="#cb16-323"></a>lower-income riders are more likely to work non-standard hours and depend on weekend</span>
+<span id="cb16-324"><a href="#cb16-324"></a>transit, which covers fewer routes with wider headways.</span>
+<span id="cb16-325"><a href="#cb16-325"></a></span>
+<span id="cb16-326"><a href="#cb16-326"></a><span class="in">```{r trips-by-daytype}</span></span>
+<span id="cb16-327"><a href="#cb16-327"></a></span>
+<span id="cb16-328"><a href="#cb16-328"></a>trips_by_day <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb16-329"><a href="#cb16-329"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb16-330"><a href="#cb16-330"></a>  <span class="fu">select</span>(service_id, <span class="fu">starts_with</span>(<span class="st">"EAM_count"</span>), <span class="fu">starts_with</span>(<span class="st">"AMP_count"</span>),</span>
+<span id="cb16-331"><a href="#cb16-331"></a>         <span class="fu">starts_with</span>(<span class="st">"MID_count"</span>), <span class="fu">starts_with</span>(<span class="st">"PMP_count"</span>),</span>
+<span id="cb16-332"><a href="#cb16-332"></a>         <span class="fu">starts_with</span>(<span class="st">"EVE_count"</span>), <span class="fu">starts_with</span>(<span class="st">"NIGHT_count"</span>),</span>
+<span id="cb16-333"><a href="#cb16-333"></a>         <span class="fu">starts_with</span>(<span class="st">"OWL_count"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-334"><a href="#cb16-334"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>service_id, <span class="at">names_to =</span> <span class="st">"period_raw"</span>, <span class="at">values_to =</span> <span class="st">"count"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-335"><a href="#cb16-335"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(count)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-336"><a href="#cb16-336"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-337"><a href="#cb16-337"></a>    <span class="at">period =</span> <span class="fu">str_remove</span>(period_raw, <span class="st">"_count"</span>) <span class="sc">%&gt;%</span> <span class="fu">str_to_upper</span>(),</span>
+<span id="cb16-338"><a href="#cb16-338"></a>    <span class="at">period =</span> <span class="fu">factor</span>(period, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"EAM"</span>, <span class="st">"AMP"</span>, <span class="st">"MID"</span>, <span class="st">"PMP"</span>, <span class="st">"EVE"</span>, <span class="st">"NIGHT"</span>, <span class="st">"OWL"</span>)),</span>
+<span id="cb16-339"><a href="#cb16-339"></a>    <span class="at">day_type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-340"><a href="#cb16-340"></a>      service_id <span class="sc">==</span> <span class="st">"WK"</span>  <span class="sc">~</span> <span class="st">"Weekday"</span>,</span>
+<span id="cb16-341"><a href="#cb16-341"></a>      service_id <span class="sc">==</span> <span class="st">"SAT"</span> <span class="sc">~</span> <span class="st">"Saturday"</span>,</span>
+<span id="cb16-342"><a href="#cb16-342"></a>      service_id <span class="sc">==</span> <span class="st">"SUN"</span> <span class="sc">~</span> <span class="st">"Sunday"</span></span>
+<span id="cb16-343"><a href="#cb16-343"></a>    )</span>
+<span id="cb16-344"><a href="#cb16-344"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-345"><a href="#cb16-345"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(day_type)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-346"><a href="#cb16-346"></a>  <span class="fu">group_by</span>(day_type, period) <span class="sc">%&gt;%</span></span>
+<span id="cb16-347"><a href="#cb16-347"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb16-348"><a href="#cb16-348"></a></span>
+<span id="cb16-349"><a href="#cb16-349"></a><span class="fu">ggplot</span>(trips_by_day, <span class="fu">aes</span>(<span class="at">x =</span> period, <span class="at">y =</span> total <span class="sc">/</span> <span class="fl">1e6</span>, <span class="at">fill =</span> day_type)) <span class="sc">+</span></span>
+<span id="cb16-350"><a href="#cb16-350"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb16-351"><a href="#cb16-351"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb16-352"><a href="#cb16-352"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Weekday"</span> <span class="ot">=</span> <span class="st">"#2c7bb6"</span>, <span class="st">"Saturday"</span> <span class="ot">=</span> <span class="st">"#fdae61"</span>, <span class="st">"Sunday"</span> <span class="ot">=</span> <span class="st">"#d7191c"</span>),</span>
+<span id="cb16-353"><a href="#cb16-353"></a>    <span class="at">name =</span> <span class="st">"Day Type"</span></span>
+<span id="cb16-354"><a href="#cb16-354"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-355"><a href="#cb16-355"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"M"</span>)) <span class="sc">+</span></span>
+<span id="cb16-356"><a href="#cb16-356"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-357"><a href="#cb16-357"></a>    <span class="at">title =</span> <span class="st">"Total Transit Trips by Period and Day Type"</span>,</span>
+<span id="cb16-358"><a href="#cb16-358"></a>    <span class="at">x =</span> <span class="st">"Service Period"</span>, <span class="at">y =</span> <span class="st">"Total Trips (millions)"</span></span>
+<span id="cb16-359"><a href="#cb16-359"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-360"><a href="#cb16-360"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb16-361"><a href="#cb16-361"></a>  <span class="fu">theme</span>(</span>
+<span id="cb16-362"><a href="#cb16-362"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb16-363"><a href="#cb16-363"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb16-364"><a href="#cb16-364"></a>  )</span>
+<span id="cb16-365"><a href="#cb16-365"></a><span class="in">```</span></span>
+<span id="cb16-366"><a href="#cb16-366"></a></span>
+<span id="cb16-367"><a href="#cb16-367"></a><span class="fu">### The income-transit relationship is real but noisy</span></span>
+<span id="cb16-368"><a href="#cb16-368"></a></span>
+<span id="cb16-369"><a href="#cb16-369"></a>Both a linear regression and a LOESS smoother show a weak negative relationship</span>
+<span id="cb16-370"><a href="#cb16-370"></a>between median household income and total trip count: lower-income tracts tend to</span>
+<span id="cb16-371"><a href="#cb16-371"></a>have more service. However, the relationship has wide scatter. Some lower-income</span>
+<span id="cb16-372"><a href="#cb16-372"></a>tracts have very little service; some moderate-income tracts near high-frequency</span>
+<span id="cb16-373"><a href="#cb16-373"></a>corridors have substantial coverage.</span>
+<span id="cb16-374"><a href="#cb16-374"></a></span>
+<span id="cb16-375"><a href="#cb16-375"></a><span class="in">```{r income-trips-scatter}</span></span>
+<span id="cb16-376"><a href="#cb16-376"></a></span>
+<span id="cb16-377"><a href="#cb16-377"></a>metro_tracts <span class="sc">%&gt;%</span></span>
+<span id="cb16-378"><a href="#cb16-378"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb16-379"><a href="#cb16-379"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(median_income), <span class="sc">!</span><span class="fu">is.na</span>(total_trips)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-380"><a href="#cb16-380"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> median_income, <span class="at">y =</span> <span class="fu">log1p</span>(total_trips))) <span class="sc">+</span></span>
+<span id="cb16-381"><a href="#cb16-381"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.35</span>, <span class="at">color =</span> <span class="st">"#4d4d4d"</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb16-382"><a href="#cb16-382"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">color =</span> <span class="st">"#2c7bb6"</span>, <span class="at">fill =</span> <span class="st">"#abd9e9"</span>, <span class="at">linewidth =</span> <span class="fl">1.1</span>) <span class="sc">+</span></span>
+<span id="cb16-383"><a href="#cb16-383"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"#d73027"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb16-384"><a href="#cb16-384"></a>              <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb16-385"><a href="#cb16-385"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-386"><a href="#cb16-386"></a>    <span class="at">title =</span> <span class="st">"Median Income vs. Transit Trips per Census Tract"</span>,</span>
+<span id="cb16-387"><a href="#cb16-387"></a>    <span class="at">subtitle =</span> <span class="st">"Blue = LOESS smoother · Red dashed = linear fit · Each point = one census tract"</span>,</span>
+<span id="cb16-388"><a href="#cb16-388"></a>    <span class="at">x =</span> <span class="st">"Median Household Income"</span>, <span class="at">y =</span> <span class="st">"Transit Trips (log scale)"</span></span>
+<span id="cb16-389"><a href="#cb16-389"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-390"><a href="#cb16-390"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb16-391"><a href="#cb16-391"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span>
+<span id="cb16-392"><a href="#cb16-392"></a><span class="in">```</span></span>
+<span id="cb16-393"><a href="#cb16-393"></a></span>
+<span id="cb16-394"><a href="#cb16-394"></a>This suggests that **density, route history, and corridor geography explain service</span>
+<span id="cb16-395"><a href="#cb16-395"></a>distribution at least as much as income alone.** The network was not explicitly</span>
+<span id="cb16-396"><a href="#cb16-396"></a>designed with income equity as a primary goal, and the spatial alignment with</span>
+<span id="cb16-397"><a href="#cb16-397"></a>lower-income tracts may be largely incidental to land-use patterns.</span>
+<span id="cb16-398"><a href="#cb16-398"></a></span>
+<span id="cb16-399"><a href="#cb16-399"></a><span class="fu">### A surprising result worth investigating</span></span>
+<span id="cb16-400"><a href="#cb16-400"></a></span>
+<span id="cb16-401"><a href="#cb16-401"></a>The scatter plot of total trips vs. percent people of color shows only a weak</span>
+<span id="cb16-402"><a href="#cb16-402"></a>positive relationship — weaker than the visual map overlay would suggest. This</span>
+<span id="cb16-403"><a href="#cb16-403"></a>disconnect is likely a methodological artifact: our spatial join assigns the full</span>
+<span id="cb16-404"><a href="#cb16-404"></a>trip count of any line segment to the single tract it intersects, which can inflate</span>
+<span id="cb16-405"><a href="#cb16-405"></a>counts in tracts that are physically large or positioned at route intersections. This</span>
+<span id="cb16-406"><a href="#cb16-406"></a>is one of the more important limitations to address in future work.</span>
+<span id="cb16-407"><a href="#cb16-407"></a></span>
+<span id="cb16-408"><a href="#cb16-408"></a>---</span>
+<span id="cb16-409"><a href="#cb16-409"></a></span>
+<span id="cb16-410"><a href="#cb16-410"></a><span class="fu">## Conclusions</span></span>
+<span id="cb16-411"><a href="#cb16-411"></a></span>
+<span id="cb16-412"><a href="#cb16-412"></a>The data tells a story that is **partially encouraging and partially concerning**.</span>
+<span id="cb16-413"><a href="#cb16-413"></a></span>
+<span id="cb16-414"><a href="#cb16-414"></a>At the broadest level, transit service is concentrated where lower-income communities</span>
+<span id="cb16-415"><a href="#cb16-415"></a>and communities of color live — the network is spatially aligned with need in</span>
+<span id="cb16-416"><a href="#cb16-416"></a>relative terms. The urban cores of Minneapolis and Saint Paul are well-covered, and</span>
+<span id="cb16-417"><a href="#cb16-417"></a>the county-level gradient in service volume tracks (inversely) with income.</span>
+<span id="cb16-418"><a href="#cb16-418"></a></span>
+<span id="cb16-419"><a href="#cb16-419"></a>But spatial coverage is only half of transit equity. When we examine *when* service</span>
+<span id="cb16-420"><a href="#cb16-420"></a>runs and *how often*, a different picture emerges. The system is structured for</span>
+<span id="cb16-421"><a href="#cb16-421"></a>peak-hour, 9-to-5 commuters. Riders who need transit most — lower-wage workers,</span>
+<span id="cb16-422"><a href="#cb16-422"></a>people without cars, those working evenings and overnight — face headways that make</span>
+<span id="cb16-423"><a href="#cb16-423"></a>transit impractical for daily life. A 90-minute mean night headway is not a system</span>
+<span id="cb16-424"><a href="#cb16-424"></a>that functions as reliable transportation; it is a system that merely tolerates</span>
+<span id="cb16-425"><a href="#cb16-425"></a>being used outside of convenient hours.</span>
+<span id="cb16-426"><a href="#cb16-426"></a></span>
+<span id="cb16-427"><a href="#cb16-427"></a>The answer to our guiding question — *does Twin Cities transit adequately serve</span>
+<span id="cb16-428"><a href="#cb16-428"></a>marginalized communities?* — is: **geographically, yes, to a degree; temporally,</span>
+<span id="cb16-429"><a href="#cb16-429"></a>much less so.** The gap between where routes exist and when those routes actually</span>
+<span id="cb16-430"><a href="#cb16-430"></a>run is where equity is lost.</span>
+<span id="cb16-431"><a href="#cb16-431"></a></span>
+<span id="cb16-432"><a href="#cb16-432"></a>---</span>
+<span id="cb16-433"><a href="#cb16-433"></a></span>
+<span id="cb16-434"><a href="#cb16-434"></a><span class="fu">## Limitations and Future Work</span></span>
+<span id="cb16-435"><a href="#cb16-435"></a></span>
+<span id="cb16-436"><a href="#cb16-436"></a>Several limitations of this analysis are worth naming directly.</span>
+<span id="cb16-437"><a href="#cb16-437"></a></span>
+<span id="cb16-438"><a href="#cb16-438"></a>**Spatial join methodology.** Our <span class="in">`st_join()`</span> assigns the full trip count of each</span>
+<span id="cb16-439"><a href="#cb16-439"></a>line segment to whichever tract polygon it intersects. Segments that cross tract</span>
+<span id="cb16-440"><a href="#cb16-440"></a>boundaries are counted in only one tract, which can artificially inflate or deflate</span>
+<span id="cb16-441"><a href="#cb16-441"></a>per-tract totals — particularly for large or irregularly shaped tracts near</span>
+<span id="cb16-442"><a href="#cb16-442"></a>corridors. A more rigorous approach would use <span class="in">`st_intersection()`</span> to clip segments</span>
+<span id="cb16-443"><a href="#cb16-443"></a>to tract boundaries and weight trip counts proportionally by the share of segment</span>
+<span id="cb16-444"><a href="#cb16-444"></a>length within each tract.</span>
+<span id="cb16-445"><a href="#cb16-445"></a></span>
+<span id="cb16-446"><a href="#cb16-446"></a>**Missing income data.** 177 metro tracts (~22%) have missing ACS median income</span>
+<span id="cb16-447"><a href="#cb16-447"></a>estimates and were excluded from regression analyses. These missing values are not</span>
+<span id="cb16-448"><a href="#cb16-448"></a>random — they tend to occur in group-quarters geographies and institutional areas —</span>
+<span id="cb16-449"><a href="#cb16-449"></a>which may introduce systematic bias.</span>
+<span id="cb16-450"><a href="#cb16-450"></a></span>
+<span id="cb16-451"><a href="#cb16-451"></a>**Cross-sectional snapshot.** The dataset represents a single point in time (March</span>
+<span id="cb16-452"><a href="#cb16-452"></a>2026). We cannot draw conclusions about trends, or whether recent service changes</span>
+<span id="cb16-453"><a href="#cb16-453"></a>have disproportionately affected certain communities.</span>
+<span id="cb16-454"><a href="#cb16-454"></a></span>
+<span id="cb16-455"><a href="#cb16-455"></a>**Service supply vs. ridership demand.** Our analysis measures service supply</span>
+<span id="cb16-456"><a href="#cb16-456"></a>(scheduled trips per segment) rather than actual ridership. High supply in a tract</span>
+<span id="cb16-457"><a href="#cb16-457"></a>does not necessarily mean high ridership, and vice versa. Incorporating actual</span>
+<span id="cb16-458"><a href="#cb16-458"></a>boarding data from Metro Transit's ridership records would provide a more complete</span>
+<span id="cb16-459"><a href="#cb16-459"></a>picture.</span>
+<span id="cb16-460"><a href="#cb16-460"></a></span>
+<span id="cb16-461"><a href="#cb16-461"></a>**Race/ethnicity analysis is incomplete.** Racial demographics appeared in the main</span>
+<span id="cb16-462"><a href="#cb16-462"></a>project summary but were not fully integrated into the individual EDA analyses. A</span>
+<span id="cb16-463"><a href="#cb16-463"></a>rigorous equity analysis would incorporate ACS race variables (e.g., <span class="in">`B03002`</span>) and</span>
+<span id="cb16-464"><a href="#cb16-464"></a>conduct multivariate analysis controlling for density, income, and racial composition</span>
+<span id="cb16-465"><a href="#cb16-465"></a>simultaneously.</span>
+<span id="cb16-466"><a href="#cb16-466"></a></span>
+<span id="cb16-467"><a href="#cb16-467"></a>**Future directions** could include: accessibility metrics measuring how many jobs</span>
+<span id="cb16-468"><a href="#cb16-468"></a>or essential services can be reached within 30 minutes by transit from each tract;</span>
+<span id="cb16-469"><a href="#cb16-469"></a>a longitudinal analysis of service changes; disaggregation of headway equity by</span>
+<span id="cb16-470"><a href="#cb16-470"></a>income quintile; and comparison with peer cities to contextualize the Twin Cities'</span>
+<span id="cb16-471"><a href="#cb16-471"></a>equity performance.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
