@@ -1,35 +1,16 @@
 ---
 title: "Exploring Equity in Twin Cities: A Spatial Analysis of Ridership and Income"
-authors:
-  - name: Hadley W
-  - name: Rishika K
-  - name: Laurice J
-date: today
-format: html
-execute:
-  echo: false
-  warning: false
-  message: false
 ---
 
 ## Motivation
 
-Public transit is one of the most direct levers cities have for expanding economic
-opportunity. It determines whether someone can reach work, school, a doctor, or a
-grocery store without a car. In a car-dependent metro like the Twin Cities, who has
-access to frequent, reliable transit matters enormously.
+Public transit is one of the most direct ways cities can expand economic opportunity. It determines whether someone can reach work, school, a doctor, or a grocery store without a car. In a car-dependent metro like the Twin Cities, who has access to frequent, reliable transit matters.
 
-Our interest came from wanting to test a fundamental assumption: does Metro Transit
-actually serve the people who need it most? The Twin Cities is often cited as one of
-the most economically segregated metros in the country, and transit equity is an
-active policy debate. We had the spatial data to investigate it directly, which led
-us to the central question: does the transit network follow need, or does it follow
+Our motivation for this project came from wanting to test a assumption: does Metro Transit
+actually serve the people who need it most? The Twin Cities is often considered one of the most economically segregated metros in the country, and transit equity is an important policy debate. We had spatial data to investigate the issue directly, which led us to the central question: does the transit network follow need, or does it follow
 something else?
 
-This project matters because transit access is not just a convenience — it is a
-mechanism for economic mobility. Understanding where service is strong, where it
-falls short, and who bears the burden of those gaps is essential for advocates,
-planners, and policymakers working toward a more equitable region.
+This project matters because transit access is a mechanism for economic mobility. Understanding where service is strong, where itfalls short, and who bears the burden of those gaps is essential for advocates, planners, and policymakers working toward a more equitable region.
 
 ---
 
@@ -42,7 +23,7 @@ to a thread of our analysis:
 
 1. Is there a relationship between neighborhood income and transit service volume?
 2. Do communities of color have greater or lesser access to transit routes?
-3. How does service quality — measured by headways and time-of-day coverage — vary
+3. How does service quality (measured by headways and time-of-day coverage) vary
    across the network, and what does that mean for riders who depend on off-peak
    service?
 
@@ -130,6 +111,61 @@ time-of-day trip counts (`EAM_count`, `AMP_count`, etc.), headway values
 identifiers. The `TripCount` field aggregates trips across all periods for a given
 segment and day type.
 
+```{r}
+library(tidyverse)
+library(dplyr)
+library(sf)
+library(tidycensus)
+library(patchwork)
+```
+
+```{r}
+df <- st_read("data/raw/shp_trans_transit_count_headway_sum/")
+```
+
+```{r}
+tracts <- get_acs(
+  geography = "tract",
+  variables = "B19013_001", 
+  state = "MN",
+  year = 2022,
+  geometry = TRUE 
+)
+```
+
+```{r}
+lines <- st_transform(df, st_crs(tracts))
+```
+
+```{r}
+lines_tracts <- st_join(lines, tracts)
+```
+
+```{r}
+names(lines_tracts)
+```
+
+```{r}
+tract_summary <- lines_tracts %>%
+  group_by(GEOID) %>%
+  summarise(
+    total_trips = sum(TripCount, na.rm = TRUE),
+    median_income = first(estimate)
+  )
+```
+
+
+```{r}
+tracts_map <- tracts %>%
+  left_join(
+    st_drop_geometry(tract_summary),
+    by = "GEOID"
+  )
+
+metro_tracts <- tracts_map %>%
+  filter(grepl("Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver", NAME))
+```
+
 Before analysis, several preparation steps were required:
 
 - **CRS reprojection:** The transit lines were in NAD83/UTM Zone 15N (EPSG:26915),
@@ -158,72 +194,191 @@ census tract** — every segment in the dataset fell within a valid geography.
 
 ### Transit service concentrates in lower-income, high-POC urban tracts
 
-The side-by-side choropleth maps comparing median household income to log-scaled
-transit trip density reveal a clear spatial inverse: the urban cores of Hennepin and
-Ramsey counties — which have the lowest median incomes and highest concentrations of
-people of color — have by far the most transit service. The county-level summary
-reinforces this pattern:
+The side-by-side choropleth maps comparing median household income to
+log-scaled transit trip density reveal a clear spatial inverse: the
+urban cores of Hennepin and Ramsey counties — which have the lowest
+median incomes and highest concentrations of people of color — have by
+far the most transit service. The wealthiest outer-ring counties are
+near-blank on the transit map.
 
-| County     | Mean Trips/Tract | Mean Median Income | Tracts |
-|------------|-----------------|-------------------|--------|
-| Hennepin   | 9,017           | \$94,164          | 329    |
-| Ramsey     | 8,724           | \$80,077          | 143    |
-| Dakota     | 2,796           | \$103,268         | 106    |
-| Anoka      | 2,262           | \$81,769          | 90     |
-| Washington | 2,244           | \$100,478         | 59     |
-| Scott      | 1,218           | \$112,866         | 32     |
-| Carver     | 334             | \$109,313         | 25     |
+```{r choropleth-maps}
+common_theme <- theme_void() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
 
-Carver County — the wealthiest in the metro — averages just 334 trips per tract,
-compared to over 9,000 in Hennepin. The map of transit routes overlaid on a
-racial demographics choropleth shows the same pattern: the urban core with the
-highest density of people of color is also where the network is densest.
+p1 <- ggplot(metro_tracts) +
+  geom_sf(aes(fill = median_income), color = "white", size = 0.1) +
+  scale_fill_viridis_c(labels = scales::dollar, name = "Median Income") +
+  labs(title = "Median Household Income") +
+  common_theme
 
-This is consistent with how most American cities are structured: higher-density,
-lower-income urban neighborhoods are more transit-oriented by design, and transit
-investment has historically followed those corridors.
+p2 <- ggplot(metro_tracts) +
+  geom_sf(aes(fill = log1p(total_trips)), color = "white", size = 0.1) +
+  scale_fill_viridis_c(option = "magma", name = "Transit Trips (log)") +
+  labs(title = "Transit Usage") +
+  common_theme
+
+p1 + p2 +
+  plot_annotation(
+    title = "Income vs Transit Usage Across Census Tracts",
+    subtitle = "Exploring spatial inequality and transportation patterns"
+  )
+```
+
+The county-level bar chart reinforces the pattern. Carver County — the
+wealthiest in the metro — averages just 334 trips per tract, compared to
+over 9,000 in Hennepin. Bar color encodes mean income, making the
+income–service inverse immediately visible.
+
+```{r county-summary}
+
+```
+
+This pattern is consistent with how most American cities are structured:
+higher-density, lower-income urban neighborhoods are more
+transit-oriented by design, and investment has historically followed
+those corridors.
 
 ### "Served" does not mean "well-served"
 
-The temporal analysis complicates the spatial picture in an important way. Laurice's
-EDA reveals that **the network is built around peak-hour commuters**, and service
-quality degrades sharply outside those windows:
+The spatial picture is only half the story. The temporal analysis reveals that
+**the network is built around peak-hour commuters**, and service quality degrades
+sharply outside those windows. The chart below shows how headways lengthen
+dramatically as the day moves away from peak commute times.
 
-- Median headways during AM and PM Peak hours are **30 minutes** — already lengthy
-  by transit standards.
-- Median night headways (9:00 PM – 1:30 AM) rise to **45 minutes**, with a mean of
-  over 90 minutes.
-- Owl service (1:30 – 4:30 AM) has a median headway of **180 minutes** — one bus
-  every three hours.
-- Only **56.4%** of weekday road segments have any night service at all.
-- Just **9.3%** of segments have Owl service, concentrated along a handful of core
-  corridors.
+```{r headway-by-period}
+
+headway_long <- df %>%
+  st_drop_geometry() %>%
+  filter(service_id == "WK") %>%
+  select(ends_with("_hdwy")) %>%
+  pivot_longer(everything(), names_to = "period_raw", values_to = "headway") %>%
+  filter(!is.na(headway), headway > 0) %>%
+  mutate(
+    period = str_remove(period_raw, "_hdwy") %>% str_to_upper(),
+    period = factor(period, levels = c("EAM", "AMP", "MID", "PMP", "EVE", "NIGHT", "OWL"))
+  )
+
+headway_summary <- headway_long %>%
+  group_by(period) %>%
+  summarise(
+    median_hdwy = median(headway, na.rm = TRUE),
+    mean_hdwy   = mean(headway, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+ggplot(headway_summary, aes(x = period, y = median_hdwy, fill = median_hdwy)) +
+  geom_col(width = 0.7, show.legend = FALSE) +
+  geom_text(aes(label = paste0(round(median_hdwy), " min")),
+            vjust = -0.4, size = 3.8, fontface = "bold") +
+  scale_fill_gradient(low = "#2ca25f", high = "#d73027") +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(
+    title = "Median Headway by Service Period (Weekday)",
+    subtitle = "Higher values = longer waits between buses",
+    x = "Service Period", y = "Median Headway (minutes)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+Key takeaways:
+
+- Median headways during AM and PM Peak are **~30 minutes** — already lengthy by
+  transit standards.
+- Median night headways (9:00 PM – 1:30 AM) rise to **45 minutes**, with a mean
+  exceeding 90 minutes.
+- Owl service has a median headway of **180 minutes** — one bus every three hours.
+- Only **56.4%** of weekday segments have any night service; just **9.3%** have Owl
+  service, concentrated along a handful of core corridors.
 
 Workers who depend on transit for evening or overnight shifts — disproportionately
-lower-wage workers in service, healthcare, and hospitality industries — face a
-dramatically different transit system than peak-hour commuters.
+lower-wage workers in service, healthcare, and hospitality — face a dramatically
+different system than peak-hour commuters.
 
 ### Weekend service is smoother but thinner
 
-Weekday trip volumes (~1.54 million total across all segments) substantially exceed
-Saturday (~1.16 million) and Sunday (~1.02 million). More importantly, **the shape
-of service differs**: weekday trips show a strong dual-peak structure reflecting
-9-to-5 commute patterns, while weekend trips are more evenly distributed across
-the day. This structural difference matters for equity — lower-income riders are
-more likely to work non-standard hours and rely on weekend transit, which covers
-fewer routes with wider headways.
+Weekday trip volumes (~1.54 million total) substantially exceed Saturday (~1.16M) and
+Sunday (~1.02M). More importantly, **the shape of service differs**: weekday trips
+show a strong dual-peak structure reflecting 9-to-5 commute patterns, while weekend
+service is more evenly distributed across the day. This matters for equity —
+lower-income riders are more likely to work non-standard hours and depend on weekend
+transit, which covers fewer routes with wider headways.
+
+```{r trips-by-daytype}
+
+trips_by_day <- df %>%
+  st_drop_geometry() %>%
+  select(service_id, starts_with("EAM_count"), starts_with("AMP_count"),
+         starts_with("MID_count"), starts_with("PMP_count"),
+         starts_with("EVE_count"), starts_with("NIGHT_count"),
+         starts_with("OWL_count")) %>%
+  pivot_longer(-service_id, names_to = "period_raw", values_to = "count") %>%
+  filter(!is.na(count)) %>%
+  mutate(
+    period = str_remove(period_raw, "_count") %>% str_to_upper(),
+    period = factor(period, levels = c("EAM", "AMP", "MID", "PMP", "EVE", "NIGHT", "OWL")),
+    day_type = case_when(
+      service_id == "WK"  ~ "Weekday",
+      service_id == "SAT" ~ "Saturday",
+      service_id == "SUN" ~ "Sunday"
+    )
+  ) %>%
+  filter(!is.na(day_type)) %>%
+  group_by(day_type, period) %>%
+  summarise(total = sum(count, na.rm = TRUE), .groups = "drop")
+
+ggplot(trips_by_day, aes(x = period, y = total / 1e6, fill = day_type)) +
+  geom_col(position = "dodge", width = 0.7) +
+  scale_fill_manual(
+    values = c("Weekday" = "#2c7bb6", "Saturday" = "#fdae61", "Sunday" = "#d7191c"),
+    name = "Day Type"
+  ) +
+  scale_y_continuous(labels = function(x) paste0(x, "M")) +
+  labs(
+    title = "Total Transit Trips by Period and Day Type",
+    x = "Service Period", y = "Total Trips (millions)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "bottom"
+  )
+```
 
 ### The income-transit relationship is real but noisy
 
-Both the linear regression (Rishika's EDA) and the LOESS smoother (Hadley's EDA)
-show a weak negative relationship between median household income and total trip
-count: lower-income tracts do tend to have more service. However, the relationship
-has substantial scatter. Some lower-income tracts have very little service; some
-moderate-income tracts near high-frequency corridors have considerable coverage.
+Both a linear regression and a LOESS smoother show a weak negative relationship
+between median household income and total trip count: lower-income tracts tend to
+have more service. However, the relationship has wide scatter. Some lower-income
+tracts have very little service; some moderate-income tracts near high-frequency
+corridors have substantial coverage.
+
+```{r income-trips-scatter}
+
+metro_tracts %>%
+  st_drop_geometry() %>%
+  filter(!is.na(median_income), !is.na(total_trips)) %>%
+  ggplot(aes(x = median_income, y = log1p(total_trips))) +
+  geom_point(alpha = 0.35, color = "#4d4d4d", size = 1.5) +
+  geom_smooth(method = "loess", color = "#2c7bb6", fill = "#abd9e9", linewidth = 1.1) +
+  geom_smooth(method = "lm", color = "#d73027", linetype = "dashed", se = FALSE,
+              linewidth = 0.8) +
+  labs(
+    title = "Median Income vs. Transit Trips per Census Tract",
+    subtitle = "Blue = LOESS smoother · Red dashed = linear fit · Each point = one census tract",
+    x = "Median Household Income", y = "Transit Trips (log scale)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(plot.title = element_text(face = "bold"))
+```
+
 This suggests that **density, route history, and corridor geography explain service
-distribution at least as much as income alone** — the network was not designed with
-income equity as a primary goal, and the spatial alignment with lower-income tracts
-may be largely incidental.
+distribution at least as much as income alone.** The network was not explicitly
+designed with income equity as a primary goal, and the spatial alignment with
+lower-income tracts may be largely incidental to land-use patterns.
 
 ### A surprising result worth investigating
 
