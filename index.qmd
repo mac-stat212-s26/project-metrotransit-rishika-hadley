@@ -67,7 +67,7 @@ Our motivation for this project came from wanting to test a assumption: does Met
 actually serve the people who need it most? The Twin Cities is often considered one of the most economically segregated metros in the country, and transit equity is an important policy debate. We had spatial data to investigate the issue directly, which led us to the central question: does the transit network follow need, or does it follow
 something else?
 
-This project matters because transit access is a mechanism for economic mobility. Understanding where service is strong, where itfalls short, and who bears the burden of those gaps is essential for advocates, planners, and policymakers working toward a more equitable region.
+This project matters because transit access is a mechanism for economic mobility. Understanding where service is strong, where it falls short, and who bears the burden of those gaps is essential for advocates, planners, and policymakers working toward a more equitable region.
 
 ---
 
