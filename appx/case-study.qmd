@@ -2,7 +2,7 @@
 title: "Case Study"
 ---
 
-https://fivethirtyeight.com/features/uber-is-taking-millions-of-manhattan-rides-away-from-taxis/
+<https://fivethirtyeight.com/features/uber-is-taking-millions-of-manhattan-rides-away-from-taxis/>
 
 The story uses a hook via policy conflict
 - 
