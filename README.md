@@ -6,8 +6,7 @@ examines whether transit service volume and quality are equitably distributed ac
 census tracts, with a focus on the relationship between neighborhood income, race,
 and access to frequent transit.
 
-The final deliverable is a **knitted HTML or PDF report** produced from an R Markdown
-/ Quarto source file.
+**Published website:** https://mac-stat212-s26.github.io/project-metrotransit-rishika-hadley/
 
 ---
 
@@ -22,6 +21,7 @@ Older versions may work but are not guaranteed.
 | R | 4.5.2 (2025-10-31) | https://cran.rstudio.com/ |
 | RStudio | 2024.12.1 Build 563 | https://posit.co/download/rstudio-desktop/ |
 | GitHub Desktop | Latest | https://desktop.github.com/ |
+| Quarto | Bundled with RStudio 2024.12+ | — |
 
 > **macOS note:** Git is bundled with Xcode Command Line Tools. Open Terminal,
 > run `git --version`, and follow the prompt to install if needed.
@@ -34,7 +34,7 @@ Older versions may work but are not guaranteed.
 ## R Package Dependencies
 
 The following R packages are required. Install them from the RStudio **Packages**
-pane → **Install**, or run this in the console:
+pane → **Install**, or run this in the R console:
 
 ```r
 install.packages(c("tidyverse", "dplyr", "sf", "tidycensus",
@@ -56,8 +56,8 @@ tidycensus::census_api_key("YOUR_KEY_HERE", install = TRUE)
 
 - Open the GitHub Classroom assignment link and accept it.
 - Click the **Code** dropdown → **Open with GitHub Desktop**.
-- Choose a local path that is **not** inside a cloud-synced folder (e.g., not inside
-  iCloud Drive or Google Drive).
+- Choose a local path that is **not** inside a cloud-synced folder (e.g., not
+  inside iCloud Drive or Google Drive).
 - Click **Clone** → select **For my own purposes** → click **Continue**.
 
 ### 2. Open the project in RStudio
@@ -93,50 +93,57 @@ root (create the folders if they don't exist):
 data/raw/shp_trans_transit_count_headway_sum/
 ```
 
-The shapefile can be downloaded from the Minnesota Geospatial Commons:
+Download the shapefile from the Minnesota Geospatial Commons:
 <https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-transit-count-headway-sum>
 
-### 6. Render the report
+### 6. Render the site locally
 
-Open `index.qmd` (or `index.Rmd`) in RStudio and click the **Knit** button at the
-top of the editor. Choose **Knit to HTML** or **Knit to PDF** from the dropdown.
+In RStudio, open the **Build** pane → click **Render Book**. A local preview of
+the website will open in your browser.
 
-Alternatively, run from the R console:
+### 7. Publish to GitHub Pages
 
-```r
-# HTML
-rmarkdown::render("index.qmd", output_format = "html_document")
+In RStudio, open the **Terminal** (Tools → Terminal → New Terminal) and run:
 
-# PDF (requires a LaTeX installation — see note below)
-rmarkdown::render("index.qmd", output_format = "pdf_document")
+```bash
+quarto publish gh-pages --no-browser
 ```
 
-> **PDF note:** Rendering to PDF requires a LaTeX distribution. The easiest option
-> is to install the `tinytex` R package:
-> ```r
-> install.packages("tinytex")
-> tinytex::install_tinytex()
-> ```
+Type `Yes` when prompted. If a **File Deleted** dialog appears, click **Yes**. When
+the process finishes, the published URL will be printed in the terminal.
+
+> **Authentication note:** If prompted for GitHub credentials, your GitHub password
+> will not work — you need a personal access token (PAT). Generate one at
+> <https://github.com/settings/tokens/new>: give it a name, set an expiration date,
+> check the **repo** scope, and click **Generate token**. Paste the token when
+> RStudio prompts for your password (it will not display after pasting — this is
+> expected).
 
 ---
 
 ## Expected Output
 
-After knitting, a rendered report file will appear in the project root:
+After publishing, the site is live at:
 
-- **`index.html`** — opens directly in any web browser; contains all prose,
-  folded code chunks, choropleth maps, and charts rendered inline.
-- **`index.pdf`** — a print-ready version of the same report.
+> https://mac-stat212-s26.github.io/project-metrotransit-rishika-hadley/
 
-The report is organized into the following sections:
+The website has the following structure:
 
-1. Motivation
-2. Research Question
-3. Background
-4. Data (collection, acquisition, and understanding)
-5. Data Insights (choropleth maps, headway charts, scatter plots)
-6. Conclusions
-7. Limitations and Future Work
+| Page | Description |
+|---|---|
+| **Main report** (`index.html`) | Full written analysis with folded code chunks, choropleth maps, headway charts, and scatter plots |
+| **Hadley W EDA** | Individual exploratory analysis — income vs. transit scatter plots and LOESS regression |
+| **Rishika Kundu EDA** | Individual exploratory analysis — linear regression of income and service volume |
+| **Laurice J. EDA** | Individual exploratory analysis — temporal patterns across service periods and day types |
+| **Project Proposal** | Original project proposal (appendix) |
+| **Case Study** | Supporting case study (appendix) |
+
+The main report is organized into: Motivation → Research Question → Background →
+Data → Data Insights → Conclusions → Limitations and Future Work.
+
+All code chunks are **folded by default** — readers can expand them via the
+"Show code" toggle. A floating table of contents appears on the right side of
+each page.
 
 ---
 
@@ -146,12 +153,22 @@ The report is organized into the following sections:
 .
 ├── data/
 │   └── raw/
-│       └── shp_trans_transit_count_headway_sum/   # Transit shapefile (not tracked by Git)
-├── index.qmd          # Main report source file
-├── eda/               # Individual EDA notebooks
-├── _quarto.yml        # Quarto configuration (if applicable)
-└── *.Rproj            # RStudio project file
+│       └── shp_trans_transit_count_headway_sum/  # Transit shapefile (not tracked by Git)
+├── eda/
+│   ├── eda-hadley.qmd
+│   ├── eda-member2.qmd
+│   └── eda-Laurice.qmd
+├── appx/
+│   ├── proposal.qmd
+│   └── case-study.qmd
+├── wa/                    # Workspace files
+├── index.qmd              # Main report
+├── _quarto.yml            # Quarto site configuration
+└── *.Rproj                # RStudio project file
 ```
+
+> The shapefile in `data/raw/` is not tracked by Git due to file size. See
+> **Step 5** above for download instructions.
 
 ---
 
