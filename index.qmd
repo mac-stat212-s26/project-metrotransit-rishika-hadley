@@ -5,7 +5,7 @@ title: "Exploring Equity in Twin Cities: A Spatial Analysis of Ridership and Inc
 ```{r setup}
 #| label: setup
 #| include: false
-
+.libPaths()
 library(tidyverse)
 library(dplyr)
 library(sf)
@@ -25,7 +25,15 @@ df <- st_read("data/raw/shp_trans_transit_count_headway_sum/", quiet = TRUE)
 # ACS median household income for MN tracts
 tracts <- get_acs(
   geography = "tract",
-  variables = "B19013_001",
+  variables = c(
+    median_income = "B19013_001",   
+    total_pop     = "B02001_001", 
+    white         = "B02001_002", 
+    black         = "B02001_003",   
+    native        = "B02001_004",  
+    asian         = "B02001_005",  
+    hispanic      = "B03003_003"   
+  ),
   state = "MN",
   year = 2022,
   geometry = TRUE
@@ -206,10 +214,39 @@ ggplot(lines_tracts, aes(x = TripCount)) +
 
 ## Data Insights
 
-### Transit service concentrates in lower-income, high-POC urban tracts
+### Transit service concentrates in lower-income tracts
 
-The side-by-side choropleth maps comparing median household income to
-log-scaled transit trip density reveal a clear spatial inverse: the
+Our analysis began with the map below, which overlays Metro Transit routes on a choropleth of median household income across the 7-county metro. Transit lines cluster densely in the urban cores of Minneapolis and Saint Paul, precisely where incomes are lowest. Moving outward into wealthier suburbs, the map darkens in income and empties of transit lines almost entirely.
+
+This inverse relationship raises an important distinction. The network is reaching lower-income communities geographically, but presence alone does not tell us whether service is frequent enough, or available at the right hours, to function as reliable transportation. 
+
+```{r}
+ggplot() +
+  geom_sf(data = metro_tracts, aes(fill = estimate), color = "white", size = 0.1) +
+  scale_fill_gradient(
+    name = "Median Income ($)",
+    low = "#d4f1d4",
+    high = "#1a5c1a",
+    labels = scales::dollar_format()
+  ) +
+  geom_sf(data = lines, size = 0.2, alpha = 0.6) +
+  coord_sf(
+    xlim = c(-94.0, -92.7),
+    ylim = c(44.6, 45.3)
+  ) +
+  labs(
+    title = "Transit Routes vs. Median Household Income"
+  ) +
+  theme_void() +
+  theme(
+    plot.title = element_text(face = "bold", size = 15, hjust = 0.5)
+  )
+```
+
+
+
+
+The pattern can be further observed in the side-by-side choropleth maps comparing median household income to log-scaled transit trip density which reveal a clear spatial inverse: the
 urban cores of Hennepin and Ramsey counties — which have the lowest
 median incomes and highest concentrations of people of color — have by
 far the most transit service. The wealthiest outer-ring counties are
@@ -282,6 +319,58 @@ This pattern is consistent with how most American cities are structured:
 higher-density, lower-income urban neighborhoods are more
 transit-oriented by design, and investment has historically followed
 those corridors.
+
+### Transit service also concentrates in high-POC urban tracts
+
+A parallel pattern emerges when race is substituted for income. The map below overlays Metro Transit routes on the share of people of color by census tract. The densest transit corridors run directly through the tracts with the highest concentrations of people of color, the dark purple core spanning Minneapolis and Saint Paul. Suburban tracts, overwhelmingly lighter in shade, receive comparatively little service.
+
+What the map cannot tell us, however, is whether the network was designed with these communities in mind, or whether the alignment is largely a byproduct of density and historical land use. That distinction matters for policy: correlation is not the same as intentional investment.
+
+```{r}
+metro_tracts_wide <- metro_tracts %>%
+  select(GEOID, variable, estimate, geometry) %>%
+  pivot_wider(names_from = variable, values_from = estimate) %>%
+  mutate(percent_poc = ((total_pop - white) / total_pop) * 100)
+
+ggplot() + geom_sf(data = metro_tracts_wide, aes(fill = percent_poc), color = "white", size = 0.1) + scale_fill_gradient(
+  name = "% People of Color",
+    low = "#f7f4ff",
+    high = "#4a1486",
+  labels = scales::percent_format(scale = 1)) +
+  geom_sf(data = lines, size = 0.3, alpha = 0.6) +
+  coord_sf(
+    xlim = c(-94.0, -92.7),
+    ylim = c(44.6, 45.3)
+  ) +
+  labs(
+    title = "Transit Routes vs. Median Household Income"
+  ) +
+  theme_void() +
+  theme(
+    plot.title = element_text(face = "bold", size = 15, hjust = 0.5)
+  )
+```
+
+```{r}
+ggplot(tract_summary, aes(x = percent_poc, y = log1p(total_trips))) +
+  geom_point(alpha = 0.35, color = "#6a0dad", size = 1.5) +
+  geom_smooth(method = "lm", color = "#d73027", linetype = "dashed",
+              se = TRUE, linewidth = 0.9) +
+  scale_x_continuous(labels = percent_format()) +
+  labs(
+    title = "Transit Service vs. Percent People of Color",
+    subtitle = "Each point = one census tract · Red dashed = linear fit",
+    x = "% People of Color",
+    y = "Transit Trips (log scale)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+The scatter plot puts numbers to what the map suggested. A positive relationship exists between the share of people of color in a tract and transit trip volume, but the fit is weak and the scatter wide. Many high-POC tracts have modest service, and some moderate-POC tracts near major corridors have substantial coverage.
+
+The takeaway is narrow but honest: the network is not avoiding communities of color, but the alignment is not strong enough to claim it was designed around them either.
+
 
 ### "Served" does not mean "well-served"
 
@@ -484,11 +573,7 @@ does not necessarily mean high ridership, and vice versa. Incorporating actual
 boarding data from Metro Transit's ridership records would provide a more complete
 picture.
 
-**Race/ethnicity analysis is incomplete.** Racial demographics appeared in the main
-project summary but were not fully integrated into the individual EDA analyses. A
-rigorous equity analysis would incorporate ACS race variables (e.g., `B03002`) and
-conduct multivariate analysis controlling for density, income, and racial composition
-simultaneously.
+**Race/ethnicity analysis not incorporated with income data** Racial demographics were analyzed but not incorporated with income data. We would have to  conduct multivariate analysis controlling for density, income, and racial composition simultaneously.
 
 **Future directions** could include: accessibility metrics measuring how many jobs
 or essential services can be reached within 30 minutes by transit from each tract;
