@@ -7,7 +7,7 @@ census tracts, with a focus on the relationship between neighborhood income, rac
 and access to frequent transit.
 
 **Published website:** https://mac-stat212-s26.github.io/project-metrotransit-rishika-hadley/
-**Published Video Recording:**[![Watch the video](https://img.youtube.com/vi/5tACRrbhGbU/0.jpg)](https://www.youtube.com/watch?v=5tACRrbhGbU)
+[![Watch the video](https://img.youtube.com/vi/5tACRrbhGbU/0.jpg)](https://www.youtube.com/watch?v=5tACRrbhGbU)
 
 
 ---
