@@ -350,22 +350,6 @@ ggplot() + geom_sf(data = metro_tracts_wide, aes(fill = percent_poc), color = "w
   )
 ```
 
-```{r}
-ggplot(tract_summary, aes(x = percent_poc, y = log1p(total_trips))) +
-  geom_point(alpha = 0.35, color = "#6a0dad", size = 1.5) +
-  geom_smooth(method = "lm", color = "#d73027", linetype = "dashed",
-              se = TRUE, linewidth = 0.9) +
-  scale_x_continuous(labels = percent_format()) +
-  labs(
-    title = "Transit Service vs. Percent People of Color",
-    subtitle = "Each point = one census tract · Red dashed = linear fit",
-    x = "% People of Color",
-    y = "Transit Trips (log scale)"
-  ) +
-  theme_minimal(base_size = 13) +
-  theme(plot.title = element_text(face = "bold"))
-```
-The scatter plot puts numbers to what the map suggested. A positive relationship exists between the share of people of color in a tract and transit trip volume, but the fit is weak and the scatter wide. Many high-POC tracts have modest service, and some moderate-POC tracts near major corridors have substantial coverage.
 
 The takeaway is narrow but honest: the network is not avoiding communities of color, but the alignment is not strong enough to claim it was designed around them either.
 
