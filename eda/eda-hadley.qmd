@@ -1,0 +1,124 @@
+---
+title: "Hadley W EDA"
+---
+
+Your exploratory data analysis of the team datasets go here.
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(sf)
+library(tidycensus)
+```
+
+```{r}
+df = st_read("../data/raw/shp_trans_transit_count_headway_sum/")
+```
+
+```{r}
+tracts <- get_acs(
+  geography = "tract",
+  variables = "B19013_001", 
+  state = "MN",
+  year = 2022,
+  geometry = TRUE 
+)
+```
+
+```{r}
+st_crs(tracts)
+st_crs(df)
+
+lines <- st_transform(df, st_crs(tracts))
+
+
+```
+
+```{r}
+lines_tracts <- st_join(lines, tracts)
+```
+
+```{r}
+names(lines_tracts)
+```
+
+```{r}
+tract_summary <- lines_tracts %>%
+  group_by(GEOID) %>%
+  summarise(
+    total_trips = sum(TripCount, na.rm = TRUE),
+    median_income = first(estimate)
+  )
+```
+
+
+```{r}
+tracts_map <- tracts %>%
+  left_join(
+    st_drop_geometry(tract_summary),
+    by = "GEOID"
+  )
+
+metro_tracts <- tracts_map %>%
+  filter(grepl("Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver", NAME))
+```
+
+
+```{r}
+# How many transit lines didn't match any tract?
+sum(is.na(lines_tracts$GEOID))
+
+# How many tracts have zero transit service?
+sum(tract_summary$total_trips == 0, na.rm = TRUE)
+
+# Distribution of TripCount — check for outliers
+summary(lines_tracts$TripCount)
+hist(lines_tracts$TripCount, breaks = 50)
+
+# How many metro tracts have missing income data?
+sum(is.na(metro_tracts$median_income))
+```
+
+```{r}
+# Scatterplot with a smoother
+ggplot(metro_tracts, aes(x = median_income, y = total_trips)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "loess") +
+  scale_x_continuous(labels = scales::dollar) +
+  labs(title = "Transit trips vs. median income by tract",
+       x = "Median household income", y = "Total trip count")
+
+# Log-transform if TripCount is heavily skewed
+ggplot(metro_tracts, aes(x = median_income, y = log1p(total_trips))) +
+  geom_point(alpha = 0.4) +
+  geom_smooth()
+```
+
+```{r}
+ggplot(metro_tracts) +
+  geom_sf(aes(fill = log1p(total_trips)), color = NA) +
+  scale_fill_viridis_c(option = "magma", name = "log(trips+1)") +
+  theme_void() +
+  labs(title = "Transit trip density by census tract")
+
+# Side-by-side income vs transit
+library(patchwork)
+p1 <- ggplot(metro_tracts) + geom_sf(aes(fill = median_income), color = NA) +
+  scale_fill_viridis_c(labels = scales::dollar) + theme_void()
+p2 <- ggplot(metro_tracts) + geom_sf(aes(fill = log1p(total_trips)), color = NA) +
+  scale_fill_viridis_c(option = "magma") + theme_void()
+p1 + p2
+```
+
+```{r}
+metro_tracts %>%
+  mutate(county = str_extract(NAME, "Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver")) %>%
+  group_by(county) %>%
+  summarise(
+    mean_trips = mean(total_trips, na.rm = TRUE),
+    mean_income = mean(median_income, na.rm = TRUE),
+    n_tracts = n()
+  ) %>%
+  arrange(desc(mean_trips))
+```
+

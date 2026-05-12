@@ -21,8 +21,8 @@ number-depth: 2
 
 
 book:
-  title: "Project Title"
-  author: ["Member 1 first and last name initial", "Member 2 first and last name initial", "Member 3 first and last name initial"]
+  title: "Project Metro-Transit"
+  author: ["Hadley W", "Rishika K", "Laurice J"]
   date: today  # use today to update date published based on last time project was edited
   date-format: full
   # favicon: path/to/favorite-logo.png
@@ -61,9 +61,9 @@ book:
 
     - part: "EDA"
       chapters:
-        - eda/eda-member1.qmd
+        - eda/eda-hadley.qmd
         - eda/eda-member2.qmd
-        - eda/eda-member3.qmd
+        - eda/eda-Laurice.qmd
 
   appendices:
   - appx/proposal.qmd

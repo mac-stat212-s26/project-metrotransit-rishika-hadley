@@ -1,0 +1,288 @@
+---
+title: "Laurice J. EDA — Temporal Patterns in Metro Transit Service"
+format: html
+editor: visual
+---
+
+## Overview
+
+While my teammates explored the relationship between transit service and median household income, this EDA examines **temporal patterns** in Metro Transit service: how trip frequency and headways (wait times) vary by time of day and day of week across the Twin Cities metro. Understanding these patterns helps identify when and where service is strongest — and where gaps exist.
+
+## Setup
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(sf)
+library(scales)
+library(patchwork)
+```
+
+## Load Data
+
+```{r}
+#| message: false
+df <- st_read("../data/raw/shp_trans_transit_count_headway_sum/")
+```
+
+```{r}
+glimpse(df)
+```
+
+## Understanding the Temporal Fields
+
+The dataset contains trip counts and headways (minutes between trips) for seven time periods:
+
+| Period | Abbreviation | Time Range |
+|--------|-------------|------------|
+| Early Morning | EAM | 4:30–6:00 AM |
+| AM Peak | AMP | 6:00–9:00 AM |
+| Midday | MID | 9:00 AM–3:00 PM |
+| PM Peak | PMP | 3:00–6:30 PM |
+| Evening | EVE | 6:30–9:00 PM |
+| Night | NIGHT | 9:00 PM–1:30 AM |
+| Owl | OWL | 1:30–4:30 AM |
+
+The `service_id` field indicates the day type: WK (weekday), SAT (Saturday), SUN (Sunday), FRI (Friday), HOL (Holiday).
+
+## 1. Service Volume by Day Type
+
+```{r}
+day_summary <- df %>%
+  st_drop_geometry() %>%
+  group_by(service_id) %>%
+  summarise(
+    total_trips = sum(TripCount, na.rm = TRUE),
+    n_segments = n(),
+    avg_trips_per_segment = mean(TripCount, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(total_trips))
+
+day_summary
+```
+
+```{r}
+ggplot(day_summary, aes(x = reorder(service_id, -total_trips), y = total_trips)) +
+  geom_col(fill = "#2c7fb8") +
+  scale_y_continuous(labels = comma) +
+  labs(
+    title = "Total Transit Trips by Day Type",
+    x = "Day Type",
+    y = "Total Trips"
+  ) +
+  theme_minimal()
+```
+
+## 2. Trip Distribution Across Time of Day
+
+This is the core of the temporal analysis — how does service shift throughout the day?
+
+```{r}
+# Pivot trip count columns to long format for weekday service
+time_periods <- c("EAM_count", "AMP_count", "MID_count", "PMP_count",
+                  "EVE_count", "NIGHT_coun", "OWL_count")
+
+period_labels <- c("Early AM\n4:30-6:00",
+                    "AM Peak\n6:00-9:00",
+                    "Midday\n9:00-3:00",
+                    "PM Peak\n3:00-6:30",
+                    "Evening\n6:30-9:00",
+                    "Night\n9:00-1:30",
+                    "Owl\n1:30-4:30")
+
+# Filter to weekday service for the main temporal view
+wk_data <- df %>%
+  st_drop_geometry() %>%
+  filter(service_id == "WK")
+
+trips_long <- wk_data %>%
+  select(all_of(time_periods)) %>%
+  summarise(across(everything(), ~sum(.x, na.rm = TRUE))) %>%
+  pivot_longer(everything(), names_to = "period", values_to = "trips") %>%
+  mutate(period_label = factor(period_labels, levels = period_labels))
+
+ggplot(trips_long, aes(x = period_label, y = trips)) +
+  geom_col(fill = "#41b6c4") +
+  geom_text(aes(label = comma(trips)), vjust = -0.3, size = 3) +
+  scale_y_continuous(labels = comma) +
+  labs(
+    title = "Weekday Trip Distribution by Time of Day",
+    subtitle = "Twin Cities Metro Transit (service_id = WK)",
+    x = "Time Period",
+    y = "Total Trips Across All Segments"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 8))
+```
+
+## 3. Weekday vs. Weekend Temporal Profiles
+
+```{r}
+# Compare weekday, Saturday, and Sunday profiles
+day_types <- c("WK", "SAT", "SUN")
+
+temporal_by_day <- df %>%
+  st_drop_geometry() %>%
+  filter(service_id %in% day_types) %>%
+  group_by(service_id) %>%
+  summarise(across(all_of(time_periods), ~sum(.x, na.rm = TRUE)), .groups = "drop") %>%
+  pivot_longer(-service_id, names_to = "period", values_to = "trips") %>%
+  mutate(
+    period_label = factor(
+      recode(period,
+        "EAM_count" = "Early AM",
+        "AMP_count" = "AM Peak",
+        "MID_count" = "Midday",
+        "PMP_count" = "PM Peak",
+        "EVE_count" = "Evening",
+        "NIGHT_coun" = "Night",
+        "OWL_count" = "Owl"),
+      levels = c("Early AM", "AM Peak", "Midday", "PM Peak", "Evening", "Night", "Owl")
+    ),
+    service_id = recode(service_id, "WK" = "Weekday", "SAT" = "Saturday", "SUN" = "Sunday")
+  )
+
+ggplot(temporal_by_day, aes(x = period_label, y = trips, fill = service_id)) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c("Weekday" = "#2c7fb8", "Saturday" = "#7fcdbb", "Sunday" = "#c7e9b4")) +
+  scale_y_continuous(labels = comma) +
+  labs(
+    title = "Trip Distribution: Weekday vs. Weekend",
+    x = "Time Period",
+    y = "Total Trips",
+    fill = "Day Type"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+## 4. Headway Analysis — How Long Do Riders Wait?
+
+Headway (minutes between trips) is a key measure of service quality. Lower headways mean shorter waits.
+
+```{r}
+headway_cols <- c("EAM_hdwy", "AMP_hdwy", "MID_hdwy", "PMP_hdwy",
+                  "EVE_hdwy", "NIGHT_hdwy", "OWL_hdwy")
+
+headway_summary <- wk_data %>%
+  select(all_of(headway_cols)) %>%
+  pivot_longer(everything(), names_to = "period", values_to = "headway") %>%
+  filter(headway > 0) %>%
+  mutate(
+    period_label = factor(
+      recode(period,
+        "EAM_hdwy" = "Early AM",
+        "AMP_hdwy" = "AM Peak",
+        "MID_hdwy" = "Midday",
+        "PMP_hdwy" = "PM Peak",
+        "EVE_hdwy" = "Evening",
+        "NIGHT_hdwy" = "Night",
+        "OWL_hdwy" = "Owl"),
+      levels = c("Early AM", "AM Peak", "Midday", "PM Peak", "Evening", "Night", "Owl")
+    )
+  )
+
+ggplot(headway_summary, aes(x = period_label, y = headway)) +
+  geom_boxplot(fill = "#fdae6b", outlier.alpha = 0.2) +
+  coord_cartesian(ylim = c(0, 120)) +
+  labs(
+    title = "Weekday Headways by Time of Day",
+    subtitle = "Lower headway = more frequent service (shorter waits)",
+    x = "Time Period",
+    y = "Headway (minutes)"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+```{r}
+# Median headways summary table
+headway_summary %>%
+  group_by(period_label) %>%
+  summarise(
+    median_headway = median(headway, na.rm = TRUE),
+    mean_headway = round(mean(headway, na.rm = TRUE), 1),
+    min_headway = min(headway, na.rm = TRUE),
+    max_headway = max(headway, na.rm = TRUE),
+    .groups = "drop"
+  )
+```
+
+## 5. Peak vs. Off-Peak Service Intensity Map
+
+Where does service concentrate during peak hours versus off-peak? This map compares AM Peak trip counts to Evening counts to visualize how the network shifts.
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+
+# Use weekday data with geometry
+wk_spatial <- df %>%
+  filter(service_id == "WK")
+
+p_peak <- ggplot(wk_spatial) +
+  geom_sf(aes(color = AMP_count), size = 0.4, alpha = 0.7) +
+  scale_color_viridis_c(option = "plasma", name = "Trips", na.value = "grey80") +
+  labs(title = "AM Peak (6:00–9:00 AM)") +
+  theme_void() +
+  theme(legend.position = "bottom")
+
+p_eve <- ggplot(wk_spatial) +
+  geom_sf(aes(color = EVE_count), size = 0.4, alpha = 0.7) +
+  scale_color_viridis_c(option = "plasma", name = "Trips", na.value = "grey80") +
+  labs(title = "Evening (6:30–9:00 PM)") +
+  theme_void() +
+  theme(legend.position = "bottom")
+
+p_peak + p_eve +
+  plot_annotation(
+    title = "Weekday Transit Service: Peak vs. Evening",
+    subtitle = "Trip counts per road segment"
+  )
+```
+
+## 6. Night & Owl Service — Where Does Late-Night Transit Exist?
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+
+night_service <- wk_spatial %>%
+  mutate(has_night = (NIGHT_coun > 0),
+         has_owl = (OWL_count > 0))
+
+ggplot() +
+  geom_sf(data = filter(night_service, !has_night), color = "grey85", size = 0.2) +
+  geom_sf(data = filter(night_service, has_night & !has_owl), color = "#fdae6b", size = 0.5, alpha = 0.7) +
+  geom_sf(data = filter(night_service, has_owl), color = "#e31a1c", size = 0.6, alpha = 0.8) +
+  labs(
+    title = "Late-Night Transit Coverage",
+    subtitle = "Orange = Night service (9 PM–1:30 AM) | Red = Owl service (1:30–4:30 AM) | Grey = No late service"
+  ) +
+  theme_void()
+```
+
+```{r}
+# What share of segments have night/owl service?
+wk_spatial %>%
+  st_drop_geometry() %>%
+  summarise(
+    total_segments = n(),
+    pct_night = round(100 * mean(NIGHT_coun > 0, na.rm = TRUE), 1),
+    pct_owl = round(100 * mean(OWL_count > 0, na.rm = TRUE), 1)
+  )
+```
+
+## Summary of Findings
+
+This temporal EDA reveals several patterns in the Metro Transit network:
+
+1. **Weekday service dominates** — weekday trip volumes are substantially higher than Saturday or Sunday.
+2. **Dual peak pattern** — weekday service shows clear AM and PM peaks, consistent with commuter-oriented scheduling. Weekend service is more evenly distributed across the day.
+3. **Headways widen dramatically at night** — median wait times during peak hours are much shorter than evening and night periods, meaning riders outside of rush hour face significantly longer waits.
+4. **Late-night coverage is sparse** — only a small fraction of road segments have any night service, and owl service (after 1:30 AM) is extremely limited, concentrated along a few core corridors.
+5. **Peak-hour service concentrates in the urban core** — comparing the AM Peak and Evening maps shows that high-frequency service contracts toward the center city as the day progresses.
+
+These temporal patterns complement the income-based analyses by Hadley and Rishika and connect to our research question about underserved areas — communities that depend on off-peak or late-night transit face much longer waits and far fewer route options.

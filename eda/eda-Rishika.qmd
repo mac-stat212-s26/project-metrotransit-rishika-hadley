@@ -1,0 +1,158 @@
+---
+title: "Rishika Kundu EDA"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(sf)
+library(tidycensus)
+```
+
+```{r}
+df = st_read("../data/raw/shp_trans_transit_count_headway_sum/")
+```
+
+```{r}
+tracts <- get_acs(
+  geography = "tract",
+  variables = c(
+    median_income = "B19013_001",   
+    total_pop     = "B02001_001", 
+    white         = "B02001_002", 
+    black         = "B02001_003",   
+    native        = "B02001_004",  
+    asian         = "B02001_005",  
+    hispanic      = "B03003_003"   
+  ),
+  state = "MN",
+  year = 2022,
+  geometry = TRUE
+)
+```
+
+```{r}
+st_crs(tracts)
+st_crs(df)
+```
+
+```{r}
+lines <- st_transform(df, st_crs(tracts))
+lines_tracts <- st_join(lines, tracts)
+names(lines_tracts)
+```
+
+```{r}
+tract_summary <- lines_tracts %>%
+  group_by(GEOID) %>%
+  summarise(
+    total_trips = sum(TripCount, na.rm = TRUE),
+    median_income = first(estimate)
+  )
+```
+
+```{r}
+ggplot(tract_summary, aes(x = median_income, y = total_trips)) +
+  geom_point() +
+  geom_smooth(method = "lm")+
+  labs(
+    title = "Transit Service vs. Median Household Income",
+    x = "Median Household Income",
+    y = "Total Transit Trips"
+  )
+```
+
+```{r}
+tracts_map <- tracts %>%
+  left_join(
+    st_drop_geometry(tract_summary),
+    by = "GEOID"
+  )
+
+metro_tracts <- tracts_map %>%
+  filter(grepl("Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver", NAME))
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = metro_tracts, fill = "grey95", color = NA) +
+  geom_sf(data = lines, color = "blue", size = 0.3, alpha = 0.6) +
+  labs(title = "Transit Network in the Twin Cities") +
+  theme_minimal()
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = metro_tracts, aes(fill = estimate), color = "white", size = 0.1) +
+   scale_fill_gradient(
+    name = "Median Income ($)",
+    low = "#d4f1d4",
+    high = "#1a5c1a",
+    labels = scales::dollar_format()
+  )  +
+  geom_sf(data = lines, size = 0.2, alpha = 0.6) +
+  coord_sf(
+    xlim = c(-94.0, -92.7),
+    ylim = c(44.6, 45.3)
+  ) +
+  labs(
+    title = "Transit Routes vs. Median Household Income"
+  ) +
+  theme_void() 
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = metro_tracts, fill = "grey95", color = NA) +
+  geom_sf(data = lines, color = "blue", size = 0.3, alpha = 0.6) +
+  labs(title = "Transit Network in the Twin Cities") +
+  theme_minimal()
+
+
+```
+
+```{r}
+metro_tracts_wide <- metro_tracts %>%
+  select(GEOID, variable, estimate, geometry) %>%
+  pivot_wider(names_from = variable, values_from = estimate) %>%
+  mutate(percent_poc = ((total_pop - white) / total_pop) * 100)
+
+ggplot() + geom_sf(data = metro_tracts_wide, aes(fill = percent_poc), color = "white", size = 0.1) + scale_fill_gradient(
+  name = "% People of Color",
+    low = "#f7f4ff",
+    high = "#4a1486",
+  labels = scales::percent_format(scale = 1)) +
+  geom_sf(data = lines, size = 0.3, alpha = 0.6) +
+  coord_sf(
+    xlim = c(-94.0, -92.7),
+    ylim = c(44.6, 45.3)
+  ) +
+  labs(
+    title = "Transit Routes vs. Racial Demographics") +
+  theme_void()
+```
+
+```{r}
+
+tract_summary <- lines_tracts %>%
+  group_by(GEOID) %>%
+  summarise(
+    total_trips = sum(TripCount, na.rm = TRUE),
+    median_income = first(estimate)
+  ) %>%
+  left_join(
+    metro_tracts_wide %>% st_drop_geometry() %>% select(GEOID, percent_poc),
+    by = "GEOID"
+  )
+
+ggplot(tract_summary, aes(x = percent_poc, y = total_trips)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Transit Service vs. Race",
+    x = "% People of Color",
+    y = "Total Transit Trips"
+  )
+```

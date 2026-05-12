@@ -1,0 +1,157 @@
+---
+title: "Project Proposal"
+format: html
+---
+
+# Milestone 1: Proposal + Dataset
+
+## Title
+
+**Exploring Equity in Metro Transit: A Spatial Analysis of Ridership and Income**
+
+## Team Members
+
+- Rishika Kundu  
+- Hadley Wilkins  
+- Laurice Jimu  
+
+## Project Description
+
+For this project, we’re looking at Metro Transit data and comparing it to income levels across different areas. Basically, we want to understand who is using public transit and whether access to transit is evenly distributed across neighborhoods.
+
+We’re especially interested in whether people in lower-income areas rely more on transit, and whether those areas actually have enough stops or service to meet demand.
+
+## Research Questions
+
+Here are the main questions we want to explore:
+
+1. Is there a relationship between income levels and transit ridership?  
+2. Are transit stops more common in higher-income or lower-income areas?  
+3. Are there areas that seem underserved and could benefit from more transit options?  
+
+## Why We Chose This Topic
+
+We’re all interested in public transit and how it impacts everyday life. Transit affects things like getting to work, school, and other opportunities, so it’s important that it works well for everyone.
+
+This project gives us a chance to look at real data and see whether transit is actually serving different communities fairly, especially in the Twin Cities.
+
+## Dataset
+
+We plan to use the following dataset:
+
+- **Metro Transit Count and Headway Data**  
+- Source: Minnesota Geospatial Commons  
+- Link: <https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-transit-count-headway-sum>  
+
+This dataset includes spatial data about transit routes, stops, and service levels. We’ll combine it with income data (likely from census data) so we can compare transit patterns across different neighborhoods.
+
+## Communication Plan
+
+We’ll mainly communicate through a group text chat, which we already use regularly. We usually respond pretty quickly, but we’ll aim to reply within 24 hours during the week.
+
+We’ll also use class time as our main meeting time to work together, and then follow up over text if anything comes up outside of class.
+
+## Team Roles
+
+We’ll all contribute to everything, but we picked a few roles to stay organized:
+
+- **Point of Contact:** Laurice Jimu  
+  (Handles communication with the instructor/preceptors)
+
+- **Technical Lead:** Rishika Kundu  
+  (Keeps track of code, data, and the website)
+
+- **Style Lead:** Hadley Wilkins  
+  (Makes sure everything is clean, readable, and follows code guidelines)
+
+## Conflict Resolution
+
+If someone misses a deadline, we’ll just talk about it and figure out how to adjust so we stay on track. We want to keep communication open and not let things build up.
+
+For decisions, we’ll try to agree as a group. If we disagree, we’ll go with what makes the most sense based on the data and our project goals.
+
+## Implementation Plan
+
+We based our timeline on the class schedule and project milestones.
+
+### Milestone 1: Proposal + Dataset  
+**Due: Wednesday, March 25**
+
+- Finalize topic and research questions  
+- Confirm dataset  
+- Set up GitHub repo  
+- Submit proposal.qmd  
+
+---
+
+### Milestone 2: Effective Teamwork  
+**Due: April 6**
+
+- Each person finds a resource about teamwork  
+- Write a short summary individually  
+
+---
+
+### Milestone 3: Case Study  
+**Due: April 8**
+
+- Look at an example data story (NYT, FiveThirtyEight, etc.)  
+- Analyze how it’s structured  
+- Add write-up to case-study.qmd  
+
+---
+
+### Milestone 4: EDA (Exploratory Data Analysis)  
+**Due: April 10**
+
+- Each person does their own EDA  
+- Create visualizations and summaries  
+- Start identifying patterns  
+
+---
+
+### Milestone 5: Progress Presentation  
+**Due: April 22**
+
+- Put together slides  
+- Share early findings  
+- Get feedback from class  
+
+---
+
+### Milestone 6: Near-Final Project  
+**Due: May 1**
+
+- Finalize analysis and visuals  
+- Build out website  
+- Refine story and explanations  
+
+---
+
+### Milestone 7: Final Submission  
+**Due: May 4**
+
+- Final edits  
+- Check website + links  
+- Submit everything  
+
+---
+
+## GitHub Issues Plan
+
+We’ll use GitHub Issues to keep track of tasks and stay organized.
+
+We’ll create milestones for each phase of the project and then break them into smaller tasks (issues), like:
+
+- Set up repository  
+- Clean dataset  
+- Do EDA  
+- Build visualizations  
+- Write sections of report  
+- Prepare presentation  
+
+Each issue will be assigned to someone and linked to a milestone so we can track progress.
+
+## Closing
+
+We’re excited about this project because it connects data science to something real and important. Our goal is to tell a clear story about transit and equity, while also building strong data analysis and visualization skills.

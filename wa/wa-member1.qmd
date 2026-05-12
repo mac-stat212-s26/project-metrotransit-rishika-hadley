@@ -1,5 +1,106 @@
 ---
-title: "Member 1 First Name & Last Name Initial"
+title: "Hadley W Workspace"
 ---
 
-Work area to try code
+```{r}
+library(tidyverse)
+library(dplyr)
+library(sf)
+library(tidycensus)
+```
+
+```{r}
+df = st_read("../data/raw/shp_trans_transit_count_headway_sum/")
+```
+
+```{r}
+tracts <- get_acs(
+  geography = "tract",
+  variables = "B19013_001", 
+  state = "MN",
+  year = 2022,
+  geometry = TRUE 
+)
+```
+
+```{r}
+st_crs(tracts)
+st_crs(df)
+
+lines <- st_transform(df, st_crs(tracts))
+
+
+```
+
+```{r}
+lines_tracts <- st_join(lines, tracts)
+```
+
+```{r}
+names(lines_tracts)
+```
+
+```{r}
+tract_summary <- lines_tracts %>%
+  group_by(GEOID) %>%
+  summarise(
+    total_trips = sum(TripCount, na.rm = TRUE),
+    median_income = first(estimate)
+  )
+```
+
+
+```{r}
+tracts_map <- tracts %>%
+  left_join(
+    st_drop_geometry(tract_summary),
+    by = "GEOID"
+  )
+
+metro_tracts <- tracts_map %>%
+  filter(grepl("Hennepin|Ramsey|Dakota|Anoka|Washington|Scott|Carver", NAME))
+```
+
+```{r}
+ggplot(metro_tracts) +
+  geom_sf(aes(fill = log1p(total_trips)), color = NA) +
+  scale_fill_viridis_c(option = "magma", name = "log(trips+1)") +
+  theme_void() +
+  labs(title = "Transit trip density by census tract")
+
+# Side-by-side income vs transit
+library(patchwork)
+p1 <- ggplot(metro_tracts) + geom_sf(aes(fill = median_income), color = NA) +
+  scale_fill_viridis_c(labels = scales::dollar) + theme_void()
+p2 <- ggplot(metro_tracts) + geom_sf(aes(fill = log1p(total_trips)), color = NA) +
+  scale_fill_viridis_c(option = "magma") + theme_void()
+p1 + p2
+```
+
+```{r}
+library(patchwork)
+
+common_theme <- theme_void() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
+
+p1 <- ggplot(metro_tracts) +
+  geom_sf(aes(fill = median_income), color = "white", size = 0.1) +
+  scale_fill_viridis_c(labels = scales::dollar, name = "Median Income") +
+  labs(title = "Median Household Income") +
+  common_theme
+
+p2 <- ggplot(metro_tracts) +
+  geom_sf(aes(fill = log1p(total_trips)), color = "white", size = 0.1) +
+  scale_fill_viridis_c(option = "magma", name = "Transit Trips (log)") +
+  labs(title = "Transit Usage") +
+  common_theme
+
+p1 + p2 +
+  plot_annotation(
+    title = "Income vs Transit Usage Across Census Tracts",
+    subtitle = "Exploring spatial inequality and transportation patterns"
+  )
+```
