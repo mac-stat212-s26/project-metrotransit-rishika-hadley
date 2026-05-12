@@ -68,6 +68,9 @@ metro_tracts <- tracts_map %>%
 
 ## Motivation
 
+# Video: 
+{{< video https://www.youtube.com/watch?v=5tACRrbhGbU >}}
+
 Public transit is one of the most direct ways cities can expand economic opportunity. It determines whether someone can reach work, school, a doctor, or a grocery store without a car. In a car-dependent metro like the Twin Cities, who has access to frequent, reliable transit matters.
 
 Our motivation for this project came from wanting to test a assumption: does Metro Transit
